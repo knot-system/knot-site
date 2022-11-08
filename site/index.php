@@ -38,6 +38,8 @@ ___________.__                     .__           .__
 		$title = $file_contents['name'];
 		$text = \Eigenheim\Text::auto_p($file_contents['content']);
 
+		if( ! $text ) continue;
+
 	?>
 	<hr>
 	<h2><?= $title ?></h2>

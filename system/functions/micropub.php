@@ -21,16 +21,17 @@ class Micropub {
 		$headers = apache_request_headers();// TODO: switch to $_SERVER ?
 
 		// Check token is valid
+		// TODO: make a custom wrapper for curl
 		$token = $headers['Authorization'];
-		$ch = curl_init("https://tokens.indieauth.com/token");
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		$ch = curl_init( "https://tokens.indieauth.com/token" );
+		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
 			"Content-Type: application/x-www-form-urlencoded",
 			"Authorization: $token"
 		));
 		$response = array();
-		parse_str(curl_exec($ch), $response);
-		curl_close($ch);
+		parse_str( curl_exec($ch), $response );
+		curl_close( $ch );
 
 		// Check for scope=post or scope=create
 		// Check for me=basedomain
@@ -40,12 +41,12 @@ class Micropub {
 		$scope = $response['scope'];
 
 		if( empty($response) ){
-			header("HTTP/1.1 401 Unauthorized");
+			header( "HTTP/1.1 401 Unauthorized" );
 			exit;
 		}
 
 		if( $me != EH_BASEURL ){
-			header("HTTP/1.1 403 Forbidden");
+			header( "HTTP/1.1 403 Forbidden" );
 			exit;
 		}
 
@@ -59,29 +60,40 @@ class Micropub {
 			}
 		}
 		if( ! $scope_found ){
-			header("HTTP/1.1 403 Forbidden");
+			header( "HTTP/1.1 403 Forbidden" );
 			exit;
 		}
 
-		if(empty($_POST['content'])){
-			header("HTTP/1.1 400 Bad Request");
+		if( empty($_POST['content']) ){
+			header( "HTTP/1.1 400 Bad Request" );
 			echo "Missing content";
 			exit;
 		}
 
-		$fn = EH_ABSPATH."content/".time().".txt";
-
-		// write file. TODO: fill this with relevant data so we can use it to display stuff
-		$h = fopen($fn, 'w');
-		foreach($_POST as $k => $v){
-			$data .= "$k: $v\n\n----\n\n";
+		$filename = EH_ABSPATH."content/".time().".txt";
+		if( file_exists($filename) ) {
+			// TODO: error handling: we should use another name for the file (append '-2' to the filename or something) and not fail at this stage
+			header( "HTTP/1.1 400 Bad Request" );
+			echo "File exists";
+			exit;
 		}
-		fwrite($h, $data); 
-		fclose($h); 
 
+		// write file.
+		// TODO / CLEANUP: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
+		foreach( $_POST as $key => $value ){
+			$data .= $key.': '.$value."\n\n----\n\n";
+		}
+		if( ! \Eigenheim\Files::write_file( $filename, $data ) ) {
+			// TODO: error handling: file could not be written
+			header( "HTTP/1.1 400 Bad Request" );
+			echo "File could not be written";
+			exit;
+		}
+
+		// success !
 		// Set headers, return location
-		header("HTTP/1.1 201 Created");
-		header("Location: ".EH_BASEURL);
+		header( "HTTP/1.1 201 Created" );
+		header( "Location: ".EH_BASEURL );
 
 	}
 

@@ -70,4 +70,15 @@ class Files {
 
 	}
 
+	static function write_file( $filename, $content ) {
+
+		if( file_exists($filename) ) return false; // TODO: error handling: file exists already
+
+		$return = file_put_contents( $filename, $content );
+
+		if( $return !== false ) return true; // return true, even if 0 bytes were written
+
+		return false;
+	}
+
 }
