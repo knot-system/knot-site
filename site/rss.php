@@ -25,10 +25,10 @@ $posts = get_posts();
 			<title><?= $post['title'] ?></title>
 			<description><![CDATA[<?= $post['text'] ?>]]</description>
 			<link><?= EH_BASEURL ?></link>
+			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
 <?php /*
 			<author></author>
 			<guid></guid>
-			<pubDate></pubDate>
 */ ?>
 		</item>
 <?php endforeach; ?>

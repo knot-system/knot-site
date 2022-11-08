@@ -43,9 +43,13 @@ function get_posts(){
 
 		if( ! $text ) continue;
 
+		// for now, the filename is the timestamp. THIS WILL CHANGE IN THE FUTURE.
+		$timestamp = str_replace( '.txt', '', $filename );
+
 		$posts[] = array(
 			'title' => $title,
-			'text' => $text
+			'text' => $text,
+			'timestamp' => $timestamp
 		);
 
 	}
