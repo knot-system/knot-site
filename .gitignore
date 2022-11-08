@@ -1,2 +1,4 @@
 content/*
 !.gitkeep
+site/config.php
+build.sh
