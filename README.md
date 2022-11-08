@@ -2,7 +2,7 @@
 
 this is very, very early alpha stage. **you should not use this for now. THINGS WILL BREAK!** here be dragons:
 
-copy all the files into a directory on your webserver
+copy all the files into a directory on your webserver. make sure to also copy the *.htacces* file. if this system exists in a subfolder, you need to edit the `RewriteBase` line in the *.htaccess* file.
 
 then add a file 'site/config.php' with this content:
 
