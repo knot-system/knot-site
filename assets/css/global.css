@@ -1,0 +1,26 @@
+body {
+
+}
+
+header {
+	text-align: center;
+}
+
+main {
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+hr {
+	margin: 40px auto;
+	border: 0;
+	border-top: 1px solid #ccc;
+}
+
+footer {
+	font-size: 12px;
+	opacity: 0.5;
+	text-align: right;
+	margin: 40px 0 0;
+	padding: 15px;
+}
