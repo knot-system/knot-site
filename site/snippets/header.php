@@ -16,10 +16,21 @@ ___________.__                     .__           .__
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<title>Eigenheim</title>
+
+	<link rel="stylesheet" href="<?= EH_BASEURL ?>assets/css/global.css?v=<?= \Eigenheim\Core::getVersion() ?>">
+
 	<link rel="authorization_endpoint" href="https://indieauth.com/auth" />
 	<link rel="token_endpoint" href="https://tokens.indieauth.com/token" />
 	<link rel="me authn" href="mailto:<?= \Eigenheim\Config::getConfig('auth_mail') ?>">
 	<link rel="micropub" href="<?= \Eigenheim\Micropub::getEndpoint() ?>" />
-	<link rel="stylesheet" href="<?= EH_BASEURL ?>assets/css/global.css?v=<?= \Eigenheim\Core::getVersion() ?>">
+<?php
+	$microsubEndpoint = \Eigenheim\Config::getConfig('microsub');
+	if( $microsubEndpoint ) :
+	?>
+	<link rel="microsub" href="<?= $microsubEndpoint ?>">
+<?php
+	endif;
+	?>
+	
 </head>
 <body>

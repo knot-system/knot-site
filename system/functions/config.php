@@ -12,7 +12,10 @@ class Config {
 
 		$config = Config::loadConfig();
 
-		if( $option ) return $config[$option];
+		if( $option ) {
+			if( ! array_key_exists( $option, $config ) ) return false;
+			return $config[$option];
+		}
 
 		return $config;
 
