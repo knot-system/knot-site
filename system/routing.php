@@ -10,10 +10,14 @@ $request = $_SERVER['REQUEST_URI'];
 $request = preg_replace( '/^'.preg_quote(EH_BASEFOLDER, '/').'/', '', $request );
 $request = explode( '/', $request );
 
-if( isset($request[0]) && $request[0] == 'feed' ){
-	if( isset($request[1]) && $request[1] == 'rss' ) {
-		// invoke rss
+if( isset($request[0]) && $request[0] == 'feed' && isset($request[1]) ){
+	if( $request[1] == 'rss' ) {
+		// rss feed
 		include_once( 'site/rss.php' );
+		exit;
+	} elseif( $request[1] == 'json' ){
+		// json feed
+		include_once( 'site/json.php' );
 		exit;
 	}
 }

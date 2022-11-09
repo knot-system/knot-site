@@ -123,7 +123,8 @@ class Micropub {
 		}
 
 		$filepath = EH_ABSPATH."content/";
-		$filename = time().".txt";
+		$id = time();
+		$filename = $id.".txt";
 		if( $post_status == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
 		if( file_exists($filepath.$filename) ) {
 			// TODO: error handling: we should use another name for the file (append '-2' to the filename or something) and not fail at this stage
@@ -143,7 +144,7 @@ class Micropub {
 		// success !
 		// Set headers, return location
 		header( "HTTP/1.1 201 Created" );
-		header( "Location: ".EH_BASEURL );
+		header( "Location: ".EH_BASEURL.'#'.$id );
 
 	}
 

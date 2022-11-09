@@ -40,8 +40,10 @@ function get_posts(){
 
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
-		$text = \Eigenheim\Text::auto_p($file_contents['content']);
-		if( ! $text ) continue;
+		$content_html = \Eigenheim\Text::auto_p($file_contents['content']);
+		if( ! $content_html ) continue;
+
+		$content_text = strip_tags($content_html); // TODO: revisit this in the future
 
 		$title = '';
 		if( ! empty($file_contents['name']) ) $title = $file_contents['name'];
@@ -53,11 +55,24 @@ function get_posts(){
 		// for now, the filename is the timestamp. THIS WILL CHANGE IN THE FUTURE.
 		$timestamp = intval(str_replace( '.txt', '', $filename ));
 
+		$id = $timestamp; // TODO: check how we want to handle the id. needs to be unique and should not change when editing this post.
+
+		$permalink = EH_BASEURL.'#'.$id; // TODO: check how we want to handle permalinks to posts
+
+		$date_published = date( 'c', $timestamp );
+
+		$date_modified = $date_published; // TODO: add modified date
+
 		$posts[] = array(
+			'id' => $id,
 			'title' => $title,
-			'text' => $text,
+			'permalink' => $permalink,
+			'content_html' => $content_html,
+			'content_text' => $content_text,
 			'tags' => $tags,
-			'timestamp' => $timestamp
+			'date_published' => $date_published,
+			'date_modified' => $date_modified,
+			'timestamp' => $timestamp // at the moment, this gets used by the rss feed and post.php
 		);
 
 	}

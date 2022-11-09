@@ -23,12 +23,12 @@ $posts = get_posts();
 <?php foreach( $posts as $post ) : ?>
 		<item>
 			<title><?= $post['title'] ?></title>
-			<description><![CDATA[<?= $post['text'] ?>]]></description>
-			<link><?= EH_BASEURL ?></link>
-			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
+			<description><![CDATA[<?= $post['content_html'] ?>]]></description>
+			<link><?= $post['permalink'] ?></link>
+			<guid><?= $post['id'] ?></guid>
+			<pubDate><?= date( 'r', $post['timestamp'] ?></pubDate>
 <?php /*
 			<author></author>
-			<guid></guid>
 */ ?>
 		</item>
 <?php endforeach; ?>

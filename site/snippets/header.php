@@ -33,6 +33,7 @@ ___________.__                     .__           .__
 	?>
 
 	<link rel="alternate" type="application/rss+xml" title="Eigenheim RSS Feed" href="<?= EH_BASEURL ?>feed/rss">
+	<link rel="alternate" type="application/json" title="Eigenheim JSON Feed" href="<?= EH_BASEURL ?>feed/json">
 	
 </head>
 <body>
