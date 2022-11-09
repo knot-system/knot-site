@@ -12,9 +12,9 @@ $posts = get_posts();
 	<channel>
 		<title>Eigenheim Feed</title>
 		<link><?= EH_BASEURL ?></link>
+		<description></description>
 <?php /*
 		<lastBuildDate></lastBuildDate>
-		<description></description>
 		<language></language>
 		<copyright></copyright>
 		<pubDate></pubDate>
@@ -23,7 +23,7 @@ $posts = get_posts();
 <?php foreach( $posts as $post ) : ?>
 		<item>
 			<title><?= $post['title'] ?></title>
-			<description><![CDATA[<?= $post['text'] ?>]]</description>
+			<description><![CDATA[<?= $post['text'] ?>]]></description>
 			<link><?= EH_BASEURL ?></link>
 			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
 <?php /*
