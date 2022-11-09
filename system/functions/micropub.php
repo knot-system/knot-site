@@ -18,7 +18,36 @@ class Micropub {
 
 		// based on MVMP by rhiaro -- https://rhiaro.co.uk/2015/04/minimum-viable-micropub
 
-		if( empty($_POST) ) return;
+		if( ! empty($_POST) ) {
+			Micropub::postRequest();
+			return;
+		} elseif( ! empty($_GET) ) {
+			Micropub::getRequest();
+			return;
+		}
+
+	}
+
+	static function getRequest(){
+
+		if( empty($_GET['q']) ) return;
+
+		if( $_GET['q'] == 'config' ) {
+
+			$categories = get_categories();
+
+			$config = array(
+				// 'media-endpoint' => '',
+				'categories' => $categories
+			);
+
+			echo json_encode( $config );
+			exit;
+		}
+
+	}
+
+	static function postRequest() {
 
 		$headers = apache_request_headers();// TODO: switch to $_SERVER ?
 

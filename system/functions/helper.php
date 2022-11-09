@@ -65,6 +65,41 @@ function get_posts(){
 }
 
 
+function get_categories(){
+	// TODO: revisit this in the future
+
+	$files = \Eigenheim\Files::read_dir( '' );
+
+	if( ! count($files) ) return array();
+
+	$categories = array();
+
+	foreach( $files as $filename ){
+
+		$file_contents = \Eigenheim\Files::read_file( $filename );
+
+		$text = \Eigenheim\Text::auto_p($file_contents['content']);
+		if( ! $text ) continue;
+
+		$tags = array();
+		if( ! empty($file_contents['category']) ) $tags = json_decode( $file_contents['category'] ); 
+		if( ! is_array($tags) ) $tags = array();
+
+		foreach( $tags as $tag ) {
+			$categories[] = $tag;
+		}
+
+	}
+
+	$categories = array_unique( $categories );
+	$categories = array_filter( $categories ); // remove empty entries
+	$categories = array_values( $categories ); // get rid of keys
+
+	return $categories;
+
+}
+
+
 function trailingslashit( $string ){
 	// add a slash at the end, if there isn't already one ..
 

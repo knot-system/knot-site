@@ -20,7 +20,6 @@ if( isset($request[0]) && $request[0] == 'feed' ){
 
 if( isset($request[0]) && $request[0] == \Eigenheim\Micropub::getEndpoint() ) {
 	// invoke micropub
-
 	\Eigenheim\Micropub::checkRequest();
 	exit;
 }
