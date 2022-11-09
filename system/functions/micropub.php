@@ -100,17 +100,9 @@ class Micropub {
 			exit;
 		}
 
-		$filename = EH_ABSPATH."content/".time().".txt";
-		if( file_exists($filename) ) {
-			// TODO: error handling: we should use another name for the file (append '-2' to the filename or something) and not fail at this stage
-			header( "HTTP/1.1 400 Bad Request" );
-			echo "File exists";
-			exit;
-		}
-
-		// write file.
 		// TODO / CLEANUP: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 		$skip_fields = array( 'access_token', 'action' );
+		$post_status = 'publish'; // possible values: publish or draft
 		foreach( $_POST as $key => $value ){
 
 			if( in_array( $key, $skip_fields) ) continue;
@@ -122,11 +114,26 @@ class Micropub {
 					$value = array_map( 'trim', $value );
 				}
 				$value = json_encode($value);
+			} elseif( $key == 'post-status' ) {
+				$post_status = $value;
+				if( $post_status == 'published' ) $post_status = 'publish';
 			}
 
 			$data .= $key.': '.$value."\n\n----\n\n";
 		}
-		if( ! \Eigenheim\Files::write_file( $filename, $data ) ) {
+
+		$filepath = EH_ABSPATH."content/";
+		$filename = time().".txt";
+		if( $post_status == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
+		if( file_exists($filepath.$filename) ) {
+			// TODO: error handling: we should use another name for the file (append '-2' to the filename or something) and not fail at this stage
+			header( "HTTP/1.1 400 Bad Request" );
+			echo "File exists";
+			exit;
+		}
+
+
+		if( ! \Eigenheim\Files::write_file( $filepath.$filename, $data ) ) {
 			// TODO: error handling: file could not be written
 			header( "HTTP/1.1 400 Bad Request" );
 			echo "File could not be written";

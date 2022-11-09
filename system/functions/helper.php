@@ -36,6 +36,8 @@ function get_posts(){
 
 	foreach( $files as $filename ){
 
+		if( str_contains( $filename, '_draft_' ) ) continue; // skip drafts
+
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
 		$text = \Eigenheim\Text::auto_p($file_contents['content']);
@@ -49,7 +51,7 @@ function get_posts(){
 		if( ! is_array($tags) ) $tags = array();
 
 		// for now, the filename is the timestamp. THIS WILL CHANGE IN THE FUTURE.
-		$timestamp = str_replace( '.txt', '', $filename );
+		$timestamp = intval(str_replace( '.txt', '', $filename ));
 
 		$posts[] = array(
 			'title' => $title,
