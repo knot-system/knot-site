@@ -84,6 +84,14 @@ class Micropub {
 
 			if( in_array( $key, $skip_fields) ) continue;
 
+			if( $key == 'category' ) {
+				if( is_array($value) ) {
+					$value = json_encode($value);
+				} else {
+					$value = explode( ',', $value );
+				}
+			}
+
 			$data .= $key.': '.$value."\n\n----\n\n";
 		}
 		if( ! \Eigenheim\Files::write_file( $filename, $data ) ) {
