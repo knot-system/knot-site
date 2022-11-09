@@ -1,0 +1,21 @@
+alpha.3
+- posting from quill now works (not every post-type is yet supported though)
+- removed the access_token from being imported (whoopsie)
+- post h2 gets only displayed if title has a value
+- tags get imported and displayed
+- the micropub endpoint address changed (you may need to re-login to post again)
+- added tag discovery to the micropub endpoint (to list available categories/tags)
+- added possibility for drafts (files get prefixed with '_draft_' and are not listed in the overview)
+- the rss feed now validates correctly
+- added json feed
+- added anchors to posts
+
+alpha.2
+- added snippet() helper
+- added get_posts() helper
+- added microsub endpoint to header
+- added basic rss feed
+- added date to posts
+
+alpha.1
+- initial release
