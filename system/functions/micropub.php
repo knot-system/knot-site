@@ -4,11 +4,13 @@ namespace Eigenheim;
 
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
+// micropub spec: https://www.w3.org/TR/micropub/
+
 class Micropub {
 
 	static function getEndpoint(){
 
-		return EH_BASEURL; // TODO: use /api/v1/micropub or something like this when we added routing
+		return 'micropub'; // TODO: revisit this in the future; if this uses '/' we need to fix routing.php as well
 
 	}
 

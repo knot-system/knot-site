@@ -18,12 +18,10 @@ if( isset($request[0]) && $request[0] == 'feed' ){
 	}
 }
 
-// TODO: this should be /api/v1/micropub or something like this; see \Eigenheim\Micropub::getEndpoint()
-if( isset($_POST['content']) ) {
+if( isset($request[0]) && $request[0] == \Eigenheim\Micropub::getEndpoint() ) {
 	// invoke micropub
 
 	\Eigenheim\Micropub::checkRequest();
-
 	exit;
 }
 
