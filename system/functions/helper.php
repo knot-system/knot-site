@@ -57,3 +57,13 @@ function get_posts(){
 	return $posts;
 
 }
+
+
+function trailingslashit( $string ){
+	// add a slash at the end, if there isn't already one ..
+
+	$string = preg_replace( '/\/$/', '', $string );
+	$string .= '/';
+
+	return $string;
+}

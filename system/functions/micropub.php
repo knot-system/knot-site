@@ -45,12 +45,11 @@ class Micropub {
 			exit;
 		}
 
-		if( $me != EH_BASEURL ){
+		if( trailingslashit($me) != trailingslashit(EH_BASEURL) ){
 			header( "HTTP/1.1 403 Forbidden" );
 			exit;
 		}
 
-		$possible_scopes = array( 'post', 'create' );
 		$scopes = explode( ' ', $scope );
 		$scope_found = false;
 		foreach( array('post', 'create') as $possible_scope ){
