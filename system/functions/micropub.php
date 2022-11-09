@@ -79,7 +79,7 @@ class Micropub {
 
 		// write file.
 		// TODO / CLEANUP: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
-		$skip_fields = array( 'access_token' );
+		$skip_fields = array( 'access_token', 'action' );
 		foreach( $_POST as $key => $value ){
 
 			if( in_array( $key, $skip_fields) ) continue;
