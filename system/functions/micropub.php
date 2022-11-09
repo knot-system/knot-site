@@ -85,11 +85,12 @@ class Micropub {
 			if( in_array( $key, $skip_fields) ) continue;
 
 			if( $key == 'category' ) {
-				if( is_array($value) ) {
-					$value = json_encode($value);
-				} else {
+				// we assume for now, that 'category' is either an array or a comma separated string
+				if( ! is_array($value) ) {
 					$value = explode( ',', $value );
+					$value = array_map( 'trim', $value );
 				}
+				$value = json_encode($value);
 			}
 
 			$data .= $key.': '.$value."\n\n----\n\n";

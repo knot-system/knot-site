@@ -30,9 +30,28 @@ footer {
 
 section {
 	border-top: 1px solid #ccc;
-	padding: 40px;
+	padding: 2em;
 }
 
 	section > h2 {
 		margin-top: 0;
 	}
+
+section .tags {
+	list-style-type: none;
+	margin: 0.2em 0 0;
+	padding: 0;
+}
+
+	section .tags li {
+		display: inline-block;
+		background: #eee;
+		border-radius: 3px;
+		box-sizing: border-box;
+		padding: 5px 10px;
+		font-size: 0.8em
+	}
+
+		section .tags li + li {
+			margin-left: 0.5em;
+		}

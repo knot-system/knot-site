@@ -3,7 +3,7 @@
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 
-function snippet( $path, $return = false ) {
+function snippet( $path, $return = false, $args = array() ) {
 	
 	$include_path = EH_ABSPATH.'site/snippets/'.$path.'.php';
 
@@ -38,10 +38,15 @@ function get_posts(){
 
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
-		$title = $file_contents['name'];
 		$text = \Eigenheim\Text::auto_p($file_contents['content']);
-
 		if( ! $text ) continue;
+
+		$title = '';
+		if( ! empty($file_contents['name']) ) $title = $file_contents['name'];
+
+		$tags = array();
+		if( ! empty($file_contents['category']) ) $tags = json_decode( $file_contents['category'] ); 
+		if( ! is_array($tags) ) $tags = array();
 
 		// for now, the filename is the timestamp. THIS WILL CHANGE IN THE FUTURE.
 		$timestamp = str_replace( '.txt', '', $filename );
@@ -49,6 +54,7 @@ function get_posts(){
 		$posts[] = array(
 			'title' => $title,
 			'text' => $text,
+			'tags' => $tags,
 			'timestamp' => $timestamp
 		);
 
