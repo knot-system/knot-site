@@ -102,7 +102,7 @@ class Micropub {
 
 		// TODO / CLEANUP: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 		$skip_fields = array( 'access_token', 'action' );
-		$post_status = 'publish'; // possible values: publish or draft
+		$post_status = 'published'; // possible values: publish or draft
 		foreach( $_POST as $key => $value ){
 
 			if( in_array( $key, $skip_fields) ) continue;
@@ -116,7 +116,7 @@ class Micropub {
 				$value = json_encode($value);
 			} elseif( $key == 'post-status' ) {
 				$post_status = $value;
-				if( $post_status == 'published' ) $post_status = 'publish';
+				if( $post_status == 'publish' ) $post_status = 'published';
 			}
 
 			$data .= $key.': '.$value."\n\n----\n\n";
