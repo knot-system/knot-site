@@ -8,7 +8,7 @@ class Core {
 	
 	static function getVersion(){
 
-		$version = 'alpha.2';
+		$version = 'alpha.3';
 
 		return $version;
 	}
