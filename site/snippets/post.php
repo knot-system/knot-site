@@ -23,7 +23,13 @@ if( $post['timestamp'] > 0 ) $date = date( 'd.m.Y', $post['timestamp'] );
 	
 	if( $text ) echo '<div class="e-content">'.$text.'</div>';
 
-	if( count($tags) ) echo '<ul class="tags"><li class="p-category">'.implode( '</li><li>', $tags).'</li></ul>';
+	if( count($tags) ) {
+		echo '<ul class="tags">';
+		foreach( $tags as $tag ) {
+			echo '<li><a href="'.EH_BASEURL.'tag/'.$tag.'/" class="p-category tag">'.$tag.'</a></li>';
+		}
+		echo '</ul>';
+	}
 
 	?>
 </article>

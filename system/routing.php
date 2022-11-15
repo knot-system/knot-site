@@ -10,6 +10,8 @@ $request = $_SERVER['REQUEST_URI'];
 $request = preg_replace( '/^'.preg_quote(EH_BASEFOLDER, '/').'/', '', $request );
 $request = explode( '/', $request );
 
+$tag = false;
+
 if( isset($request[0]) && $request[0] == 'feed' && isset($request[1]) ){
 	// feeds
 
@@ -37,11 +39,26 @@ if( isset($request[0]) && $request[0] == 'feed' && isset($request[1]) ){
 		exit;
 	}
 
+} elseif( isset($request[0]) && $request[0] == 'tag' && isset($request[1]) ){
+	// single tag view
+
+	$tag = $request[1];
+	$posts = get_posts_by_tag( $tag );
+
+	if( ! count($posts) ) {
+		include_once( EH_ABSPATH.'site/404.php' );
+		exit;
+	}
+
 } elseif( isset($request[0]) && $request[0] == \Eigenheim\Micropub::getEndpoint() ) {
 	// micropub
 
 	\Eigenheim\Micropub::checkRequest();
 	exit;
+
+} else {
+
+	$posts = get_posts();
 
 }
 

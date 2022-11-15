@@ -45,6 +45,26 @@ function get_posts(){
 }
 
 
+function get_posts_by_tag( $tag ) {
+
+	$all_posts = get_posts();
+
+	$posts = array();
+
+	foreach( $all_posts as $post ) {
+
+		if( empty($post['tags']) || ! is_array($post['tags']) || ! count($post['tags']) ) continue;
+
+		if( ! in_array( $tag, $post['tags']) ) continue;
+
+		$posts[] = $post;
+
+	}
+
+	return $posts;
+}
+
+
 function get_post( $post_id ) {
 
 	$files = \Eigenheim\Files::read_dir( '', true );
@@ -112,7 +132,7 @@ function get_post_by_filename( $filename ) {
 	$timestamp = $file_contents['timestamp'];
 	$id = $file_contents['id'];
 
-	$permalink = EH_BASEURL.'post/'.$id;
+	$permalink = EH_BASEURL.'post/'.$id.'/';
 
 	$date_published = date( 'c', $timestamp );
 

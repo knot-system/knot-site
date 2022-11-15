@@ -4,12 +4,16 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 ?>
 <header>
-	<h1>Eigenheim</h1>
+	<h1><a href="<?= EH_BASEURL ?>">Eigenheim</a></h1>
 </header>
 <main>
 <?php
 
-$posts = get_posts();
+$tag = $args['tag'];
+
+if( $tag ) echo '<p><em>only showing posts with tag <strong>'.$tag.'</strong></em></p>';
+
+$posts = $args['posts'];
 
 foreach( $posts as $post ) snippet( 'post', array( 'post' => $post ) );
 

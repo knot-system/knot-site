@@ -76,14 +76,24 @@ article {
 	}
 
 		article .tags li {
-			display: inline-block;
-			background: var(--color-box-background);
-			border: 1px solid var(--color-box-border);
-			border-radius: 3px;
-			box-sizing: border-box;
-			padding: 5px 10px;
-			font-size: 0.8em
+			display: inline;
 		}
+
+			article .tags li a {
+				display: inline-block;
+				background: var(--color-box-background);
+				border: 1px solid var(--color-box-border);
+				border-radius: 3px;
+				box-sizing: border-box;
+				padding: 5px 10px;
+				font-size: 0.8em;
+				color: var(--color-text);
+				text-decoration: none;
+			}
+
+				article .tags li a:hover {
+					background-color: var(--color-box-border);
+				}
 
 			article .tags li + li {
 				margin-left: 0.5em;
