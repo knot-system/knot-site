@@ -13,13 +13,20 @@ then add a file 'site/config.php' with this content:
 
 return [
 	'auth_mail' => 'mail@example.com',
-	//'microsub' => 'https://www.example.com/microsub'
+	//'microsub' => 'https://www.example.com/microsub',
+	'author' => [
+		'p-name' => 'My Author Name',
+		'u-email' => 'mail@example.com',
+		'p-note' => 'This is my Website. Hi.',
+		// .. and other h-card properties, see https://microformats.org/wiki/h-card#Properties for an overview
+	],
 ];
 
 ```
 
 replace `mail@example.com` with your e-mail address, for the login code
 if you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line
+add author information. you can use h-card properties here, but not all may be used in the frontend. this will be expanded later.
 
 open the page. see if it works.
 

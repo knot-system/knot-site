@@ -16,6 +16,14 @@ ___________.__                     .__           .__
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<title>Eigenheim</title>
+<?php
+	$author = get_author_information();
+	if( ! empty( $author['display_name'] ) ) :
+	?>
+	<meta name="author" content="<?= $author['display_name'] ?>">
+<?php
+	endif;
+	?>
 
 	<link rel="stylesheet" href="<?= EH_BASEURL ?>assets/css/global.css?v=<?= \Eigenheim\Core::getVersion() ?>">
 

@@ -20,6 +20,14 @@ hr {
 	border-top: 1px solid #ccc;
 }
 
+a {
+	color: #00a;
+}
+
+	a:hover {
+		color: #00f;
+	}
+
 footer {
 	font-size: 12px;
 	opacity: 0.5;
@@ -55,3 +63,10 @@ section .tags {
 		section .tags li + li {
 			margin-left: 0.5em;
 		}
+
+section.author {
+	background: #eee;
+	border-radius: 8px;
+	margin-top: 3em;
+	border: 1px solid #ccc;
+}

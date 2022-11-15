@@ -27,9 +27,12 @@ $posts = get_posts();
 			<link><?= $post['permalink'] ?></link>
 			<guid><?= $post['id'] ?></guid>
 			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
-<?php /*
-			<author></author>
-*/ ?>
+<?php
+			$author = get_author_information();
+			if( ! empty( $author['display_name'] ) ) :
+			?>
+			<author><?= $author['display_name'] ?></author>
+<?php endif; ?>
 		</item>
 <?php endforeach; ?>
 
