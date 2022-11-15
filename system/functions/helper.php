@@ -44,8 +44,9 @@ function get_posts(){
 
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
-		$content_html = \Eigenheim\Text::auto_p($file_contents['content']);
-		if( ! $content_html ) continue;
+		$content_html = $file_contents['content'];
+		$content_html = \Eigenheim\Text::auto_a($content_html);
+		$content_html = \Eigenheim\Text::auto_p($content_html);
 
 		$content_text = strip_tags($content_html); // TODO: revisit this in the future
 

@@ -48,7 +48,17 @@ class Text {
 		$text = preg_replace( "/\<\/p\>\<br\>/", '</p>', $text );
 
 		return $text;
+	}
 
+	static function auto_a( $text ) {
+
+		// TODO/CLEANUP: this will break existing a-tags at the moment. revisit this in the future - do we want to allow html in the text? if so, we need to skip a-tags here.
+
+		$regexp = "/(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)?/";
+
+		$text = preg_replace( $regexp, '<a href="$1://$2.$3$4" target="_blank" rel="noopener">$2.$3$4</a>', $text );
+
+		return $text;
 	}
 	
 }
