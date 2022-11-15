@@ -24,7 +24,7 @@ if( ! count($info) ) return;
 			<?php
 		} elseif( str_starts_with( $property, 'u-') ) {
 			?>
-			<a class="<?= $property ?>" href="<?= $content ?>"><?= $content ?></a>
+			<a class="<?= $property ?>" href="<?= $content ?>" target="_blank" rel="noopener"><?= $content ?></a>
 			<?php
 		} elseif( str_starts_with( $property, 'dt-') ) {
 			?>
