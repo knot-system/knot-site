@@ -92,12 +92,6 @@ class Micropub {
 			exit;
 		}
 
-		if( empty($_POST['content']) ){
-			header( "HTTP/1.1 400 Bad Request" );
-			echo "Missing content";
-			exit;
-		}
-
 		$timestamp = time();
 
 		// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
@@ -130,11 +124,10 @@ class Micropub {
 
 		$year = date('Y', $timestamp);
 		$month = date('m', $timestamp);
-		$filepath = EH_ABSPATH.'content/'.$year.'/'.$month.'/';
-		if( ! is_dir($filepath) ) {
-			mkdir( $filepath, 0777, true );
-			if( ! is_dir($filepath) ) {
-				// TODO: error handling: folder could not be created
+		$target_folder = EH_ABSPATH.'content/'.$year.'/'.$month.'/';
+		if( ! is_dir($target_folder) ) {
+			mkdir( $target_folder, 0777, true );
+			if( ! is_dir($target_folder) ) {
 				header( "HTTP/1.1 500 Internal Server Error" );
 				echo "Folder could not be created";
 				exit;
@@ -145,11 +138,12 @@ class Micropub {
 		do {
 			$post_id = uniqid();
 			$foldername = $prefix.'_'.$post_id.'/';
-		} while( is_dir($filepath.$foldername) );
+		} while( is_dir($target_folder.$foldername) );
 
-		mkdir( $filepath.$foldername, 0777 );
-		if( ! is_dir($filepath.$foldername) ) {
-			// TODO: error handling: folder could not be created
+		$target_folder .= $foldername;
+
+		mkdir( $target_folder, 0777 );
+		if( ! is_dir($target_folder) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
 			echo "Folder could not be created";
 			exit;
@@ -159,20 +153,60 @@ class Micropub {
 
 		$filename = 'post.txt';
 		if( $post_status == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
+		
+		// NOTE: file upload - photo
+		if( isset($_FILES['photo']) ) {
+			$photo = $_FILES['photo'];
 
-		$filepath .= $foldername.$filename;
+			if( empty($photo['name']) || ! isset($photo['error']) || ! isset($photo['tmp_name']) || ! isset($photo['size']) || ! isset($photo['type']) ) {
+				header( "HTTP/1.1 400 Bad Request" );
+				echo "Photo could not be uploaded";
+				exit;
+			} elseif( $photo['error'] > 0 ) {
+				header( "HTTP/1.1 400 Bad Request" );
+				echo 'Photo could not be uploaded (errorcode '.$photo['error'].')';
+				exit;
+			} elseif( $photo['size'] <= 0 ) {
+				header( "HTTP/1.1 400 Bad Request" );
+				echo 'Photo could not be uploaded';
+				exit;
+			} elseif( $photo['type'] != 'image/jpeg' ) {
+				header( "HTTP/1.1 400 Bad Request" );
+				echo 'Photo could not be uploaded (only .jpg is allowed for now)';
+				exit;
+			}
+			
+			$photo_target = $target_folder.$photo['name'];
+			if( file_exists($photo_target) ) {
+				// TODO: rename photo name, if this already exists, instead of showing an error message and aborting here
+				header( "HTTP/1.1 500 Internal Server Error" );
+				echo "Photo could not be moved to the target location - this file already exists";
+				exit;
+			}
+			if( ! rename( $photo['tmp_name'], $photo_target ) ) {
+				header( "HTTP/1.1 500 Internal Server Error" );
+				echo 'Photo could not be moved to the target location';
+				exit;
+			}
+
+			$data['photo'] = $photo['name'];
+
+		}
+
+
+		$file_target = $target_folder.$filename;
 
 		$data_string = '';
 		foreach( $data as $key => $value ){
 			$data_string .= $key.': '.$value."\n\n----\n\n";
 		}
 
-		if( ! \Eigenheim\Files::write_file( $filepath, $data_string ) ) {
-			// TODO: error handling: file could not be written
-			header( "HTTP/1.1 400 Bad Request" );
+		if( ! \Eigenheim\Files::write_file( $file_target, $data_string ) ) {
+			header( "HTTP/1.1 500 Internal Server Error" );
 			echo "File could not be written";
 			exit;
 		}
+
 
 		// success !
 		// Set headers, return location
