@@ -1,3 +1,14 @@
+alpha.4
+- new content folder structure -- content created before this version is no longer visible! (you may want to delete it, or move it into the new folder structure and rename the textfiles to 'post.txt')
+- rss was still broken, this should fix it
+- added author information (see README.md)
+- added (basic) microformats support for articles
+- basic automatic link detection in the content field
+- css style update
+- photo upload! you can upload one photo per post. we don't resize it yet, so be sure to upload small files (max. 1600px width). only .jpg allowed for now. no media endpoint yet.
+- post permalinks. the url structure may change in the future!
+- filter posts overview by tag
+
 alpha.3
 - posting from quill now works (not every post-type is yet supported though)
 - removed the access_token from being imported (whoopsie)
