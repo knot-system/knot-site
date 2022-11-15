@@ -3,6 +3,7 @@
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 $post = $args['post'];
+if( ! $post ) return;
 
 $title = $post['title'];
 $text = $post['content_html'];
@@ -16,9 +17,9 @@ if( $post['timestamp'] > 0 ) $date = date( 'd.m.Y', $post['timestamp'] );
 	<a class="anchor" name="<?= $post['id'] ?>"></a>
 	<?php
 
-	if( $date ) echo '<time class="dt-published" datetime="'.$date.'">'.$date.'</time>';
+	if( $date ) echo '<time class="dt-published" datetime="'.$date.'"><a href="'.$post['permalink'].'">'.$date.'</a></time>';
 	
-	if( $title ) echo '<h2 class="p-name">'.$title.'</h2>';
+	if( $title ) echo '<h2 class="p-name"><a href="'.$post['permalink'].'">'.$title.'</a></h2>';
 	
 	if( $text ) echo '<div class="e-content">'.$text.'</div>';
 

@@ -216,7 +216,7 @@ class Micropub {
 		// success !
 		// Set headers, return location
 		header( "HTTP/1.1 201 Created" );
-		header( "Location: ".EH_BASEURL.'#'.$post_id );
+		header( "Location: ".EH_BASEURL.'post/'.$post_id );
 
 	}
 
