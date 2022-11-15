@@ -1,6 +1,22 @@
+:root {
+
+	--color-global-background: #f9ffff;
+
+	--color-box-background: #f4fbff;
+	--color-box-border: #d1e7ff;
+
+	--color-text: #0c1e48;
+
+	--color-link: #00a;
+	--color-link-hover: #00f;
+
+}
+
 body {
 	margin: 0;
 	padding: 0;
+	background: var(--color-global-background);
+	color: var(--color-text);
 }
 
 header {
@@ -11,21 +27,15 @@ main {
 	max-width: 800px;
 	margin: 0 auto;
 	box-sizing: border-box;
-	min-height: calc(100vh - 195px);
-}
-
-hr {
-	margin: 40px auto;
-	border: 0;
-	border-top: 1px solid #ccc;
+	min-height: calc(100vh - 175px);
 }
 
 a {
-	color: #00a;
+	color: var(--color-link);
 }
 
 	a:hover {
-		color: #00f;
+		color: var(--color-link-hover);
 	}
 
 footer {
@@ -37,7 +47,7 @@ footer {
 }
 
 article {
-	border-top: 1px solid #ccc;
+	border-top: 1px solid var(--color-box-border);
 	padding: 2em;
 }
 
@@ -53,7 +63,8 @@ article {
 
 		article .tags li {
 			display: inline-block;
-			background: #eee;
+			background: var(--color-box-background);
+			border: 1px solid var(--color-box-border);
 			border-radius: 3px;
 			box-sizing: border-box;
 			padding: 5px 10px;
@@ -66,17 +77,18 @@ article {
 
 	article time {
 		font-size: 0.8em;
-		color: #999;
+		opacity: 0.7;
 	}
 
 section.author {
-	background: #eee;
+	background: var(--color-box-background);
 	border-radius: 8px;
 	margin-top: 3em;
-	border: 1px solid #ccc;
+	border: 1px solid var(--color-box-border);
 	padding: 2em;
 }
 
 	section.author > h2 {
 		margin-top: 0;
+		font-size: 1.2em;
 	}
