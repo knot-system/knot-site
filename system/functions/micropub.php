@@ -16,8 +16,6 @@ class Micropub {
 
 	static function checkRequest(){
 
-		// based on MVMP by rhiaro -- https://rhiaro.co.uk/2015/04/minimum-viable-micropub
-
 		if( ! empty($_POST) ) {
 			Micropub::postRequest();
 			return;
@@ -100,41 +98,76 @@ class Micropub {
 			exit;
 		}
 
-		// TODO / CLEANUP: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
+		$timestamp = time();
+
+		// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
+		$data = $_POST;
+
 		$skip_fields = array( 'access_token', 'action' );
-		$post_status = 'published'; // possible values: publish or draft
-		foreach( $_POST as $key => $value ){
-
-			if( in_array( $key, $skip_fields) ) continue;
-
-			if( $key == 'category' ) {
-				// we assume for now, that 'category' is either an array or a comma separated string
-				if( ! is_array($value) ) {
-					$value = explode( ',', $value );
-					$value = array_map( 'trim', $value );
-				}
-				$value = json_encode($value);
-			} elseif( $key == 'post-status' ) {
-				$post_status = $value;
-				if( $post_status == 'publish' ) $post_status = 'published';
-			}
-
-			$data .= $key.': '.$value."\n\n----\n\n";
+		foreach( $skip_fields as $key ) {
+			if( ! array_key_exists( $key, $data) ) continue;
+			unset($data[$key]);
 		}
 
-		$filepath = EH_ABSPATH."content/";
-		$id = time();
-		$filename = $id.".txt";
-		if( $post_status == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
-		if( file_exists($filepath.$filename) ) {
-			// TODO: error handling: we should use another name for the file (append '-2' to the filename or something) and not fail at this stage
-			header( "HTTP/1.1 400 Bad Request" );
-			echo "File exists";
+		$data['timestamp'] = $timestamp;
+		$data['date'] = date('c', $timestamp);
+
+		if( ! empty($data['category']) ) {
+			// we assume for now, that 'category' is either an array or a comma separated string
+			if( ! is_array($data['category']) ) {
+				$data['category'] = explode( ',', $data['category'] );
+				$data['category'] = array_map( 'trim', $data['category'] );
+			}
+			$data['category'] = json_encode($data['category']);
+		}
+
+		$post_status = 'published'; // possible values: published or draft
+		if( ! empty($data['post-status']) ) {
+			if( $data['post-status'] == 'publish' ) $data['post-status'] = 'published';
+
+			$post_status = $data['post-status'];
+		}
+
+		$year = date('Y', $timestamp);
+		$month = date('m', $timestamp);
+		$filepath = EH_ABSPATH.'content/'.$year.'/'.$month.'/';
+		if( ! is_dir($filepath) ) {
+			mkdir( $filepath, 0777, true );
+			if( ! is_dir($filepath) ) {
+				// TODO: error handling: folder could not be created
+				header( "HTTP/1.1 500 Internal Server Error" );
+				echo "Folder could not be created";
+				exit;
+			}
+		}
+
+		$prefix = date('Y-m-d_H-i-s', $timestamp);
+		do {
+			$post_id = uniqid();
+			$foldername = $prefix.'_'.$post_id.'/';
+		} while( is_dir($filepath.$foldername) );
+
+		mkdir( $filepath.$foldername, 0777 );
+		if( ! is_dir($filepath.$foldername) ) {
+			// TODO: error handling: folder could not be created
+			header( "HTTP/1.1 500 Internal Server Error" );
+			echo "Folder could not be created";
 			exit;
 		}
 
+		$data['id'] = $post_id;
 
-		if( ! \Eigenheim\Files::write_file( $filepath.$filename, $data ) ) {
+		$filename = 'post.txt';
+		if( $post_status == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
+
+		$filepath .= $foldername.$filename;
+
+		$data_string = '';
+		foreach( $data as $key => $value ){
+			$data_string .= $key.': '.$value."\n\n----\n\n";
+		}
+
+		if( ! \Eigenheim\Files::write_file( $filepath, $data_string ) ) {
 			// TODO: error handling: file could not be written
 			header( "HTTP/1.1 400 Bad Request" );
 			echo "File could not be written";
@@ -144,7 +177,7 @@ class Micropub {
 		// success !
 		// Set headers, return location
 		header( "HTTP/1.1 201 Created" );
-		header( "Location: ".EH_BASEURL.'#'.$id );
+		header( "Location: ".EH_BASEURL.'#'.$post_id );
 
 	}
 

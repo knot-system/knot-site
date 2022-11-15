@@ -6,9 +6,9 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 class Files {
 
-	static function read_dir( $folderpath ){
+	static function read_dir( $folderpath_input, $recursive = false ){
 
-		$folderpath = EH_ABSPATH.'content/'.$folderpath;
+		$folderpath = EH_ABSPATH.'content/'.$folderpath_input;
 
 		if( ! is_dir( $folderpath ) ) return array(); // TODO: error handling: $folderpath is no directory
 
@@ -16,12 +16,18 @@ class Files {
 
 		if( $handle = opendir($folderpath) ){
 			while( false !== ($file = readdir($handle)) ){
-				if( '.' === $file ) continue;
-				if( '..' === $file ) continue;
-				if( is_dir($file) ) continue;
-				if( substr($file,0,1) == '.' ) continue;
+				if( substr($file,0,1) == '.' ) continue; // skip hidden files, ./ and ../
 
-				$files[] = $file;
+				if( is_dir($folderpath.$file) ) {
+					if( $recursive ){
+						$files = array_merge( $files, Files::read_dir( $folderpath_input.$file.'/', true ) );
+					}
+					continue;
+				}
+
+				if( $file != 'post.txt' ) continue;
+
+				$files[] = $folderpath_input.$file;
 			}
 			closedir($handle);
 		} else {

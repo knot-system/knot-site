@@ -28,7 +28,7 @@ function snippet( $path, $return = false, $args = array() ) {
 function get_posts(){
 	// TODO: get_posts() should work differently. don't know how exactly yet. but this function will very likely be replaced.
 
-	$files = \Eigenheim\Files::read_dir( '' );
+	$files = \Eigenheim\Files::read_dir( '', true );
 
 	if( ! count($files) ) return array();
 
@@ -39,8 +39,6 @@ function get_posts(){
 	$posts = array();
 
 	foreach( $files as $filename ){
-
-		if( str_contains( $filename, '_draft_' ) ) continue; // skip drafts
 
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
@@ -57,10 +55,8 @@ function get_posts(){
 		if( ! empty($file_contents['category']) ) $tags = json_decode( $file_contents['category'] ); 
 		if( ! is_array($tags) ) $tags = array();
 
-		// for now, the filename is the timestamp. THIS WILL CHANGE IN THE FUTURE.
-		$timestamp = intval(str_replace( '.txt', '', $filename ));
-
-		$id = $timestamp; // TODO: check how we want to handle the id. needs to be unique and should not change when editing this post.
+		$timestamp = $file_contents['timestamp'];
+		$id = $file_contents['id'];
 
 		$permalink = EH_BASEURL.'#'.$id; // TODO: check how we want to handle permalinks to posts
 
@@ -78,7 +74,7 @@ function get_posts(){
 			'tags' => $tags,
 			'date_published' => $date_published,
 			'date_modified' => $date_modified,
-			'timestamp' => $timestamp // at the moment, this gets used by the rss feed and post.php
+			'timestamp' => $timestamp
 		);
 
 	}
@@ -91,7 +87,7 @@ function get_posts(){
 function get_categories(){
 	// TODO: revisit this in the future
 
-	$files = \Eigenheim\Files::read_dir( '' );
+	$files = \Eigenheim\Files::read_dir( '', true );
 
 	if( ! count($files) ) return array();
 
