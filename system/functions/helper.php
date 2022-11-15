@@ -154,6 +154,7 @@ function get_author_information( $raw = false ){
 		if( ! empty($conf['p-note']) ) $author['description'] = $conf['p-note'];
 		if( ! empty($conf['u-email']) ) $author['email'] = $conf['u-email'];
 		if( ! empty($conf['u-url']) ) $author['url'] = $conf['u-url'];
+		if( ! empty($conf['u-photo']) ) $author['avatar'] = $conf['u-photo'];
 
 		if( ! empty($author['given_name']) && ! empty($author['family_name']) && empty($author['display_name']) ) $author['display_name'] = $author['given_name'].' '.$author['family_name'];
 

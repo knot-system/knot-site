@@ -2,7 +2,7 @@
 
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
-$posts = get_posts();
+// see https://www.jsonfeed.org/version/1.1/ for details
 
 $json = array(
 	'version' => 'https://jsonfeed.org/version/1.1',
@@ -10,9 +10,20 @@ $json = array(
 	'description' => '',
 	'home_page_url' => EH_BASEURL,
 	'feed_url' => EH_BASEURL.'feed/json',
-	'items' => $posts
 );
 
-header('Content-Type: application/json; charset=utf-8');
+$author = get_author_information();
+if( $author ) {
+	$json['authors'] = array(
+		'name' => $author['display_name'],
+	);
 
+	if( ! empty($author['url']) ) $json['authors']['url'] = $author['url'];
+	if( ! empty($author['avatar']) ) $json['authors']['avatar'] = $author['avatar'];
+}
+
+$posts = get_posts();
+if( count($posts) ) $json['items'] = $posts;
+
+header('Content-Type: application/json; charset=utf-8');
 echo json_encode( $json );
