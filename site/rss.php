@@ -26,7 +26,7 @@ $posts = get_posts();
 			<description><![CDATA[<?= $post['content_html'] ?>]]></description>
 			<link><?= $post['permalink'] ?></link>
 			<guid><?= $post['id'] ?></guid>
-			<pubDate><?= date( 'r', $post['timestamp'] ?></pubDate>
+			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
 <?php /*
 			<author></author>
 */ ?>
