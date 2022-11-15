@@ -92,3 +92,9 @@ section.author {
 		margin-top: 0;
 		font-size: 1.2em;
 	}
+
+img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+}

@@ -43,10 +43,28 @@ function get_posts(){
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
 		$content_html = $file_contents['content'];
+
+		$content_text = strip_tags($content_html); // TODO: revisit this in the future
+
 		$content_html = \Eigenheim\Text::auto_a($content_html);
 		$content_html = \Eigenheim\Text::auto_p($content_html);
 
-		$content_text = strip_tags($content_html); // TODO: revisit this in the future
+		$image = false;
+		if( ! empty( $file_contents['photo']) ) {
+			$post_folder = trailingslashit(pathinfo( $filename, PATHINFO_DIRNAME ));
+
+			if( file_exists(EH_ABSPATH.'content/'.$post_folder.$file_contents['photo']) ) {
+				$image = $post_folder.$file_contents['photo'];
+
+				// TODO: we may want to get the image size on upload and cache this information instead of getting it on runtime
+				// TODO: we also want to resize the image, if its too large. also at upload time.
+				list( $width, $height ) = getimagesize( EH_ABSPATH.'content/'.$image );
+
+				$content_html = '<p><img src="'.EH_BASEURL.'content/'.$image.'" width="'.$width.'" height="'.$height.'"></p>'.$content_html;
+
+			}
+
+		}
 
 		$title = '';
 		if( ! empty($file_contents['name']) ) $title = $file_contents['name'];
@@ -64,6 +82,7 @@ function get_posts(){
 
 		$date_modified = $date_published; // TODO: add modified date
 
+ 		// this is the structure that the json feed wants for a post, see https://www.jsonfeed.org/version/1.1/ (with some additional fields we use elsewhere)
 		$posts[] = array(
 			'id' => $id,
 			'title' => $title,
@@ -74,7 +93,8 @@ function get_posts(){
 			'tags' => $tags,
 			'date_published' => $date_published,
 			'date_modified' => $date_modified,
-			'timestamp' => $timestamp
+			'timestamp' => $timestamp,
+			'image' => $image,
 		);
 
 	}

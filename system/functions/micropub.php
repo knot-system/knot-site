@@ -188,6 +188,11 @@ class Micropub {
 				echo 'Photo could not be moved to the target location';
 				exit;
 			}
+			if( ! chmod( $photo_target, 0644) ) {
+				header( "HTTP/1.1 500 Internal Server Error" );
+				echo 'Photo was uploaded, but could not be set to readable';
+				exit;	
+			}
 
 			$data['photo'] = $photo['name'];
 
