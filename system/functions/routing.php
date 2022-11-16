@@ -11,7 +11,7 @@ function get_route(){
 
 	$tag = false;
 
-	if( isset($request[0]) && $request[0] == 'feed' && isset($request[1]) ){
+	if( ! empty($request[0]) && $request[0] == 'feed' && ! empty($request[1]) ){
 		// feeds
 
 		if( $request[1] == 'rss' ) {
@@ -26,7 +26,7 @@ function get_route(){
 			);
 		}
 
-	} elseif( isset($request[0]) && $request[0] == 'post' && isset($request[1]) ){
+	} elseif( ! empty($request[0]) && $request[0] == 'post' && ! empty($request[1]) ){
 		// single post view
 
 		$post_id = $request[1];
@@ -46,7 +46,7 @@ function get_route(){
 			);
 		}
 
-	} elseif( isset($request[0]) && $request[0] == 'tag' && isset($request[1]) ){
+	} elseif( ! empty($request[0]) && $request[0] == 'tag' && ! empty($request[1]) ){
 		// single tag view
 
 		$tag = $request[1];
@@ -66,7 +66,7 @@ function get_route(){
 			)
 		);
 
-	} elseif( isset($request[0]) && $request[0] == \Eigenheim\Micropub::getEndpoint() ) {
+	} elseif( ! empty($request[0]) && $request[0] == \Eigenheim\Micropub::getEndpoint() ) {
 		// micropub
 
 		// TODO: return micropub template here? or maybe return a function instead of a template?
