@@ -66,12 +66,12 @@ function get_route(){
 			)
 		);
 
-	} elseif( ! empty($request[0]) && $request[0] == \Eigenheim\Micropub::getEndpoint() ) {
+	} elseif( ! empty($request[0]) && $request[0] == micropub_get_endpoint() ) {
 		// micropub
 
 		// TODO: return micropub template here? or maybe return a function instead of a template?
 		// the 'exit' should maybe not happen here, but in the root index.php
-		\Eigenheim\Micropub::checkRequest();
+		micropub_check_request();
 		exit;
 
 	}

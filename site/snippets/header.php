@@ -30,12 +30,12 @@ ___________.__                     .__           .__
 	<link rel="authorization_endpoint" href="https://indieauth.com/auth">
 	<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
 	<link rel="me authn" href="mailto:<?= get_config('auth_mail') ?>">
-	<link rel="micropub" href="<?= EH_BASEURL.\Eigenheim\Micropub::getEndpoint().'/' ?>">
+	<link rel="micropub" href="<?= micropub_get_endpoint( true ).'/' ?>">
 <?php
-	$microsubEndpoint = get_config('microsub');
-	if( $microsubEndpoint ) :
+	$microsub_endpoint = get_config('microsub');
+	if( $microsub_endpoint ) :
 	?>
-	<link rel="microsub" href="<?= $microsubEndpoint ?>">
+	<link rel="microsub" href="<?= $microsub_endpoint ?>">
 <?php
 	endif;
 	?>
