@@ -102,8 +102,7 @@ function get_post_by_filename( $filename ) {
 
 	$content_text = strip_tags($content_html); // TODO: revisit this in the future
 
-	$content_html = \Eigenheim\Text::auto_a($content_html);
-	$content_html = \Eigenheim\Text::auto_p($content_html);
+	$content_html = text_cleanup( $content_html );
 
 	$image = false;
 	if( ! empty( $file_contents['photo']) ) {
