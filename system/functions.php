@@ -10,6 +10,9 @@ if( $handle = opendir($dir) ){
 		if( '.' === $file ) continue;
 		if( '..' === $file ) continue;
 
+		$file_extension = pathinfo( $dir.$file, PATHINFO_EXTENSION );
+		if( strtolower($file_extension) != 'php' ) continue;
+
 		include_once( $dir.$file );
 	}
 	closedir($handle);
