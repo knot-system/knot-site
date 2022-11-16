@@ -207,7 +207,7 @@ function micropub_handle_post_request() {
 		$data_string .= $key.': '.$value."\n\n----\n\n";
 	}
 
-	if( ! \Eigenheim\Files::write_file( $file_target, $data_string ) ) {
+	if( ! file_write( $file_target, $data_string ) ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
 		echo "File could not be written";
 		exit;

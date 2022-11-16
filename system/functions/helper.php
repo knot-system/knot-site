@@ -28,16 +28,14 @@ function snippet( $path, $args = array(), $return = false ) {
 function get_posts(){
 	// TODO: get_posts() should work differently. don't know how exactly yet. but this function will very likely be replaced.
 
-	$files = \Eigenheim\Files::read_dir( '', true );
+	$files = dir_read( '', true );
 
 	if( ! count($files) ) return array();
 
 	$posts = array();
 
-	foreach( $files as $filename ){
-
+	foreach( $files as $filename ) {
 		$posts[] = get_post_by_filename( $filename );
-
 	}
 
 	return $posts;
@@ -67,7 +65,7 @@ function get_posts_by_tag( $tag ) {
 
 function get_post( $post_id ) {
 
-	$files = \Eigenheim\Files::read_dir( '', true );
+	$files = dir_read( '', true );
 
 	$post_name = false;
 	foreach( $files as $filename ) {
@@ -90,7 +88,7 @@ function get_post( $post_id ) {
 
 function get_post_by_filename( $filename ) {
 
-	$file_contents = \Eigenheim\Files::read_file( $filename );
+	$file_contents = file_read( $filename );
 
 	if( ! $file_contents ) return false;
 
@@ -159,7 +157,7 @@ function get_post_by_filename( $filename ) {
 function get_categories(){
 	// TODO: revisit this in the future
 
-	$files = \Eigenheim\Files::read_dir( '', true );
+	$files = dir_read( '', true );
 
 	if( ! count($files) ) return array();
 
@@ -167,7 +165,7 @@ function get_categories(){
 
 	foreach( $files as $filename ){
 
-		$file_contents = \Eigenheim\Files::read_file( $filename );
+		$file_contents = file_read( $filename );
 
 		$tags = array();
 		if( ! empty($file_contents['category']) ) $tags = json_decode( $file_contents['category'] ); 
