@@ -169,9 +169,6 @@ function get_categories(){
 
 		$file_contents = \Eigenheim\Files::read_file( $filename );
 
-		$text = \Eigenheim\Text::auto_p($file_contents['content']);
-		if( ! $text ) continue;
-
 		$tags = array();
 		if( ! empty($file_contents['category']) ) $tags = json_decode( $file_contents['category'] ); 
 		if( ! is_array($tags) ) $tags = array();
