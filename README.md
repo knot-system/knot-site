@@ -1,6 +1,10 @@
 # Eigenheim
 
-this is very, very early alpha stage. **you should not use this for now. THINGS WILL BREAK!** here be dragons:
+a small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. this will be part of a larger system.
+
+this is currently a very early alpha stage. **you should not use this for now. THINGS WILL BREAK!**
+
+here be dragons:
 
 (this needs at least PHP 8 for now, and maybe forever, because PHP7 is already EOL)
 
