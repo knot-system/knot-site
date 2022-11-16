@@ -195,7 +195,7 @@ function get_author_information( $raw = false ){
 
 	$author = array();
 
-	$conf = \Eigenheim\Config::getConfig('author');
+	$conf = get_config('author');
 
 	if( ! $raw ) {
 
