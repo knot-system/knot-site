@@ -2,13 +2,6 @@
 
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
-?>
-<header>
-	<h1><a href="<?= EH_BASEURL ?>">Eigenheim</a></h1>
-</header>
-<main>
-<?php
-
 $tag = false;
 if( ! empty($args['tag']) ) $tag = $args['tag'];
 
@@ -19,6 +12,3 @@ $posts = $args['posts'];
 foreach( $posts as $post ) snippet( 'post', array( 'post' => $post ) );
 
 snippet( 'author_info' );
-
-?>
-</main>

@@ -45,3 +45,7 @@ ___________.__                     .__           .__
 	
 </head>
 <body>
+	<header>
+		<h1><a href="<?= EH_BASEURL ?>">Eigenheim</a></h1>
+	</header>
+	<main>
