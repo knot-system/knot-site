@@ -74,7 +74,7 @@ class Micropub {
 			exit;
 		}
 
-		if( trailingslashit($me) != trailingslashit(EH_BASEURL) ){
+		if( trailing_slash_it($me) != trailing_slash_it(EH_BASEURL) ){
 			header( "HTTP/1.1 403 Forbidden" );
 			exit;
 		}

@@ -106,7 +106,7 @@ function get_post_by_filename( $filename ) {
 
 	$image = false;
 	if( ! empty( $file_contents['photo']) ) {
-		$post_folder = trailingslashit(pathinfo( $filename, PATHINFO_DIRNAME ));
+		$post_folder = trailing_slash_it(pathinfo( $filename, PATHINFO_DIRNAME ));
 
 		if( file_exists(EH_ABSPATH.'content/'.$post_folder.$file_contents['photo']) ) {
 			$image = $post_folder.$file_contents['photo'];
@@ -266,7 +266,7 @@ function get_author_information( $raw = false ){
 }
 
 
-function trailingslashit( $string ){
+function trailing_slash_it( $string ){
 	// add a slash at the end, if there isn't already one ..
 
 	$string = preg_replace( '/\/$/', '', $string );
