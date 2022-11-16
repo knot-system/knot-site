@@ -40,6 +40,7 @@ function micropub_handle_get_request(){
 			'categories' => $categories
 		);
 
+		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode( $config );
 		exit;
 	}
@@ -48,20 +49,16 @@ function micropub_handle_get_request(){
 
 function micropub_handle_post_request() {
 
-	$headers = apache_request_headers();// TODO: switch to $_SERVER ?
+	$headers = apache_request_headers();
 
 	// Check token is valid
-	// TODO: make a custom wrapper for curl
 	$token = $headers['Authorization'];
-	$ch = curl_init( "https://tokens.indieauth.com/token" );
-	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
+	$headers = array(
 		"Content-Type: application/x-www-form-urlencoded",
 		"Authorization: $token"
-	));
-	$response = array();
-	parse_str( curl_exec($ch), $response );
-	curl_close( $ch );
+	);
+	$response = request_post( 'https://tokens.indieauth.com/token', $headers );
+
 
 	// Check for scope=post or scope=create
 	// Check for me=basedomain
@@ -94,6 +91,7 @@ function micropub_handle_post_request() {
 	}
 
 	$timestamp = time();
+
 
 	// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 	$data = $_POST;
