@@ -63,26 +63,15 @@ function get_post( $post_id ) {
 
 
 function get_categories(){
-	// TODO: revisit this in the future
-
-	$files = dir_read( '', true );
-
-	if( ! count($files) ) return array();
+	
+	$posts = get_posts();
 
 	$categories = array();
 
-	foreach( $files as $filename ){
-
-		$file_contents = file_read( $filename );
-
-		$tags = array();
-		if( ! empty($file_contents['category']) ) $tags = json_decode( $file_contents['category'] ); 
-		if( ! is_array($tags) ) $tags = array();
-
-		foreach( $tags as $tag ) {
+	foreach( $posts as $post ){
+		foreach( $post['tags'] as $tag ) {
 			$categories[] = $tag;
 		}
-
 	}
 
 	$categories = array_unique( $categories );

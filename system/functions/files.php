@@ -2,7 +2,6 @@
 
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
-// TODO: maybe add additional database_ wrapper?
 
 function dir_read( $folderpath_input, $recursive = false ){
 
@@ -48,30 +47,7 @@ function file_read( $filepath ){
 
 	if( ! $content ) return false; // TODO: error handling: empty file
 
-	$fields = explode( "\n\n----\n\n", $content );
-
-	if( ! is_array($fields) || ! count($fields) ) return false; // TODO: error handling: no fields in file
-
-	$return = array();
-
-	foreach( $fields as $field ) {
-
-		$pos = strpos( $field, ':' );
-
-		if( $pos === false ) continue; // TODO: error handling: no fieldname for this field
-
-		$field_name = substr( $field, 0, $pos );
-		$field_content = substr( $field, $pos+1 );
-
-		$field_name = strtolower(trim($field_name));
-		$field_content = trim($field_content);
-
-		$return[$field_name] = $field_content;
-
-	}
-
-	return $return;
-
+	return $content;
 }
 
 function file_write( $filename, $content ) {
