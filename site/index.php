@@ -4,6 +4,7 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 snippet( 'header' );
 
-snippet( 'overview', array( 'posts' => $posts, 'tag' => $tag ) );
+$posts = get_posts();
+snippet( 'overview', array( 'posts' => $posts ) );
 
 snippet( 'footer' );

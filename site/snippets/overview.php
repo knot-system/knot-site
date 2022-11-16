@@ -9,7 +9,8 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 <main>
 <?php
 
-$tag = $args['tag'];
+$tag = false;
+if( ! empty($args['tag']) ) $tag = $args['tag'];
 
 if( $tag ) echo '<p><em>only showing posts with tag <strong>'.$tag.'</strong></em></p>';
 
