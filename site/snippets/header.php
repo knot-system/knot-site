@@ -15,7 +15,7 @@ ___________.__                     .__           .__
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<title>Eigenheim</title>
+	<title><?= get_config('site_title') ?></title>
 <?php
 	$author = get_author_information();
 	if( ! empty( $author['display_name'] ) ) :
@@ -40,14 +40,14 @@ ___________.__                     .__           .__
 	endif;
 	?>
 
-	<link rel="alternate" type="application/rss+xml" title="Eigenheim RSS Feed" href="<?= EH_BASEURL ?>feed/rss">
-	<link rel="alternate" type="application/json" title="Eigenheim JSON Feed" href="<?= EH_BASEURL ?>feed/json">
+	<link rel="alternate" type="application/rss+xml" title="<?= get_config('site_title') ?> RSS Feed" href="<?= EH_BASEURL ?>feed/rss">
+	<link rel="alternate" type="application/json" title="<?= get_config('site_title') ?> JSON Feed" href="<?= EH_BASEURL ?>feed/json">
 	
 </head>
 <body>
 
 	<header>
-		<h1><a href="<?= EH_BASEURL ?>">Eigenheim</a></h1>
+		<h1><a href="<?= EH_BASEURL ?>"><?= get_config('site_title') ?></a></h1>
 		<?php
 		$navigation = get_navigation();
 		if( $navigation ) :

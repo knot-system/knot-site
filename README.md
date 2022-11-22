@@ -18,6 +18,7 @@ you may want to edit the *site/config.php* a bit after the initial setup and add
 <?php
 
 return [
+	'site_title' => 'My Eigenheim Site',
 	'auth_mail' => 'mail@example.com',
 	//'microsub' => 'https://www.example.com/microsub',
 	//'logging' => false,

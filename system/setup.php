@@ -26,12 +26,13 @@ if( file_exists(EH_ABSPATH.'site/config.php') ) {
 
 <?php
 
-if( empty( $_POST['auth_mail'] ) || empty( $_POST['author_name']) ) {
+if( empty($_POST['auth_mail']) || empty($_POST['author_name']) || empty($_POST['site_title']) ) {
 
 	?>
 	<hr>
 	<p>Please fill out these fields:</p>
 	<form action="<?= EH_BASEURL ?>" method="POST">
+		<p><label><strong>Site Title</strong><br><input type="text" name="site_title" required></label></p>
 		<p><label><strong>Authorization Mail</strong><br><small>(this is were we send the login token to, when you log into a micropub client. It is not displayed publicly, but is added to the HTML source code)</small><br><input type="email" name="auth_mail" required></label></p>
 		<p><label><strong>Author Name</strong><br><input type="text" name="author_name" required></label></p>
 		<p><small>(all fields are required)</small></p>
@@ -42,6 +43,7 @@ if( empty( $_POST['auth_mail'] ) || empty( $_POST['author_name']) ) {
 	exit;
 }
 
+$site_title = $_POST['site_title'];
 $auth_mail = $_POST['auth_mail'];
 $author_name = $_POST['author_name'];
 ?>
@@ -218,7 +220,7 @@ if( ! is_dir(EH_ABSPATH.'content/posts/'.date('Y')) ) {
 <p><strong>Step 4:</strong> creating the <em>config.php</em> file:</p>
 <ul>
 <?php
-$content = "<?php\r\n\r\nreturn [\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],\r\n];\r\n";
+$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],\r\n];\r\n";
 if( file_put_contents( EH_ABSPATH.'site/config.php', $content ) === false ) {
 	?>
 	<li><strong>ERROR:</strong> could not create the file <em>site/config.php</em>. make sure the folder is writeable. we abort the setup here.</li>
