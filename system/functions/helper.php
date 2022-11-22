@@ -122,3 +122,38 @@ function get_author_information( $raw = false ){
 
 	return $author;
 }
+
+
+function get_navigation(){
+
+	$pages = get_pages();
+
+	if( ! $pages ) return false;
+
+	$route = get_route();
+	$current_page_id = false;
+	if( $route['template'] == 'page' && ! empty($route['args']['page_id']) ) {
+		$current_page_id = $route['args']['page_id'];
+	}
+
+	$navigation = false;
+
+	foreach( $pages as $page ) {
+
+		$is_current_page = false;
+		if( $current_page_id && $page['id'] == $current_page_id ) {
+			$is_current_page = true;
+		}
+
+		$navigation[] = array(
+			'title' => $page['title'],
+			'permalink' => $page['permalink'],
+			'is_current_page' => $is_current_page
+		);
+		
+	}
+
+	if( ! count($navigation) ) return false;
+
+	return $navigation;
+}
