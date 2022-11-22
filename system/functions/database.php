@@ -274,7 +274,7 @@ function database_create_post( $data, $photo = false ) {
 
 	$data_string = '';
 	foreach( $data as $key => $value ){
-		$data_string .= $key.': '.$value."\n\n----\n\n";
+		$data_string .= $key.': '.$value."\r\n\r\n----\r\n\r\n";
 	}
 
 	if( ! file_write( $file_target, $data_string ) ) {

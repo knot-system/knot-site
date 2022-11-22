@@ -77,6 +77,7 @@ function file_get_fields( $filename ) {
 
 	if( ! $file_content ) return false;
 
+	$file_content = str_replace("\r\n", "\n", $file_content);
 
 	$fields = explode( "\n\n----\n\n", $file_content );
 

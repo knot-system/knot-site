@@ -3,3 +3,4 @@ log/*
 !.gitkeep
 site/config.php
 build.sh
+.htaccess
