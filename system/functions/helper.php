@@ -28,7 +28,7 @@ function snippet( $path, $args = array(), $return = false ) {
 function trailing_slash_it( $string ){
 	// add a slash at the end, if there isn't already one ..
 
-	$string = preg_replace( '/\/$/', '', $string );
+	$string = preg_replace( '/\/*$/', '', $string );
 	$string .= '/';
 
 	return $string;
