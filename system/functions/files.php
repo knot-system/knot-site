@@ -37,6 +37,7 @@ function dir_read( $folderpath_input, $recursive = false ){
 
 }
 
+
 function file_read( $filepath ){
 
 	$filepath = EH_ABSPATH.'content/'.$filepath;
@@ -49,6 +50,7 @@ function file_read( $filepath ){
 
 	return $content;
 }
+
 
 function file_write( $filename, $content ) {
 

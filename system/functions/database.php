@@ -5,9 +5,24 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 // NOTE: this is a wrapper for the files.php, so we can easily change to a 'real' database instead of using text files
 
-function database_get_posts(){
 
-	$files = dir_read( '', true );
+function database_get_pages() {
+	// TODO
+
+	return array();
+}
+
+
+function database_get_page( $page_id ) {
+	// TODO
+
+	return false;
+}
+
+
+function database_get_posts() {
+
+	$files = dir_read( 'posts/', true );
 
 	if( ! count($files) ) return array();
 
@@ -23,7 +38,7 @@ function database_get_posts(){
 
 function database_get_post( $post_id ) {
 
-	$files = dir_read( '', true );
+	$files = dir_read( 'posts/', true );
 
 	if( ! count($files) ) return false;
 
@@ -143,7 +158,7 @@ function database_create_post( $data, $photo = false ) {
 
 	$year = date('Y', $data['timestamp']);
 	$month = date('m', $data['timestamp']);
-	$target_folder = EH_ABSPATH.'content/'.$year.'/'.$month.'/';
+	$target_folder = EH_ABSPATH.'content/posts/'.$year.'/'.$month.'/';
 	if( ! is_dir($target_folder) ) {
 		mkdir( $target_folder, 0777, true );
 		if( ! is_dir($target_folder) ) {
