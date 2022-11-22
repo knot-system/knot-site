@@ -82,6 +82,7 @@ function get_author_information( $raw = false ){
 
 	}
 
+	// see https://microformats.org/wiki/h-card
 // TODO: we need to test those fields
 	$additional_hcard_properties = array(
 		'p-name',
