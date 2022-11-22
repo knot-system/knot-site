@@ -17,20 +17,17 @@ function micropub_get_endpoint( $complete_path = false ){
 
 function micropub_check_request(){
 
-	log_message( array(
-		'micropub endpoint reached',
-		'$_POST:'.var_export($_POST, true),
-		'$_GET:'.var_export($_GET, true),
-		'$_REQUEST:'.var_export($_REQUEST, true),
-		'$_FILES:'.var_export($_FILES, true),
-		'$_SERVER:'.var_export($_SERVER, true)
-	));
-
 	if( ! empty($_POST) ) {
 		micropub_handle_post_request();
 		return;
 	} elseif( ! empty($_GET) ) {
 		micropub_handle_get_request();
+		return;
+	}
+
+	$json = json_decode(file_get_contents('php://input'), true);
+	if( $json ) {
+		micropub_handle_json_request( $json );
 		return;
 	}
 
@@ -56,60 +53,51 @@ function micropub_handle_get_request(){
 
 }
 
+function micropub_handle_json_request( $json ) {
+
+	micropub_check_authorization_bearer(); // this will exit with a error message if authorization is not allowed
+
+	$data = array();
+
+	$data['h'] = str_replace('h-', '', $json['type'][0]);
+	foreach( $json['properties'] as $name => $property ) {
+
+		if( is_array($property) ) $property = array_values($property);
+
+		if( is_array($property) && count($property) == 1 ) $property = $property[0];
+
+		// special case: content html
+		if( $name == 'content' && ! empty($property['html']) ) $property = $property['html'];
+
+		// special case: slug
+		if( $name == 'mp-slug' ) $name = 'slug';
+
+		$data[$name] = $property;
+	}
+
+	micropub_create_post( $data );
+
+}
+
 function micropub_handle_post_request() {
 
-	$headers = apache_request_headers();
+	micropub_check_authorization_bearer(); // this will exit with a error message if authorization is not allowed
 
-	log_message( array("micropub request with headers:", var_export($headers, true)) );
-
-	// Check token is valid
-	$token = $headers['Authorization'];
-	$headers = array(
-		"Content-Type: application/x-www-form-urlencoded",
-		"Authorization: $token"
-	);
-	$response = request_post( 'https://tokens.indieauth.com/token', $headers );
-
-
-	// Check for scope=post or scope=create
-	// Check for me=basedomain
-	$me = $response['me'];
-	$iss = $response['issued_by'];
-	$client = $response['client_id'];
-	$scope = $response['scope'];
-
-	if( empty($response) ){
-		header( "HTTP/1.1 401 Unauthorized" );
-		exit;
-	}
-
-	if( trailing_slash_it($me) != trailing_slash_it(EH_BASEURL) ){
-		header( "HTTP/1.1 403 Forbidden" );
-		exit;
-	}
-
-	$scopes = explode( ' ', $scope );
-	$scope_found = false;
-	foreach( array('post', 'create') as $possible_scope ){
-		if( in_array($possible_scope, $scopes) ) {
-			$scope_found = true;
-			break;
-		}
-	}
-	if( ! $scope_found ){
-		header( "HTTP/1.1 403 Forbidden" );
-		exit;
-	}
-
-
-	// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 	$data = $_POST;
+
+	micropub_create_post( $data );
+
+}
+
+function micropub_create_post( $data ){
 
 	$skip_fields = array( 'access_token', 'action' );
 	foreach( $skip_fields as $key ) {
 		if( ! array_key_exists( $key, $data) ) continue;
 		unset($data[$key]);
 	}
+
+	// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 
 	$data['timestamp'] = time();
 	$data['date'] = date('c', $data['timestamp']);
@@ -136,5 +124,50 @@ function micropub_handle_post_request() {
 	// Set headers, return location
 	header( "HTTP/1.1 201 Created" );
 	header( "Location: ".$permalink );
+	exit;
+
+}
+
+function micropub_check_authorization_bearer() {
+
+	$headers = apache_request_headers();
+
+	$token = $headers['Authorization'];
+
+	$headers = array(
+		"Content-Type: application/x-www-form-urlencoded",
+		"Authorization: $token"
+	);
+	$response = request_post( 'https://tokens.indieauth.com/token', $headers );
+
+	if( empty($response) ){
+		header( "HTTP/1.1 401 Unauthorized" );
+		exit;
+	}
+
+	// Check for scope=post or scope=create
+	// Check for me=basedomain
+	$me = $response['me'];
+	$iss = $response['issued_by'];
+	$client = $response['client_id'];
+	$scope = $response['scope'];
+	
+	if( trailing_slash_it($me) != trailing_slash_it(EH_BASEURL) ){
+		header( "HTTP/1.1 403 Forbidden" );
+		exit;
+	}
+
+	$scopes = explode( ' ', $scope );
+	$scope_found = false;
+	foreach( array('post', 'create') as $possible_scope ){
+		if( in_array($possible_scope, $scopes) ) {
+			$scope_found = true;
+			break;
+		}
+	}
+	if( ! $scope_found ){
+		header( "HTTP/1.1 403 Forbidden" );
+		exit;
+	}
 
 }
