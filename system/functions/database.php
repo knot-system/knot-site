@@ -103,8 +103,8 @@ function database_get_post( $post_id ) {
 	$post_name = false;
 	foreach( $files as $filename ) {
 		$file_id = file_get_id( $filename );
-		if( $file_id == $page_id ) {
-			$page_name = $filename;
+		if( $file_id == $post_id ) {
+			$post_name = $filename;
 			break;
 		}
 	}
