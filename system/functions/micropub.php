@@ -17,6 +17,15 @@ function micropub_get_endpoint( $complete_path = false ){
 
 function micropub_check_request(){
 
+	log_message( array(
+		'micropub endpoint reached',
+		'$_POST:'.var_export($_POST, true),
+		'$_GET:'.var_export($_GET, true),
+		'$_REQUEST:'.var_export($_REQUEST, true),
+		'$_FILES:'.var_export($_FILES, true),
+		'$_SERVER:'.var_export($_SERVER, true)
+	));
+
 	if( ! empty($_POST) ) {
 		micropub_handle_post_request();
 		return;
@@ -50,6 +59,8 @@ function micropub_handle_get_request(){
 function micropub_handle_post_request() {
 
 	$headers = apache_request_headers();
+
+	log_message( array("micropub request with headers:", var_export($headers, true)) );
 
 	// Check token is valid
 	$token = $headers['Authorization'];

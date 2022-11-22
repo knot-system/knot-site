@@ -18,6 +18,7 @@ then add a file 'site/config.php' with this content:
 return [
 	'auth_mail' => 'mail@example.com',
 	//'microsub' => 'https://www.example.com/microsub',
+	//'logging' => false,
 	'author' => [
 		'p-name' => 'My Author Name',
 		'u-email' => 'mail@example.com',
