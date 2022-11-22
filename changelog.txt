@@ -1,3 +1,8 @@
+alpha.6
+- support for static pages; the content/ folder structure changed again, see message in commit 817a2efaa0c773e632f426cce6a9c0a1b7af62ee
+- support micropub json requests; now more micropub clients are supported
+- first time setup flow, that creates the site/config.php, .htaccess and content/ folder with testcontent; if you want to reset the system, delete these files/folders and open the page to trigger the first time setup flow
+
 alpha.5
 - code cleanup & rewrite. no new functionality.
 
