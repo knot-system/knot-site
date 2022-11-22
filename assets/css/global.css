@@ -23,11 +23,36 @@ header {
 	text-align: center;
 }
 
+nav {
+	padding: 0 0 20px;
+}
+
+	nav ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+		nav ul li {
+			display: inline;
+		}
+
+	nav a {
+		display: inline-block;
+		padding: 5px;
+		text-decoration: none;
+	}
+
+	nav .current-page a {
+		color: inherit;
+		text-decoration: underline;
+	}
+
 main {
 	max-width: 800px;
 	margin: 0 auto;
 	box-sizing: border-box;
-	min-height: calc(100vh - 175px);
+	min-height: calc(100vh - 230px);
 }
 
 a {

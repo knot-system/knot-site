@@ -8,6 +8,7 @@ if( ! $post ) return;
 $title = $post['title'];
 $text = $post['content_html'];
 $tags = $post['tags'];
+$permalink = $post['permalink'];
 
 $date = false;
 if( $post['timestamp'] > 0 ) $date = date( 'd.m.Y', $post['timestamp'] );
@@ -19,7 +20,7 @@ if( $post['timestamp'] > 0 ) $date = date( 'd.m.Y', $post['timestamp'] );
 
 	if( $date ) echo '<time class="dt-published" datetime="'.$date.'"><a href="'.$post['permalink'].'">'.$date.'</a></time>';
 	
-	if( $title ) echo '<h2 class="p-name"><a href="'.$post['permalink'].'">'.$title.'</a></h2>';
+	if( $title ) echo '<h2 class="p-name"><a href="'.$permalink.'">'.$title.'</a></h2>';
 	
 	if( $text ) echo '<div class="e-content">'.$text.'</div>';
 

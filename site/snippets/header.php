@@ -45,7 +45,34 @@ ___________.__                     .__           .__
 	
 </head>
 <body>
+
 	<header>
 		<h1><a href="<?= EH_BASEURL ?>">Eigenheim</a></h1>
+		<?php
+		$pages = get_pages();
+		if( $pages ) {
+		?><nav>
+			<ul>
+			<?php
+			$route = get_route();
+			$current_page_id = false;
+			if( $route['template'] == 'page' && ! empty($route['args']['page_id']) ) {
+				$current_page_id = $route['args']['page_id'];
+			}
+			foreach( $pages as $page ) {
+				$classes = array();
+				if( $current_page_id && $page['id'] == $current_page_id ) {
+					$classes[] = 'current-page';
+				}
+				?>	<li<?= get_class_attribute($classes) ?>><a href="<?= $page['permalink'] ?>"><?= $page['title'] ?></a></li>
+			<?php
+			}
+			?></ul>
+		</nav><?php
+		}
+		?>
+	
 	</header>
+
 	<main>
+

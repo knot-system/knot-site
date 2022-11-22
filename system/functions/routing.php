@@ -74,6 +74,21 @@ function get_route(){
 		micropub_check_request();
 		exit;
 
+	} elseif( ! empty($request[0]) ) {
+		// maybe static page
+
+		$page_id = $request[0];
+		$page = get_page( $page_id );
+		if( $page ) {
+			return array(
+				'template' => 'page',
+				'args' => array(
+					'page_id' => $page_id,
+					'page' => $page
+				)
+			);
+		}
+
 	}
 
 	// default

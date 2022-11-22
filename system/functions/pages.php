@@ -8,7 +8,6 @@ function get_pages() {
 	$pages = database_get_pages();
 
 	return $pages;
-
 }
 
 

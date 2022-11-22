@@ -7,22 +7,80 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 
 function database_get_pages() {
-	// TODO
+	
+	$files = dir_read( '', true, 'page.txt' );
 
-	return array();
+	if( ! count($files) ) return array();
+
+	$pages = array();
+
+	foreach( $files as $filename ) {
+		$pages[] = database_get_page_by_filename( $filename );
+	}
+
+	return $pages;
 }
 
 
 function database_get_page( $page_id ) {
-	// TODO
 
-	return false;
+	$files = dir_read( '', true, 'page.txt' );
+
+	if( ! count($files) ) return false;
+
+	$page_name = false;
+	foreach( $files as $filename ) {
+		$file_id = file_get_id( $filename );
+		if( $file_id == $page_id ) {
+			$page_name = $filename;
+			break;
+		}
+	}
+
+	if( ! $page_name ) return false;
+
+	$page = database_get_page_by_filename( $page_name );
+
+	return $page;
+}
+
+
+function database_get_page_by_filename( $filename ) {
+
+	$data = file_get_fields( $filename );
+
+	if( ! $data ) return false;
+
+	if( ! isset($data['content']) ) return false;
+
+	$id = file_get_id( $filename );
+
+	$content_html = $data['content'];
+
+	$content_text = strip_tags($content_html); // TODO: revisit this in the future
+
+	$content_html = text_cleanup( $content_html );
+
+	$title = ucwords($id);
+	if( ! empty($data['title']) ) $title = $data['title'];
+
+	$permalink = EH_BASEURL.$id.'/';
+
+	$page = array(
+		'id' => $id,
+		'title' => $title,
+		'content_html' => $content_html,
+		'content_text' => $content_text,
+		'permalink' => $permalink
+	);
+
+	return $page;
 }
 
 
 function database_get_posts() {
 
-	$files = dir_read( 'posts/', true );
+	$files = dir_read( 'posts/', true, 'post.txt', true );
 
 	if( ! count($files) ) return array();
 
@@ -38,17 +96,15 @@ function database_get_posts() {
 
 function database_get_post( $post_id ) {
 
-	$files = dir_read( 'posts/', true );
+	$files = dir_read( 'posts/', true, 'post.txt', true );
 
 	if( ! count($files) ) return false;
 
 	$post_name = false;
 	foreach( $files as $filename ) {
-		$filename_exp = explode( '/', $filename );
-		$id = $filename_exp[count($filename_exp)-2];
-		$id_exp = explode('_', $id);
-		if( end($id_exp) == $post_id ) {
-			$post_name = $filename;
+		$file_id = file_get_id( $filename );
+		if( $file_id == $page_id ) {
+			$page_name = $filename;
 			break;
 		}
 	}
@@ -63,38 +119,16 @@ function database_get_post( $post_id ) {
 
 function database_get_post_by_filename( $filename ) {
 
-	$file_content = file_read( $filename );
+	$data = file_get_fields( $filename );
 
-	if( ! $file_content ) return false;
-
-
-	$fields = explode( "\n\n----\n\n", $file_content );
-
-	if( ! is_array($fields) || ! count($fields) ) return false; // TODO: error handling: no fields in file
-	
-
-	$data = array();
-
-	foreach( $fields as $field ) {
-
-		$pos = strpos( $field, ':' );
-
-		if( $pos === false ) continue; // TODO: error handling: no fieldname for this field
-
-		$field_name = substr( $field, 0, $pos );
-		$field_content = substr( $field, $pos+1 );
-
-		$field_name = strtolower(trim($field_name));
-		$field_content = trim($field_content);
-
-		$data[$field_name] = $field_content;
-
-	}
+	if( ! $data ) return false;
 
 
 	$author_information = get_author_information();
 	$author = false;
 	if( ! empty( $author_information['display_name'] ) ) $author = $author_information['display_name'];
+
+	if( ! isset($data['content']) ) return false;
 
 	$content_html = $data['content'];
 
