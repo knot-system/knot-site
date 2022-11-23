@@ -22,6 +22,10 @@ if( ! file_exists(EH_ABSPATH.'config.php') || isset($_GET['setup']) ) {
 }
 
 
+$theme = get_theme();
+include_once( $theme['path'].'theme.php' );
+
+
 $route = get_route();
 
 $template = $route['template'];

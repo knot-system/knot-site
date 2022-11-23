@@ -27,7 +27,9 @@ ___________.__                     .__           .__
 	endif;
 	?>
 
-	<link rel="stylesheet" href="<?= EH_BASEURL ?>assets/css/global.css?v=<?= eigenheim_get_version() ?>">
+<?php
+	print_stylesheets();
+	?>
 
 	<link rel="authorization_endpoint" href="https://indieauth.com/auth">
 	<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
