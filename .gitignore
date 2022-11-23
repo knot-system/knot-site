@@ -1,7 +1,6 @@
-content/*
-log/*
-cache/*
-!.gitkeep
-config.php
 build.sh
+content/
+log/
+cache/
+config.php
 .htaccess
