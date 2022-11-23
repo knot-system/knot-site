@@ -44,14 +44,14 @@ ___________.__                     .__           .__
 	endif;
 	?>
 
-	<link rel="alternate" type="application/rss+xml" title="<?= get_config('site_title') ?> RSS Feed" href="<?= EH_BASEURL ?>feed/rss">
-	<link rel="alternate" type="application/json" title="<?= get_config('site_title') ?> JSON Feed" href="<?= EH_BASEURL ?>feed/json">
+	<link rel="alternate" type="application/rss+xml" title="<?= get_config('site_title') ?> RSS Feed" href="<?= url('feed/rss') ?>">
+	<link rel="alternate" type="application/json" title="<?= get_config('site_title') ?> JSON Feed" href="<?= url('feed/json') ?>">
 	
 </head>
 <body>
 
 	<header>
-		<h1><a href="<?= EH_BASEURL ?>"><?= get_config('site_title') ?></a></h1>
+		<h1><a href="<?= url() ?>"><?= get_config('site_title') ?></a></h1>
 		<?php
 		$navigation = get_navigation();
 		if( $navigation ) :

@@ -17,7 +17,7 @@ function get_theme() {
 
 	$theme['name'] = $theme_name;
 	$theme['path'] = EH_ABSPATH.'theme/'.$theme_name.'/';
-	$theme['url'] = EH_BASEURL.'theme/'.$theme_name.'/';
+	$theme['url'] = url('theme/'.$theme_name.'/');
 
 	return $theme;
 }

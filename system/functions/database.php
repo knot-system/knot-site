@@ -64,7 +64,7 @@ function database_get_page_by_filename( $filename ) {
 	$title = ucwords($id);
 	if( ! empty($data['title']) ) $title = $data['title'];
 
-	$permalink = EH_BASEURL.$id.'/';
+	$permalink = url($id);
 
 	$page = array(
 		'id' => $id,
@@ -143,10 +143,9 @@ function database_get_post_by_filename( $filename ) {
 		if( file_exists(EH_ABSPATH.'content/'.$post_folder.$data['photo']) ) {
 			$image = $post_folder.$data['photo'];
 
-			// TODO: we may want to get the image size on upload and cache this information instead of getting it on runtime
-			// TODO: we also want to resize the image, if its too large. also at upload time.
 			list( $width, $height ) = getimagesize( EH_ABSPATH.'content/'.$image );
-
+			// TODO: get image size of cached (resized) image, if available
+	
 			$content_html = '<p><img src="'.EH_BASEURL.'content/'.$image.'" width="'.$width.'" height="'.$height.'"></p>'.$content_html;
 
 		}
@@ -163,7 +162,7 @@ function database_get_post_by_filename( $filename ) {
 	$timestamp = $data['timestamp'];
 	$id = $data['id'];
 
-	$permalink = EH_BASEURL.'post/'.$id.'/';
+	$permalink = url('post/'.$id.'/');
 
 	$date_published = date( 'c', $timestamp );
 
@@ -286,7 +285,7 @@ function database_create_post( $data, $photo = false ) {
 
 	// when we get here, everything should have worked and the post was created.
 
-	$permalink = EH_BASEURL.'post/'.$post_id;
+	$permalink = url('post/'.$post_id);
 
 	return $permalink;
 }

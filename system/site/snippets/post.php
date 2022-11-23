@@ -29,7 +29,7 @@ if( $post['timestamp'] > 0 ) $date = date( 'd.m.Y', $post['timestamp'] );
 	if( count($tags) ) {
 		echo '<ul class="tags">';
 		foreach( $tags as $tag ) {
-			echo '<li><a href="'.EH_BASEURL.'tag/'.$tag.'/" class="p-category tag">'.$tag.'</a></li>';
+			echo '<li><a href="'.url('tag/'.$tag.'/').'" class="p-category tag">'.$tag.'</a></li>';
 		}
 		echo '</ul>';
 	}

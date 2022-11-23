@@ -3,6 +3,13 @@
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 
+function url( $path = '' ) {
+	$path = EH_BASEURL.$path;
+	$path = trailing_slash_it($path);
+	return $path;
+}
+
+
 function get_class_attribute( $classes ) {
 
 	if( ! is_array( $classes ) ) $classes = explode( ' ', $classes );

@@ -10,8 +10,8 @@ $posts = get_posts();
 <rss version="2.0">
 
 	<channel>
-		<title>Eigenheim Feed</title>
-		<link><?= EH_BASEURL ?></link>
+		<title><?= get_option( 'site_title' ) ?></title>
+		<link><?= url() ?></link>
 		<description></description>
 <?php /*
 		<lastBuildDate></lastBuildDate>

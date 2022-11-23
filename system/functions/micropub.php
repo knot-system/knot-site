@@ -12,7 +12,7 @@ function micropub_get_endpoint( $complete_path = false ){
 		return $endpoint;
 	}
 
-	return EH_BASEURL.$endpoint;
+	return url($endpoint);
 }
 
 function micropub_check_request(){

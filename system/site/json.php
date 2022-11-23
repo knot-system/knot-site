@@ -6,10 +6,10 @@ if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 $json = array(
 	'version' => 'https://jsonfeed.org/version/1.1',
-	'title' => 'Eigenheim JSON Feed',
+	'title' => get_config( 'site_title' ),
 	'description' => '',
-	'home_page_url' => EH_BASEURL,
-	'feed_url' => EH_BASEURL.'feed/json',
+	'home_page_url' => url(),
+	'feed_url' => url('feed/json'),
 );
 
 $author = get_author_information();
