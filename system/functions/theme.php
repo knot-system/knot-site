@@ -58,7 +58,7 @@ function snippet( $path, $args = array(), $return = false ) {
 	if( file_exists($theme['path'].$snippet_path) ) {
 		$include_path = $theme['path'].$snippet_path;
 	} else {
-		$include_path = EH_ABSPATH.'site/'.$snippet_path;
+		$include_path = EH_ABSPATH.'system/site/'.$snippet_path;
 	}
 
 	if( ! file_exists( $include_path) ) return;

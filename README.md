@@ -47,6 +47,6 @@ if you want to add a microsub endpoint, replace `https://www.example.com/microsu
 
 ## custom theme
 
-You can duplicate the *theme/default/* folder, rename it and change the css. You can also create a *theme/{themename}/snippets/* folder and copy files from *site/snippets/* into this folder, to overwrite them on a per theme basis. all the files in the *snippets* folder have a version number at the start of the file, so you can see if they were updated since you last copied them.
+You can duplicate the *theme/default/* folder, rename it and change the css. You can also create a *theme/{themename}/snippets/* folder and copy files from *system/site/snippets/* into this folder, to overwrite them on a per theme basis. all the files in the *snippets* folder have a version number at the start of the file, so you can see if they were updated since you last copied them.
 
 you can define the theme in the *config.php* file like this: 'theme' => '{themename}',

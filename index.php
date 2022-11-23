@@ -33,7 +33,7 @@ $args = false;
 if( ! empty($route['args']) ) $args = $route['args'];
 
 // TODO: check if template file exists before we include it and fall back to an error page if it doesn't
-include_once( EH_ABSPATH.'site/'.$template.'.php' );
+include_once( EH_ABSPATH.'system/site/'.$template.'.php' );
 
 
 die(); // EIGENHEIM end
