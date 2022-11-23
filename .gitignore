@@ -1,6 +1,6 @@
 content/*
 log/*
 !.gitkeep
-site/config.php
+config.php
 build.sh
 .htaccess

@@ -17,7 +17,7 @@ function get_config( $option = false ){
 
 function load_config_from_file(){
 
-	$config_file = EH_ABSPATH.'site/config.php';
+	$config_file = EH_ABSPATH.'config.php';
 
 	if( ! file_exists($config_file) ) {
 		// TODO: add debug option to show or hide this message

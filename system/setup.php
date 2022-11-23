@@ -4,9 +4,9 @@
 
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
-if( file_exists(EH_ABSPATH.'site/config.php') ) {
+if( file_exists(EH_ABSPATH.'config.php') ) {
 	?>
-	<p>Setup already finished. Please delete <em>site/config.php</em> to re-run the setup.</p>
+	<p>Setup already finished. Please delete <em>config.php</em> to re-run the setup.</p>
 	<?php
 	exit;
 }
@@ -221,13 +221,13 @@ if( ! is_dir(EH_ABSPATH.'content/posts/'.date('Y')) ) {
 <ul>
 <?php
 $content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],\r\n];\r\n";
-if( file_put_contents( EH_ABSPATH.'site/config.php', $content ) === false ) {
+if( file_put_contents( EH_ABSPATH.'config.php', $content ) === false ) {
 	?>
-	<li><strong>ERROR:</strong> could not create the file <em>site/config.php</em>. make sure the folder is writeable. we abort the setup here.</li>
+	<li><strong>ERROR:</strong> could not create the file <em>config.php</em>. make sure the folder is writeable. we abort the setup here.</li>
 	<?php
 } else {
 	?>
-	<li>file <em>site/config.php</em> created successfully</li>
+	<li>file <em>config.php</em> created successfully</li>
 	<?php
 }
 ?>

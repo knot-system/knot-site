@@ -17,11 +17,11 @@ you can then edit the textfiles that get created in the *content/* folder to cha
 if you want to reset the whole system, delete the following files and folders and open the url in a webbrowser:
 - `content/`
 - `.htaccess`
-- `site/config.php`
+- `config.php`
 
 ## additional options
 
-you may want to edit the *site/config.php* a bit after the initial setup and add additional information:
+you may want to edit the *config.php* a bit after the initial setup and add additional information:
 
 ```php
 <?php

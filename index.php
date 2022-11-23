@@ -16,7 +16,7 @@ define( 'EH_BASEURL', $baseurl );
 include_once( EH_ABSPATH.'system/functions.php' );
 
 
-if( ! file_exists(EH_ABSPATH.'site/config.php') || isset($_GET['setup']) ) {
+if( ! file_exists(EH_ABSPATH.'config.php') || isset($_GET['setup']) ) {
 	include_once( EH_ABSPATH.'system/setup.php');
 	exit;
 }
