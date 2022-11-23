@@ -25,6 +25,7 @@ header {
 
 nav {
 	padding: 0 0 20px;
+	text-align: center;
 }
 
 	nav ul {
@@ -47,6 +48,15 @@ nav {
 		color: inherit;
 		text-decoration: underline;
 	}
+
+	nav.pagination {
+		border-top: 1px solid var(--color-box-border);
+		padding: 20px 0;
+	}
+
+		nav.pagination li + li {
+			margin-left: 2em;
+		}
 
 main {
 	max-width: 800px;

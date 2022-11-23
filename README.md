@@ -35,6 +35,7 @@ return [
 	'site_title' => 'My Eigenheim Site',
 	'auth_mail' => 'mail@example.com',
 	//'theme' => 'default',
+	//'posts_per_page' => 5,
 	//'microsub' => 'https://www.example.com/microsub',
 	//'logging' => false,
 	'author' => [

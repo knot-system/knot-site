@@ -3,16 +3,19 @@
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
 
-function get_posts(){
+function get_posts( $page = -1 ){
 
 	$posts = database_get_posts();
 
-	return $posts;
+	if( $page > -1 ) {
+		$posts = paginate_posts( $posts, $page );
+	}
 
+	return $posts;
 }
 
 
-function get_posts_by_tag( $tag ) {
+function get_posts_by_tag( $tag, $page = -1 ) {
 
 	$all_posts = get_posts();
 
@@ -27,6 +30,22 @@ function get_posts_by_tag( $tag ) {
 		$posts[] = $post;
 
 	}
+
+	if( $page > -1 ) {
+		$posts = paginate_posts( $posts, $page );
+	}
+
+	return $posts;
+}
+
+
+function paginate_posts( $posts, $page ) {
+
+	$posts_per_page = get_config( 'posts_per_page' );
+
+	$offset = ($page-1)*$posts_per_page;
+
+	$posts = array_slice( $posts, $offset, $posts_per_page );
 
 	return $posts;
 }
@@ -57,5 +76,4 @@ function get_categories(){
 	$categories = array_values( $categories ); // get rid of keys
 
 	return $categories;
-
 }

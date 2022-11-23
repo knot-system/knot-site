@@ -6,6 +6,11 @@ function get_config( $option = false ){
 
 	$config = load_config_from_file();
 
+	// TODO: build something better for default config options
+	if( ! isset( $config['posts_per_page']) ) {
+		$config['posts_per_page'] = 5; // default value
+	}
+
 	if( $option ) {
 		if( ! array_key_exists( $option, $config ) ) return false;
 		return $config[$option];

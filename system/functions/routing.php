@@ -9,7 +9,7 @@ function get_route(){
 	$request = preg_replace( '/^'.preg_quote(EH_BASEFOLDER, '/').'/', '', $request );
 	$request = explode( '/', $request );
 
-	$tag = false;
+	$pagination = 0;
 
 	if( ! empty($request[0]) && $request[0] == 'feed' && ! empty($request[1]) ){
 		// feeds
@@ -52,6 +52,8 @@ function get_route(){
 		$tag = $request[1];
 		$posts = get_posts_by_tag( $tag );
 
+		// TODO: add pagination
+
 		if( ! count($posts) ) {
 			return array(
 				'template' => '404',
@@ -74,6 +76,10 @@ function get_route(){
 		micropub_check_request();
 		exit;
 
+	} elseif( ! empty($request[0]) && $request[0] == 'page' && isset($request[1]) ) {
+		// overview, pagination
+		$pagination = (int)$request[1];
+
 	} elseif( ! empty($request[0]) ) {
 		// maybe static page
 
@@ -91,9 +97,15 @@ function get_route(){
 
 	}
 
-	// default
+	// default overview (may be paginated)
+	if( $pagination < 1 ) $pagination = 1;
+	$posts = get_posts( $pagination );
 	return array(
 		'template' => 'index',
+		'args' => array(
+			'posts' => $posts,
+			'page' => $pagination
+		)
 	);
 
 }
