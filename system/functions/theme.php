@@ -11,13 +11,29 @@ function get_theme() {
 		$theme_name = 'default';
 	}
 
-	$theme = array(
-		'name' => $theme_name,
-		'path' => EH_ABSPATH.'theme/'.$theme_name.'/',
-		'url' => EH_BASEURL.'theme/'.$theme_name.'/'
-	);
+	global $theme_data;
+
+	$theme = $theme_data;
+
+	$theme['name'] = $theme_name;
+	$theme['path'] = EH_ABSPATH.'theme/'.$theme_name.'/';
+	$theme['url'] = EH_BASEURL.'theme/'.$theme_name.'/';
 
 	return $theme;
+}
+
+
+function get_theme_data( $key = false ) {
+
+	$theme_data = get_theme();
+
+	unset($theme_data['path']);
+
+	if( ! $key ) return $theme_data;
+
+	if( array_key_exists($key, $theme_data) ) return $theme_data[$key];
+	
+	return false;
 }
 
 
@@ -38,7 +54,7 @@ function print_stylesheets() {
 
 	if( ! is_array($global_stylesheet_list) || ! count($global_stylesheet_list) ) return;
 	
-	$version = eigenheim_get_version(); // TODO: maybe add a theme version?
+	$version = get_theme_data('version');
 
 	foreach( $global_stylesheet_list as $stylesheet ) {
 	?>
