@@ -1,5 +1,6 @@
 content/*
 log/*
+cache/*
 !.gitkeep
 config.php
 build.sh

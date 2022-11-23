@@ -80,7 +80,7 @@ if( ! file_exists( EH_ABSPATH.'.htaccess' ) ) {
 	?>
 	<li>file <em>.htaccess</em> does not exist, creating it with rewrite base <em><?= $rewrite_base ?></em></li>
 	<?php
-	$content = "<IfModule mod_rewrite.c>\r\nRewriteEngine on\r\nRewriteBase ".$rewrite_base."\r\n\r\nRewriteRule (^|/)\.(?!well-known\/) index.php [L]\r\nRewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]\r\nRewriteRule ^system/(.*) index.php [L]\r\n\r\nRewriteCond %{REQUEST_FILENAME} !-d\r\nRewriteCond %{REQUEST_FILENAME} !-f\r\nRewriteRule . index.php [L]\r\n</IfModule>";
+	$content = "<IfModule mod_rewrite.c>\r\nRewriteEngine on\r\nRewriteBase ".$rewrite_base."\r\n\r\nRewriteRule (^|/)\.(?!well-known\/) index.php [L]\r\nRewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]\r\nRewriteRule ^system/(.*) index.php [L]\r\n\r\nRewriteRule ^content/(.*)\.(jpg|jpeg|png)$ media.php [L]\r\n\r\nRewriteCond %{REQUEST_FILENAME} !-d\r\nRewriteCond %{REQUEST_FILENAME} !-f\r\nRewriteRule . index.php [L]\r\n</IfModule>";
 	if( file_put_contents( EH_ABSPATH.'.htaccess', $content ) === false ) {
 		?>
 		<li><strong>ERROR:</strong> file <em>.htaccess</em> could not be created. Please check the permissions of the root folder and make sure we are allowed to write to it. we abort the setup here.</li>
@@ -178,33 +178,43 @@ $file_structure = array(
 	'content' => array(
 		array(
 			'type' => 'folder',
-			'name' => '1_about',
+			'name' => 'content',
 			'content' => array(
 				array(
-					'type' => 'file',
-					'name' => 'page.txt',
-					'content' => "title: About\r\n\r\n----\r\n\r\ncontent: This is a Testpage. You can edit it at <em>content/1_about/page.txt</em>."
-				)
+					'type' => 'folder',
+					'name' => '1_about',
+					'content' => array(
+						array(
+							'type' => 'file',
+							'name' => 'page.txt',
+							'content' => "title: About\r\n\r\n----\r\n\r\ncontent: This is a Testpage. You can edit it at <em>content/1_about/page.txt</em>."
+						)
+					)
+				),
+				array(
+					'type' => 'folder',
+					'name' => '2_imprint',
+					'content' => array(
+						array(
+							'type' => 'file',
+							'name' => 'page.txt',
+							'content' => "title: Imprint\r\n\r\n----\r\n\r\ncontent: This is a Testpage. You can edit it at <em>content/2_imprint/page.txt</em>."
+						)
+					)
+				),
+				array(
+					'type' => 'folder',
+					'name' => 'posts',
+				),
 			)
 		),
 		array(
 			'type' => 'folder',
-			'name' => '2_imprint',
-			'content' => array(
-				array(
-					'type' => 'file',
-					'name' => 'page.txt',
-					'content' => "title: Imprint\r\n\r\n----\r\n\r\ncontent: This is a Testpage. You can edit it at <em>content/2_imprint/page.txt</em>."
-				)
-			)
-		),
-		array(
-			'type' => 'folder',
-			'name' => 'posts',
-		),
-	)
+			'name' => 'cache'
+		)
+	),
 );
-setup_create_testcontent( EH_ABSPATH.'content/', $file_structure );
+setup_create_testcontent( EH_ABSPATH, $file_structure );
 
 ?>
 <li>test folder structure created successfully</li>
