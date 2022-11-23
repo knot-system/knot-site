@@ -130,19 +130,37 @@ function setup_create_testcontent( $root, $file_structure ) {
 	if( $file_structure['type'] == 'file' ) {
 		$filename = $file_structure['name'];
 		$data = $file_structure['content'];
-		if( file_put_contents( $root.$filename, $data ) === false ) {
+		if( ! file_exists( $root.$filename ) ){
 			?>
-			<li><strong>ERROR:</strong> could not create the file <em><?= $root.$filename ?></em>. we abort the setup here.</li>
+			<li>file <em><?= $root.$filename ?></em> does not exist, we need to create it</li>
 			<?php
-			exit;
+			if( file_put_contents( $root.$filename, $data ) === false ) {
+				?>
+				<li><strong>ERROR:</strong> could not create the file <em><?= $root.$filename ?></em>. we abort the setup here.</li>
+				<?php
+				exit;
+			}
+		} else {
+			?>
+			<li>file <em><?= $root.$filename ?></em> already exists, we do not need to create it</li>
+			<?php
 		}
 	} elseif( $file_structure['type'] == 'folder' ) {
 		$foldername = $file_structure['name'];
-		if( ! is_dir( $root.$foldername) && mkdir( $root.$foldername, 0777, true ) === false ) {
+		if( ! is_dir( $root.$foldername) ) {
 			?>
-			<li><strong>ERROR:</strong> could not create the folder <em><?= $root.$foldername ?></em>. we abort the setup here.</li>
+			<li>folder <em><?= $root.$foldername ?></em> does not exist, we need to create it</li>
 			<?php
-			exit;
+			if( mkdir( $root.$foldername, 0777, true ) === false ) {
+				?>
+				<li><strong>ERROR:</strong> could not create the folder <em><?= $root.$foldername ?></em>. we abort the setup here.</li>
+				<?php
+				exit;
+			}
+		} else {
+			?>
+			<li>folder <em><?= $root.$foldername ?></em> already exist, we do not need to create it</li>
+			<?php
 		}
 	}
 
