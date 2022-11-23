@@ -14,10 +14,15 @@ copy all the files into a directory on your webserver, then open the url to this
 
 you can then edit the textfiles that get created in the *content/* folder to change the content, and log in to a micropub client with your url to add new posts.
 
-if you want to reset the whole system, delete the following files and folders and open the url in a webbrowser:
-- `content/`
+## updating
+
+when you want update the system, download the latest release. backup your content/ folder, your config.php and the .htaccss file (and your custom theme, if you have any). you can delete the system/ folder, the index.php and the theme/default/ folder, and then re-upload them from the release .zip file.
+
+if you want to reset the whole system, delete the following files and folders and open the url in a webbrowser to re-trigger the setup process:
 - `.htaccess`
 - `config.php`
+- maybe the `content/` folder, if you want to reset the content as well
+- maybe a custom theme in the `theme/` folder
 
 ## additional options
 
