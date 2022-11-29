@@ -16,7 +16,7 @@ define( 'EH_BASEURL', $baseurl );
 include_once( EH_ABSPATH.'system/functions.php' );
 
 
-if( ! file_exists(EH_ABSPATH.'config.php') || isset($_GET['setup']) ) {
+if( ! file_exists(EH_ABSPATH.'config.php') || ! file_exists(EH_ABSPATH.'.htaccess') || isset($_GET['setup']) ) {
 	include_once( EH_ABSPATH.'system/setup.php');
 	exit;
 }
@@ -36,4 +36,4 @@ if( ! empty($route['args']) ) $args = $route['args'];
 include_once( EH_ABSPATH.'system/site/'.$template.'.php' );
 
 
-die(); // EIGENHEIM end
+exit; // EIGENHEIM end

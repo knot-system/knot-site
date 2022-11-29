@@ -30,7 +30,7 @@ function load_config_from_file(){
 	if( ! file_exists($config_file) ) {
 		// TODO: add debug option to show or hide this message
 		echo '<p><strong>no config file found</strong></p>';
-		die();
+		exit;
 	}
 
 	$config = include( $config_file );

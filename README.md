@@ -58,9 +58,10 @@ return [
 
 ## Updating
 
-When you want update the system, download the latest release. backup your *content/* folder and your *config.php* (and your custom theme, if you have any). You can delete the *system/* folder, the *index.php* and the *theme/default/* folder, and then re-upload them from the release .zip file. We add an option to automatically update the system in the future.
+When you want update the system, download the latest release. Backup your *content/* folder and your *config.php* (and your custom theme, if you have any). You can delete the *system/* folder, the *index.php* and the *theme/default/* folder, and then re-upload them from the release .zip file. We'll add an option to automatically update the system in the future.
 
 If you want to reset the whole system, delete the following files and folders and open the url in a webbrowser to re-trigger the setup process:
 - `.htaccess`
 - `config.php`
 - maybe the `content/` folder, if you want to reset the content as well
+- maybe the custom theme folders in the `theme/` directory (leave the `theme/default/` directory there, though)
