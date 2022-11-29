@@ -1,5 +1,8 @@
 alpha.8
-(you should delete the old '.htaccess' and 'media.php' files and the content of the 'cache/' folder before updating)
+
+you should delete the old '.htaccess' and 'media.php' files and the content of the 'cache/' folder before updating.
+if you have a custom theme, you need to split the 'theme.php' into two new files 'config.php' and 'functions.php'. have a look at the default theme for how these files should now look. you also need to update all snippets to alpha.8
+
 - RSS bugfix, again again.
 - config options for image caching & resizing (see "Additional Options" in the README)
 - for resized images, the correct image dimensions are now included in the HTML (instead of the original image dimensions)
@@ -8,10 +11,14 @@ alpha.8
 - removed media.php; image handling via index.php (you need to re-create the .htaccess for this)
 - some enhancements to the setup process
 - possibility to automatically update the system in the future
+- some code rewrite
+- update to the theme handling. the 'theme.php' in a theme folder got split up into 'config.php' and 'functions.php'
 
 
 alpha.7
-(you should reset the whole system and re-run the setup procedure to get all the new functionality; see the 'reset' portion in 'updating' in the readme.)
+
+you should reset the whole system and re-run the setup procedure to get all the new functionality; see the 'reset' portion in 'updating' in the readme.
+
 - moved site/config.php to config.php (in the root directory); you need to move your site/config.php into the root directory manually if you want to keep your settings
 - added support for themes, with a default theme as an example. see readme for details
 - added basic pagination for posts
@@ -23,16 +30,19 @@ alpha.7
 
 
 alpha.6
+
 - support for static pages; the content/ folder structure changed again, see message in commit 817a2efaa0c773e632f426cce6a9c0a1b7af62ee
 - support micropub json requests; now more micropub clients are supported
 - first time setup flow, that creates the site/config.php, .htaccess and content/ folder with testcontent; if you want to reset the system, delete these files/folders and open the page to trigger the first time setup flow
 
 
 alpha.5
+
 - code cleanup & rewrite. no new functionality.
 
 
 alpha.4
+
 - new content folder structure -- content created before this version is no longer visible! (you may want to delete it, or move it into the new folder structure and rename the textfiles to 'post.txt')
 - rss was still broken, this should fix it
 - added author information (see README.md)
@@ -45,6 +55,7 @@ alpha.4
 
 
 alpha.3
+
 - posting from quill now works (not every post-type is yet supported though)
 - removed the access_token from being imported (whoopsie)
 - post h2 gets only displayed if title has a value
@@ -58,6 +69,7 @@ alpha.3
 
 
 alpha.2
+
 - added snippet() helper
 - added get_posts() helper
 - added microsub endpoint to header
@@ -66,4 +78,5 @@ alpha.2
 
 
 alpha.1
+
 - initial release
