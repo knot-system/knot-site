@@ -4,23 +4,31 @@
 
 
 
-
 // NOTE: these defines need to happen in the root media.php, because they depend on the location of this file
 define( 'EH_ABSPATH', realpath(dirname(__FILE__)).'/' );
 
 $basefolder = str_replace( 'media.php', '', $_SERVER['PHP_SELF']);
 define( 'EH_BASEFOLDER', $basefolder );
 
+if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ) $baseurl = 'https://';
+else $baseurl = 'http://';
+$baseurl .= $_SERVER['HTTP_HOST'];
+$baseurl .= $basefolder;
+define( 'EH_BASEURL', $baseurl );
+
 
 include_once( EH_ABSPATH.'system/functions/config.php' );
 include_once( EH_ABSPATH.'system/functions/media.php' );
+
+$request = $_SERVER['REQUEST_URI'];
+$request = preg_replace( '/^'.preg_quote(EH_BASEFOLDER, '/').'/', '', $request );
+
+$file_path = EH_ABSPATH.$request;
 
 
 $cache_active = get_config( 'image_cache_active', true );
 $target_width = get_config( 'image_target_width', 1200 );
 $jpg_quality = get_config( 'image_jpg_quality', 80 );
-
-$file_path = EH_ABSPATH.str_replace( EH_BASEFOLDER, '', $_SERVER['REQUEST_URI'] );
 
 $image_meta = getimagesize( $file_path );
 $filesize = filesize( $file_path );
@@ -37,12 +45,7 @@ if( $image_type == IMAGETYPE_JPEG ) {
 	$file_extension = 'png';
 	$mime_type = 'image/png';
 } else {
-	echo '<strong>Error:</strong> unknown image type ('.$image_type.')';
-	if( isset($_GET['debug']) ) {
-		echo '<pre>';
-		var_dump($image_meta);
-		echo '</pre>';
-	}
+	echo '<strong>Error:</strong> unknown image type';
 	exit;
 }
 
