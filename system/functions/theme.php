@@ -7,27 +7,43 @@ function get_theme() {
 
 	$theme_name = get_config( 'theme' );
 
-	if( ! file_exists( EH_ABSPATH.'theme/'.$theme_name.'/theme.php') ) {
+	if( ! file_exists( EH_ABSPATH.'theme/'.$theme_name.'/config.php') ) {
 		$theme_name = 'default';
 	}
 
-	global $theme_data;
+	$file_path = 'theme/'.$theme_name.'/config.php';
+	$theme = load_theme_config_from_file( $file_path );
 
-	$theme = $theme_data;
-
-	$theme['name'] = $theme_name;
-	$theme['path'] = EH_ABSPATH.'theme/'.$theme_name.'/';
-	$theme['url'] = url('theme/'.$theme_name.'/');
+	$theme['_folder_name'] = $theme_name;
+	$theme['_path'] = 'theme/'.$theme_name.'/';
+	$theme['_url'] = url('theme/'.$theme_name.'/');
 
 	return $theme;
 }
+
+
+function load_theme_config_from_file( $file_path ){
+
+	if( ! file_exists(EH_ABSPATH.$file_path) ) {
+		// TODO: add debug option to show or hide this message
+		echo '<p><strong>no config file found</strong></p>';
+		exit;
+	}
+
+	$config = include( EH_ABSPATH.$file_path );
+
+	return $config;
+}
+
 
 
 function get_theme_data( $key = false ) {
 
 	$theme_data = get_theme();
 
-	unset($theme_data['path']);
+	unset($theme_data['_folder_name']);
+	unset($theme_data['_path']);
+	unset($theme_data['_url']);
 
 	if( ! $key ) return $theme_data;
 
@@ -44,7 +60,7 @@ function add_stylesheet( $path ) {
 
 	$theme = get_theme();
 
-	$global_stylesheet_list[] = $theme['url'].$path;
+	$global_stylesheet_list[] = $theme['_url'].$path;
 
 }
 
@@ -71,8 +87,8 @@ function snippet( $path, $args = array(), $return = false ) {
 
 	$theme = get_theme();
 
-	if( file_exists($theme['path'].$snippet_path) ) {
-		$include_path = $theme['path'].$snippet_path;
+	if( file_exists($theme['_path'].$snippet_path) ) {
+		$include_path = $theme['_path'].$snippet_path;
 	} else {
 		$include_path = EH_ABSPATH.'system/site/'.$snippet_path;
 	}

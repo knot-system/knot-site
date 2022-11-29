@@ -36,7 +36,7 @@ class Eigenheim {
 
 	}
 
-	function include( $file_path ) {
+	function include( $file_path, $args = false ) {
 
 		$full_file_path = $this->abspath.$file_path;
 
