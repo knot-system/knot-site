@@ -56,7 +56,7 @@ if( $step == 'check' ) {
 	<p><strong>Release notes:</strong></p><?= text_auto_p($release_notes) ?>
 	<hr>
 
-	<form action="<?= EH_BASEURL ?>" method="GET">
+	<form action="<?= $eigenheim->baseurl ?>" method="GET">
 		<input type="hidden" name="step" value="install">
 		<button><?php if( $new_version_available ) echo 'update system'; else echo 're-install system'; ?></button> (this may take some time, please be patient)
 	</form>
@@ -89,7 +89,7 @@ if( $step == 'check' ) {
 	echo '<p>Downloading new .zip from GitHub … ';
 	flush();
 
-	$temp_zip_file = EH_ABSPATH.'cache/_new_release.zip';
+	$temp_zip_file = $eigenheim->abspath.'cache/_new_release.zip';
 	if( file_exists($temp_zip_file) ) unlink($temp_zip_file);
 
 	$file_handle = fopen( $temp_zip_file, 'w+' );
@@ -110,6 +110,9 @@ if( $step == 'check' ) {
 	flush();
 
 	function deleteDirectory( $dirPath ) {
+
+		global $eigenheim;
+
 		if( ! is_dir($dirPath) ) return;
 
 		$objects = scandir($dirPath);
@@ -126,7 +129,7 @@ if( $step == 'check' ) {
 	}
 
 
-	$temp_folder = EH_ABSPATH.'cache/_new_release/';
+	$temp_folder = $eigenheim->abspath.'cache/_new_release/';
 	if( is_dir($temp_folder) ) deleteDirectory($temp_folder);
 	mkdir( $temp_folder );
 
@@ -158,36 +161,36 @@ if( $step == 'check' ) {
 	echo '<p>Deleting old files … ';
 	flush();
 
-	deleteDirectory( EH_ABSPATH.'theme/default/' );
-	deleteDirectory( EH_ABSPATH.'system/' );
-	@unlink( EH_ABSPATH.'.htacces' );
-	unlink( EH_ABSPATH.'index.php' );
-	unlink( EH_ABSPATH.'README.md');
-	unlink( EH_ABSPATH.'changelog.txt');
+	deleteDirectory( $eigenheim->abspath.'theme/default/' );
+	deleteDirectory( $eigenheim->abspath.'system/' );
+	@unlink( $eigenheim->abspath.'.htacces' );
+	unlink( $eigenheim->abspath.'index.php' );
+	unlink( $eigenheim->abspath.'README.md');
+	unlink( $eigenheim->abspath.'changelog.txt');
 
 	echo 'done.</p>';
 
 	echo '<p>Moving new files to new location … ';
 	flush();
 
-	rename( $subfolder.'theme/default', EH_ABSPATH.'theme/default' );
-	rename( $subfolder.'system', EH_ABSPATH.'system' );
-	rename( $subfolder.'index.php', EH_ABSPATH.'index.php' );
-	rename( $subfolder.'README.md', EH_ABSPATH.'README.md' );
-	rename( $subfolder.'changelog.txt', EH_ABSPATH.'changelog.txt' );
+	rename( $subfolder.'theme/default', $eigenheim->abspath.'theme/default' );
+	rename( $subfolder.'system', $eigenheim->abspath.'system' );
+	rename( $subfolder.'index.php', $eigenheim->abspath.'index.php' );
+	rename( $subfolder.'README.md', $eigenheim->abspath.'README.md' );
+	rename( $subfolder.'changelog.txt', $eigenheim->abspath.'changelog.txt' );
 
 	echo 'done.</p>';
 	echo '<p>Cleaning up …';
-	@unlink( EH_ABSPATH.'update.txt' );
-	@unlink( EH_ABSPATH.'update' );
+	@unlink( $eigenheim->abspath.'update.txt' );
+	@unlink( $eigenheim->abspath.'update' );
 
-	deleteDirectory( EH_ABSPATH.'cache/');
-	mkdir( EH_ABSPATH.'cache/' );
+	deleteDirectory( $eigenheim->abspath.'cache/');
+	mkdir( $eigenheim->abspath.'cache/' );
 
 	echo 'done.</p>';
 	flush();
 
-	echo '<p>Please <a href="'.EH_BASEURL.'">refresh this page</a></p>';
+	echo '<p>Please <a href="'.$eigenheim->baseurl.'">refresh this page</a></p>';
 
 } else {
 	?>
@@ -197,7 +200,7 @@ if( $step == 'check' ) {
 
 	<p>Currently installed version: <em><?= $old_version ?></em></p>
 
-	<form action="<?= EH_BASEURL ?>" method="GET">
+	<form action="<?= $eigenheim->baseurl ?>" method="GET">
 		<input type="hidden" name="step" value="check">
 		<button>check for update</button>
 	</form>

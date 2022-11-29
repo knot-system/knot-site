@@ -5,8 +5,10 @@ if( ! $eigenheim ) exit;
 
 function get_route(){
 
+	global $eigenheim;
+
 	$request = $_SERVER['REQUEST_URI'];
-	$request = preg_replace( '/^'.preg_quote(EH_BASEFOLDER, '/').'/', '', $request );
+	$request = preg_replace( '/^'.preg_quote($eigenheim->basefolder, '/').'/', '', $request );
 	$request = explode( '/', $request );
 
 	$pagination = 0;

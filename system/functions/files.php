@@ -8,7 +8,9 @@ if( ! $eigenheim ) exit;
 
 function dir_read( $folderpath_input, $recursive = false, $filename = false, $reverse = false ){
 
-	$folderpath = EH_ABSPATH.'content/'.$folderpath_input;
+	global $eigenheim;
+
+	$folderpath = $eigenheim->abspath.'content/'.$folderpath_input;
 
 	if( ! is_dir( $folderpath ) ) return array(); // TODO: error handling: $folderpath is no directory
 
@@ -47,7 +49,9 @@ function dir_read( $folderpath_input, $recursive = false, $filename = false, $re
 
 function file_read( $filepath ){
 
-	$filepath = EH_ABSPATH.'content/'.$filepath;
+	global $eigenheim;
+
+	$filepath = $eigenheim->abspath.'content/'.$filepath;
 
 	if( ! file_exists( $filepath) ) return false; // TODO: error handling: file not found
 

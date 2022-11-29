@@ -5,9 +5,11 @@ if( ! $eigenheim ) exit;
 
 function get_theme() {
 
+	global $eigenheim;
+
 	$theme_name = get_config( 'theme' );
 
-	if( ! file_exists( EH_ABSPATH.'theme/'.$theme_name.'/config.php') ) {
+	if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/config.php') ) {
 		$theme_name = 'default';
 	}
 
@@ -24,13 +26,15 @@ function get_theme() {
 
 function load_theme_config_from_file( $file_path ){
 
-	if( ! file_exists(EH_ABSPATH.$file_path) ) {
+	global $eigenheim;
+
+	if( ! file_exists($eigenheim->abspath.$file_path) ) {
 		// TODO: add debug option to show or hide this message
 		echo '<p><strong>no config file found</strong></p>';
 		exit;
 	}
 
-	$config = include( EH_ABSPATH.$file_path );
+	$config = include( $eigenheim->abspath.$file_path );
 
 	return $config;
 }
@@ -93,8 +97,9 @@ function snippet( $path, $args = array(), $return = false ) {
 		$include_path = 'system/site/'.$snippet_path;
 	}
 
+	global $eigenheim;
 
-	if( ! file_exists( EH_ABSPATH.$include_path) ) return;
+	if( ! file_exists( $eigenheim->abspath.$include_path) ) return;
 	
 	global $eigenheim;
 

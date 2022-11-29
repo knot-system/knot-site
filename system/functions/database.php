@@ -136,11 +136,13 @@ function database_get_post_by_filename( $filename ) {
 
 	$content_html = text_cleanup( $content_html );
 
+	global $eigenheim;
+
 	$image = false;
 	if( ! empty( $data['photo']) ) {
 		$post_folder = trailing_slash_it(pathinfo( $filename, PATHINFO_DIRNAME ));
 
-		if( file_exists(EH_ABSPATH.'content/'.$post_folder.$data['photo']) ) {
+		if( file_exists($eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
 			$image_path = $post_folder.$data['photo'];
 			$image_html = get_image_html( $image_path );
 	
@@ -187,9 +189,11 @@ function database_get_post_by_filename( $filename ) {
 
 function database_create_post( $data, $photo = false ) {
 
+	global $eigenheim;
+
 	$year = date('Y', $data['timestamp']);
 	$month = date('m', $data['timestamp']);
-	$target_folder = EH_ABSPATH.'content/posts/'.$year.'/'.$month.'/';
+	$target_folder = $eigenheim->abspath.'content/posts/'.$year.'/'.$month.'/';
 	if( ! is_dir($target_folder) ) {
 		mkdir( $target_folder, 0777, true );
 		if( ! is_dir($target_folder) ) {

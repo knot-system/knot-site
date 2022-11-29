@@ -24,7 +24,9 @@ function get_config( $option = false, $fallback = false ){
 
 function load_config_from_file(){
 
-	$config_file = EH_ABSPATH.'config.php';
+	global $eigenheim;
+
+	$config_file = $eigenheim->abspath.'config.php';
 
 	if( ! file_exists($config_file) ) {
 		// TODO: add debug option to show or hide this message

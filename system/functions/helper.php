@@ -4,7 +4,9 @@ if( ! $eigenheim ) exit;
 
 
 function url( $path = '' ) {
-	$path = EH_BASEURL.$path;
+	global $eigenheim;
+
+	$path = $eigenheim->baseurl.$path;
 	$path = trailing_slash_it($path);
 	return $path;
 }

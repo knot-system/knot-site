@@ -8,13 +8,13 @@ $eigenheim = new Eigenheim();
 $eigenheim->include( 'system/functions.php' );
 
 
-if( ! file_exists(EH_ABSPATH.'config.php') || ! file_exists(EH_ABSPATH.'.htaccess') || isset($_GET['setup']) ) {
+if( ! file_exists($eigenheim->abspath.'config.php') || ! file_exists($eigenheim->abspath.'.htaccess') || isset($_GET['setup']) ) {
 	$eigenheim->include( 'system/setup.php' );
 	exit;
 }
 
 
-if( file_exists(EH_ABSPATH.'update') || file_exists(EH_ABSPATH.'update.txt') ) {
+if( file_exists($eigenheim->abspath.'update') || file_exists($eigenheim->abspath.'update.txt') ) {
 	$eigenheim->include( 'system/update.php' );
 	exit;
 }

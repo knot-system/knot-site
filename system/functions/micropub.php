@@ -130,6 +130,8 @@ function micropub_create_post( $data ){
 
 function micropub_check_authorization_bearer() {
 
+	global $eigenheim;
+
 	$headers = apache_request_headers();
 
 	$token = $headers['Authorization'];
@@ -152,7 +154,7 @@ function micropub_check_authorization_bearer() {
 	$client = $response['client_id'];
 	$scope = $response['scope'];
 	
-	if( trailing_slash_it($me) != trailing_slash_it(EH_BASEURL) ){
+	if( trailing_slash_it($me) != trailing_slash_it($eigenheim->baseurl) ){
 		header( "HTTP/1.1 403 Forbidden" );
 		exit;
 	}

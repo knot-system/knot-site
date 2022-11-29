@@ -25,11 +25,6 @@ class Eigenheim {
 		$baseurl .= $basefolder;
 		$this->baseurl = $baseurl;
 
-		// TODO: get rid of these constants
-		define( 'EH_ABSPATH', $this->abspath );
-		define( 'EH_BASEFOLDER', $this->basefolder );
-		define( 'EH_BASEURL', $this->baseurl );
-
 		$this->debug = true; // TODO: get this from the config file
 
 	}

@@ -5,9 +5,11 @@ if( ! $eigenheim ) exit;
 
 function get_image_html( $image_path ) {
 
+	global $eigenheim;
+
 	$target_width = get_config( 'image_target_width', 1200 );
 
-	$image_meta = getimagesize( EH_ABSPATH.'content/'.$image_path );
+	$image_meta = getimagesize( $eigenheim->abspath.'content/'.$image_path );
 	$src_width = $image_meta[0];
 	$src_height = $image_meta[1];
 
@@ -16,7 +18,7 @@ function get_image_html( $image_path ) {
 	$width = $target_dimensions[0];
 	$height = $target_dimensions[1];
 
-	$html = '<img src="'.EH_BASEURL.'content/'.$image_path.'" width="'.$width.'" height="'.$height.'" loading="lazy">';
+	$html = '<img src="'.$eigenheim->baseurl.'content/'.$image_path.'" width="'.$width.'" height="'.$height.'" loading="lazy">';
 
 	return $html;
 }
@@ -60,10 +62,11 @@ function handle_image_display( $file_path ) {
 		exit;
 	}
 
+	global $eigenheim;
 
 	$cache_string = $file_path.$filesize;
 
-	$cache_folder = EH_ABSPATH.'cache/';
+	$cache_folder = $eigenheim->abspath.'cache/';
 	$cache_name = md5($cache_string).'_'.$target_width.'_'.$jpg_quality.'.'.$file_extension;
 	$cache_file = $cache_folder.$cache_name;
 

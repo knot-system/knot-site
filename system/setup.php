@@ -4,7 +4,7 @@
 
 if( ! $eigenheim ) exit;
 
-if( file_exists(EH_ABSPATH.'config.php') && file_exists(EH_ABSPATH.'.htaccess') ) {
+if( file_exists($eigenheim->abspath.'config.php') && file_exists($eigenheim->abspath.'.htaccess') ) {
 	?>
 	<p>Setup already finished. Please delete <em>config.php</em> or <em>.htaccess</em> from the root directory to re-run the setup.</p>
 	<?php
@@ -19,26 +19,26 @@ if( file_exists(EH_ABSPATH.'config.php') && file_exists(EH_ABSPATH.'.htaccess') 
 
 <h3>Environment:</h3>
 <ul>
-	<li>ABSPATH: <em><?= EH_ABSPATH ?></em></li>
-	<li>BASEFOLDER: <em><?= EH_BASEFOLDER ?></em></li>
-	<li>BASEURL: <em><?= EH_BASEURL ?></em></li>
+	<li>ABSPATH: <em><?= $eigenheim->abspath ?></em></li>
+	<li>BASEFOLDER: <em><?= $eigenheim->basefolder ?></em></li>
+	<li>BASEURL: <em><?= $eigenheim->baseurl ?></em></li>
 </ul>
 
 <?php
 
-if( EH_ABSPATH == '' ) {
+if( $eigenheim->abspath == '' ) {
 	?>
 	<p><strong>ERROR:</strong> ABSPATH is empty. we don't know what went wrong. we abort the setup here.</p>
 	<?php
 	exit;
 }
-if( EH_BASEFOLDER == '' ) {
+if( $eigenheim->basefolder == '' ) {
 	?>
 	<p><strong>ERROR:</strong> BASEFOLDER is empty. we don't know what went wrong. we abort the setup here.</p>
 	<?php
 	exit;
 }
-if( EH_BASEURL == '' ) {
+if( $eigenheim->baseurl == '' ) {
 	?>
 	<p><strong>ERROR:</strong> BASEURL is empty. we don't know what went wrong. we abort the setup here.</p>
 	<?php
@@ -46,7 +46,7 @@ if( EH_BASEURL == '' ) {
 }
 
 $config = true;
-if( file_exists(EH_ABSPATH.'config.php') ) $config = false;
+if( file_exists($eigenheim->abspath.'config.php') ) $config = false;
 
 if( $config && 
 	( empty($_POST['auth_mail']) || empty($_POST['author_name']) || empty($_POST['site_title']) ) 
@@ -54,7 +54,7 @@ if( $config &&
 	?>
 	<hr>
 	<p>Please fill out these fields:</p>
-	<form action="<?= EH_BASEURL ?>" method="POST">
+	<form action="<?= $eigenheim->baseurl ?>" method="POST">
 		<p><label><strong>Site Title</strong><br><input type="text" name="site_title" required></label></p>
 		<p><label><strong>Authorization Mail</strong><br><small>(this is were we send the login token to, when you log into a micropub client. It is not displayed publicly, but is added to the HTML source code)</small><br><input type="email" name="auth_mail" required></label></p>
 		<p><label><strong>Author Name</strong><br><input type="text" name="author_name" required></label></p>
@@ -82,14 +82,14 @@ if( $config ) {
 <ul>
 	<li>checking if <em>.htaccess</em> file exists</li>
 <?php
-if( ! file_exists( EH_ABSPATH.'.htaccess' ) ) {
-	$rewrite_base = EH_BASEFOLDER;
+if( ! file_exists( $eigenheim->abspath.'.htaccess' ) ) {
+	$rewrite_base = $eigenheim->basefolder;
 	if( $rewrite_base == '' ) $rewrite_base = '/';
 	?>
 	<li>file <em>.htaccess</em> does not exist, creating it with rewrite base <em><?= $rewrite_base ?></em></li>
 	<?php
 	$content = "<IfModule mod_rewrite.c>\r\nRewriteEngine on\r\nRewriteBase ".$rewrite_base."\r\n\r\nRewriteRule (^|/)\.(?!well-known\/) index.php [L]\r\nRewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]\r\nRewriteRule ^content/(.*)\.(jpg|jpeg|png)$ index.php [L]\r\nRewriteRule ^system/(.*) index.php [L]\r\n\r\nRewriteCond %{REQUEST_FILENAME} !-d\r\nRewriteCond %{REQUEST_FILENAME} !-f\r\nRewriteRule . index.php [L]\r\n</IfModule>";
-	if( file_put_contents( EH_ABSPATH.'.htaccess', $content ) === false ) {
+	if( file_put_contents( $eigenheim->abspath.'.htaccess', $content ) === false ) {
 		?>
 		<li><strong>ERROR:</strong> file <em>.htaccess</em> could not be created. Please check the permissions of the root folder and make sure we are allowed to write to it. we abort the setup here.</li>
 		<?php
@@ -110,11 +110,11 @@ if( ! file_exists( EH_ABSPATH.'.htaccess' ) ) {
 <h3>checking <em>content/</em> folder:</h3>
 <ul>
 <?php
-if( ! is_dir( EH_ABSPATH.'content/') ) {
+if( ! is_dir( $eigenheim->abspath.'content/') ) {
 	?>
 	<li>folder <em>content/</em> does not exist, trying to create it</li>
 	<?php
-	if( mkdir( EH_ABSPATH.'content/', 0777, true ) === false ) {
+	if( mkdir( $eigenheim->abspath.'content/', 0777, true ) === false ) {
 		?>
 		<li><strong>ERROR:</strong> folder <em>content/</em> could not be created. Please check the permissions of the root folder and make sure we are allowed to write to it. we abort the setup here.</li>
 		<?php
@@ -134,11 +134,11 @@ if( ! is_dir( EH_ABSPATH.'content/') ) {
 <h3>checking <em>cache/</em> folder:</h3>
 <ul>
 <?php
-if( ! is_dir( EH_ABSPATH.'cache/') ) {
+if( ! is_dir( $eigenheim->abspath.'cache/') ) {
 	?>
 	<li>folder <em>cache/</em> does not exist, trying to create it</li>
 	<?php
-	if( mkdir( EH_ABSPATH.'cache/', 0777, true ) === false ) {
+	if( mkdir( $eigenheim->abspath.'cache/', 0777, true ) === false ) {
 		?>
 		<li><strong>ERROR:</strong> folder <em>cache/</em> could not be created. Please check the permissions of the root folder and make sure we are allowed to write to it. we abort the setup here.</li>
 		<?php
@@ -162,6 +162,8 @@ if( $testcontent ) {
 	<ul>
 	<?php
 	function setup_create_testcontent( $root, $file_structure ) {
+
+		global $eigenheim;
 
 		if( $file_structure['type'] == 'file' ) {
 			$filename = $file_structure['name'];
@@ -246,11 +248,11 @@ if( $testcontent ) {
 			),
 		),
 	);
-	setup_create_testcontent( EH_ABSPATH, $file_structure );
+	setup_create_testcontent( $eigenheim->abspath, $file_structure );
 	?>
 	<li>test folder structure created successfully</li>
 	<?php
-	if( ! is_dir(EH_ABSPATH.'content/posts/'.date('Y')) ) {
+	if( ! is_dir($eigenheim->abspath.'content/posts/'.date('Y')) ) {
 		?>
 		<li>creating test post</li>
 		<?php
@@ -285,7 +287,7 @@ if( $testcontent ) {
 	<?php
 	if( $config ) {
 		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],\r\n];\r\n";
-		if( file_put_contents( EH_ABSPATH.'config.php', $content ) === false ) {
+		if( file_put_contents( $eigenheim->abspath.'config.php', $content ) === false ) {
 			?>
 			<li><strong>ERROR:</strong> could not create the file <em>config.php</em>. make sure the folder is writeable. we abort the setup here.</li>
 			<?php
@@ -305,7 +307,7 @@ if( $testcontent ) {
 
 <hr>
 <h3>Setup finished!</h3>
-<p>please <a href="<?= EH_BASEURL ?>">reload this page</a>.</p>
+<p>please <a href="<?= $eigenheim->baseurl ?>">reload this page</a>.</p>
 <hr>
 <?php
 exit;
