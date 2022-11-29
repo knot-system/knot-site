@@ -1,19 +1,11 @@
-<?php // EIGENHEIM start
+<?php
 
+include_once( 'system/core.php' );
 
-// NOTE: these defines need to happen in the root index.php, because they depend on the location of this file
-define( 'EH_ABSPATH', realpath(dirname(__FILE__)).'/' );
+global $eigenheim;
+$eigenheim = new Eigenheim();
 
-$basefolder = str_replace( 'index.php', '', $_SERVER['PHP_SELF']);
-define( 'EH_BASEFOLDER', $basefolder );
-
-if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ) $baseurl = 'https://';
-else $baseurl = 'http://';
-$baseurl .= $_SERVER['HTTP_HOST'];
-$baseurl .= $basefolder;
-define( 'EH_BASEURL', $baseurl );
-
-include_once( EH_ABSPATH.'system/functions.php' );
+$eigenheim->include( 'system/functions.php' );
 
 
 if( ! file_exists(EH_ABSPATH.'config.php') || ! file_exists(EH_ABSPATH.'.htaccess') || isset($_GET['setup']) ) {
@@ -40,6 +32,3 @@ if( ! empty($route['args']) ) $args = $route['args'];
 
 // TODO: check if template file exists before we include it and fall back to an error page if it doesn't
 include_once( EH_ABSPATH.'system/site/'.$template.'.php' );
-
-
-exit; // EIGENHEIM end
