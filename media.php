@@ -1,6 +1,6 @@
 <?php
 
-// TODO/CLEANUP: revisit this. currently, in the html the original file size gets included. also, the cache does not get refreshed, if the image changes but the filename stays the same. and we need some config options. and this code is janky.
+// TODO/CLEANUP: the old cached image does not get cleared if the target_width or jpg_quality or filename or filesize change. we may want to periodically clear out the /cache folder, or old files in the /cache folder
 
 
 
@@ -13,6 +13,7 @@ define( 'EH_BASEFOLDER', $basefolder );
 
 
 include_once( EH_ABSPATH.'system/functions/config.php' );
+include_once( EH_ABSPATH.'system/functions/media.php' );
 
 
 $cache_active = get_config( 'image_cache_active', true );
@@ -22,6 +23,7 @@ $jpg_quality = get_config( 'image_jpg_quality', 80 );
 $file_path = EH_ABSPATH.str_replace( EH_BASEFOLDER, '', $_SERVER['REQUEST_URI'] );
 
 $image_meta = getimagesize( $file_path );
+$filesize = filesize( $file_path );
 
 $src_width = $image_meta[0];
 $src_height = $image_meta[1];
@@ -40,8 +42,10 @@ if( $image_type == IMAGETYPE_JPEG ) {
 }
 
 
+$cache_string = $file_path.$filesize;
+
 $cache_folder = EH_ABSPATH.'cache/';
-$cache_name = md5($file_path).'_'.$target_width.'_'.$jpg_quality.'.'.$file_extension;
+$cache_name = md5($cache_string).'_'.$target_width.'_'.$jpg_quality.'.'.$file_extension;
 $cache_file = $cache_folder.$cache_name;
 
 if( file_exists($cache_file) ) {
@@ -70,8 +74,11 @@ if( $image_type == IMAGETYPE_JPEG ) {
 }
 
 if( $src_width > $target_width ) {
-	$width = $target_width;
-	$height = (int) round($src_height/$src_width*$width);
+	
+	$target_dimensions = get_image_dimensions( $target_width, $src_width, $src_height);
+
+	$width = $target_dimensions[0];
+	$height = $target_dimensions[1];
 
 	$target_image = imagecreatetruecolor($width, $height);
 	imagecopyresized($target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height);

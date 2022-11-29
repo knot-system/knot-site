@@ -132,7 +132,7 @@ function database_get_post_by_filename( $filename ) {
 
 	$content_html = $data['content'];
 
-	$content_text = strip_tags($content_html); // TODO: revisit this in the future
+	$content_text = strip_tags( $content_html ); // TODO: revisit this in the future
 
 	$content_html = text_cleanup( $content_html );
 
@@ -141,12 +141,10 @@ function database_get_post_by_filename( $filename ) {
 		$post_folder = trailing_slash_it(pathinfo( $filename, PATHINFO_DIRNAME ));
 
 		if( file_exists(EH_ABSPATH.'content/'.$post_folder.$data['photo']) ) {
-			$image = $post_folder.$data['photo'];
-
-			list( $width, $height ) = getimagesize( EH_ABSPATH.'content/'.$image );
-			// TODO: get image size of cached (resized) image, if available
+			$image_path = $post_folder.$data['photo'];
+			$image_html = get_image_html( $image_path );
 	
-			$content_html = '<p><img src="'.EH_BASEURL.'content/'.$image.'" width="'.$width.'" height="'.$height.'"></p>'.$content_html;
+			$content_html = '<p>'.$image_html.'</p>'.$content_html;
 
 		}
 
