@@ -10,7 +10,7 @@ $posts = get_posts();
 <rss version="2.0">
 
 	<channel>
-		<title><?= get_option( 'site_title' ) ?></title>
+		<title><?= get_config( 'site_title' ) ?></title>
 		<link><?= url() ?></link>
 		<description></description>
 <?php /*
