@@ -35,6 +35,9 @@ return [
 		// .. and other h-card properties; for an overview see
 		// https://microformats.org/wiki/h-card#Properties
 	],
+	//'image_cache_active' => true, // cache resized images
+	//'image_target_width' => 1200, // resize bigger images to this width
+	//'image_jpg_quality' => 80,    // when resizing/caching, use this quality for jpg files
 ];
 
 ```

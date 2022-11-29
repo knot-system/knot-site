@@ -4,6 +4,7 @@
 
 
 
+
 // NOTE: these defines need to happen in the root media.php, because they depend on the location of this file
 define( 'EH_ABSPATH', realpath(dirname(__FILE__)).'/' );
 
@@ -11,10 +12,12 @@ $basefolder = str_replace( 'media.php', '', $_SERVER['PHP_SELF']);
 define( 'EH_BASEFOLDER', $basefolder );
 
 
-$cache_active = true; // TODO: make this a config option
-$target_width = 1200; // TODO: make this a config option
-$jpg_quality = 80;    // TODO: make this a config option
+include_once( EH_ABSPATH.'system/functions/config.php' );
 
+
+$cache_active = get_config( 'image_cache_active', true );
+$target_width = get_config( 'image_target_width', 1200 );
+$jpg_quality = get_config( 'image_jpg_quality', 80 );
 
 $file_path = EH_ABSPATH.str_replace( EH_BASEFOLDER, '', $_SERVER['REQUEST_URI'] );
 
@@ -38,7 +41,7 @@ if( $image_type == IMAGETYPE_JPEG ) {
 
 
 $cache_folder = EH_ABSPATH.'cache/';
-$cache_name = md5($file_path).'.'.$file_extension;
+$cache_name = md5($file_path).'_'.$target_width.'_'.$jpg_quality.'.'.$file_extension;
 $cache_file = $cache_folder.$cache_name;
 
 if( file_exists($cache_file) ) {

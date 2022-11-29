@@ -2,7 +2,7 @@
 
 if( ! defined( 'EH_ABSPATH' ) ) exit;
 
-function get_config( $option = false ){
+function get_config( $option = false, $fallback = NULL ){
 
 	$config = load_config_from_file();
 
@@ -12,7 +12,10 @@ function get_config( $option = false ){
 	}
 
 	if( $option ) {
-		if( ! array_key_exists( $option, $config ) ) return false;
+		if( ! array_key_exists( $option, $config ) ) {
+			if( $fallback === NULL ) return false;
+			else return $fallback;
+		}
 		return $config[$option];
 	}
 
