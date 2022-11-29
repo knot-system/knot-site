@@ -15,14 +15,26 @@ $cache_active = true; // TODO: make this a config option
 $target_width = 1200; // TODO: make this a config option
 $jpg_quality = 80;    // TODO: make this a config option
 
+
 $file_path = EH_ABSPATH.str_replace( EH_BASEFOLDER, '', $_SERVER['REQUEST_URI'] );
 
 $image_meta = getimagesize( $file_path );
 
+$src_width = $image_meta[0];
+$src_height = $image_meta[1];
+$image_type = $image_meta[2];
 
 $file_extension = '';
-if( $image_meta['mime'] == 'image/jpeg' ) $file_extension = 'jpg';
-elseif( $image_meta['mime'] == 'image/png' ) $file_extension = 'png';
+if( $image_type == IMAGETYPE_JPEG ) {
+	$file_extension = 'jpg';
+	$mime_type = 'image/jpeg';
+} elseif( $image_type == IMAGETYPE_PNG ) {
+	$file_extension = 'png';
+	$mime_type = 'image/png';
+} else {
+	echo '<strong>Error:</strong> unknown image type';
+	exit;
+}
 
 
 $cache_folder = EH_ABSPATH.'cache/';
@@ -32,33 +44,27 @@ $cache_file = $cache_folder.$cache_name;
 if( file_exists($cache_file) ) {
 	// return cached file, then end
 	$fp = fopen($cache_file, 'rb');
-	header("Content-Type: ".$image_meta['mime']);
-	header("Content-Length: " . filesize($cache_file));
+	header("Content-Type: ".$mime_type);
+	header("Content-Length: ".filesize($cache_file));
 	fpassthru($fp);
 	exit;
 }
 
-if( $image_meta['mime'] == 'image/jpeg' ) {
+if( $image_type == IMAGETYPE_JPEG ) {
 	$src_image = imagecreatefromjpeg( $file_path );
 	if( ! $src_image ) {
 		echo '<strong>Error:</strong> could not load jpg image';
 		exit;
 	}
 
-} elseif( $image_meta['mime'] == 'image/png' ) {
+} elseif( $image_type == IMAGETYPE_PNG ) {
 	$src_image = imagecreatefrompng( $file_path );
 	if( ! $src_image ) {
 		echo '<strong>Error:</strong> could not load png image';
 		exit;
 	}
 
-} else {
-	echo '<strong>Error:</strong> unknown mime type';
-	exit;
 }
-
-$src_width = $image_meta[0];
-$src_height = $image_meta[1];
 
 if( $src_width > $target_width ) {
 	$width = $target_width;
@@ -75,16 +81,16 @@ if( $src_width > $target_width ) {
 
 
 
-if( $image_meta['mime'] == 'image/jpeg' ) {
-	header( 'Content-Type: '.$image_meta['mime'] );
+if( $image_type == IMAGETYPE_JPEG ) {
+	header( 'Content-Type: '.$mime_type );
 	imagejpeg( $target_image, NULL, $jpg_quality );
 
 	if( $cache_active ) {
 		imagejpeg( $target_image, $cache_file, $jpg_quality );
 	}
 
-} elseif( $image_meta['mime'] == 'image/png' ) {
-	header( 'Content-Type: '.$image_meta['mime'] );
+} elseif( $image_type == IMAGETYPE_PNG ) {
+	header( 'Content-Type: '.$mime_type );
 	imagepng($target_image);
 
 	if( $cache_active ) {
@@ -94,3 +100,4 @@ if( $image_meta['mime'] == 'image/jpeg' ) {
 }
 
 imagedestroy( $target_image );
+exit;
