@@ -80,6 +80,16 @@ function get_route(){
 		// overview, pagination
 		$pagination = (int)$request[1];
 
+	} elseif( ! empty($request[0]) && $request[0] == 'content' ) {
+		// maybe image
+
+		$filename = strtolower(end($request));
+		$filename = str_replace('.jpeg', '.jpg', $filename);
+		if( str_ends_with($filename, '.jpg') || str_ends_with($filename, '.png') ){
+			handle_image_display( implode('/', $request) );
+			exit;
+		}
+
 	} elseif( ! empty($request[0]) ) {
 		// maybe static page
 
