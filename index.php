@@ -22,6 +22,12 @@ if( ! file_exists(EH_ABSPATH.'config.php') || ! file_exists(EH_ABSPATH.'.htacces
 }
 
 
+if( file_exists(EH_ABSPATH.'update') || file_exists(EH_ABSPATH.'update.txt') ) {
+	include_once( EH_ABSPATH.'system/update.php');
+	exit;
+}
+
+
 $theme = get_theme();
 include_once( $theme['path'].'theme.php' );
 

@@ -307,3 +307,5 @@ if( $testcontent ) {
 <h3>Setup finished!</h3>
 <p>please <a href="<?= EH_BASEURL ?>">reload this page</a>.</p>
 <hr>
+<?php
+exit;

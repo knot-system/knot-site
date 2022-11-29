@@ -1,3 +1,15 @@
+alpha.8
+(you should delete the old '.htaccess' and 'media.php' files and the content of the 'cache/' folder before updating)
+- RSS bugfix, again again.
+- config options for image caching & resizing (see "Additional Options" in the README)
+- for resized images, the correct image dimensions are now included in the HTML (instead of the original image dimensions)
+- images get lazy loaded
+- bugfix for image display, when the installation is in a root folder (instead of a subfolder)
+- removed media.php; image handling via index.php (you need to re-create the .htaccess for this)
+- some enhancements to the setup process
+- possibility to automatically update the system in the future
+
+
 alpha.7
 (you should reset the whole system and re-run the setup procedure to get all the new functionality; see the 'reset' portion in 'updating' in the readme.)
 - moved site/config.php to config.php (in the root directory); you need to move your site/config.php into the root directory manually if you want to keep your settings
@@ -9,13 +21,16 @@ alpha.7
 - disallow direct access to some files and folders
 - added update (& reset) instructions to the readme
 
+
 alpha.6
 - support for static pages; the content/ folder structure changed again, see message in commit 817a2efaa0c773e632f426cce6a9c0a1b7af62ee
 - support micropub json requests; now more micropub clients are supported
 - first time setup flow, that creates the site/config.php, .htaccess and content/ folder with testcontent; if you want to reset the system, delete these files/folders and open the page to trigger the first time setup flow
 
+
 alpha.5
 - code cleanup & rewrite. no new functionality.
+
 
 alpha.4
 - new content folder structure -- content created before this version is no longer visible! (you may want to delete it, or move it into the new folder structure and rename the textfiles to 'post.txt')
@@ -27,6 +42,7 @@ alpha.4
 - photo upload! you can upload one photo per post. we don't resize it yet, so be sure to upload small files (max. 1600px width). only .jpg allowed for now. no media endpoint yet.
 - post permalinks. the url structure may change in the future!
 - filter posts overview by tag
+
 
 alpha.3
 - posting from quill now works (not every post-type is yet supported though)
@@ -40,12 +56,14 @@ alpha.3
 - added json feed
 - added anchors to posts
 
+
 alpha.2
 - added snippet() helper
 - added get_posts() helper
 - added microsub endpoint to header
 - added basic rss feed
 - added date to posts
+
 
 alpha.1
 - initial release
