@@ -37,7 +37,12 @@ if( $image_type == IMAGETYPE_JPEG ) {
 	$file_extension = 'png';
 	$mime_type = 'image/png';
 } else {
-	echo '<strong>Error:</strong> unknown image type';
+	echo '<strong>Error:</strong> unknown image type ('.$image_type.')';
+	if( isset($_GET['debug']) ) {
+		echo '<pre>';
+		var_dump($image_meta);
+		echo '</pre>';
+	}
 	exit;
 }
 
