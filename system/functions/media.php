@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH') ) exit;
+if( ! $eigenheim ) exit;
 
 
 function get_image_html( $image_path ) {

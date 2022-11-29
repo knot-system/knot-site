@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 
 function get_theme() {
@@ -90,14 +90,17 @@ function snippet( $path, $args = array(), $return = false ) {
 	if( file_exists($theme['_path'].$snippet_path) ) {
 		$include_path = $theme['_path'].$snippet_path;
 	} else {
-		$include_path = EH_ABSPATH.'system/site/'.$snippet_path;
+		$include_path = 'system/site/'.$snippet_path;
 	}
 
-	if( ! file_exists( $include_path) ) return;
+
+	if( ! file_exists( EH_ABSPATH.$include_path) ) return;
+	
+	global $eigenheim;
 
 	ob_start();
 
-	include( $include_path );
+	$eigenheim->include( $include_path, $args );
 
 	$snippet = ob_get_contents();
 	ob_end_clean();

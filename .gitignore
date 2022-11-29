@@ -1,6 +1,6 @@
-build.sh
-content/
-log/
-cache/
-config.php
-.htaccess
+/build.sh
+/content/
+/log/
+/cache/
+/config.php
+/.htaccess

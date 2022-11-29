@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 // see https://www.jsonfeed.org/version/1.1/ for details
 

@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 
 // TODO: cache these reads in a global variable (?) so we do not re-read the folder-structure and files multiple times in one page hit

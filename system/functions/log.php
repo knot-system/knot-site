@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 
 function log_message( $message ) {

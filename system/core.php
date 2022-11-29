@@ -1,7 +1,5 @@
 <?php
 
-//if( ! defined( 'EH_ABSPATH' ) ) exit; // this is not yet defined
-
 class Eigenheim {
 
 	private const VERSION = 'alpha.8';
@@ -36,7 +34,9 @@ class Eigenheim {
 
 	}
 
-	function include( $file_path, $args = false ) {
+	function include( $file_path, $args = array() ) {
+
+		$eigenheim = $this;
 
 		$full_file_path = $this->abspath.$file_path;
 
@@ -46,7 +46,7 @@ class Eigenheim {
 			exit;
 		}
 
-		include_once( $full_file_path );
+		include( $full_file_path );
 
 	}
 
@@ -54,12 +54,4 @@ class Eigenheim {
 		return self::VERSION;
 	}
 
-}
-
-
-// TODO: get rid of this function (use $eigenheim->get_version() instead)
-function eigenheim_get_version(){
-	global $eigenheim;
-
-	return $eigenheim->get_version();
 }

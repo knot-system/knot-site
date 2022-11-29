@@ -1,10 +1,9 @@
 <?php
 
-// Version: alpha.7
+// Version: alpha.8
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 snippet( 'post', $args );
 
 snippet( 'author_info' );
-

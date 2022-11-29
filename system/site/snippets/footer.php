@@ -1,11 +1,11 @@
 <?php
 
-// Version: alpha.7
+// Version: alpha.8
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 ?>
 	</main>
-	<footer>Eigenheim v.<?= eigenheim_get_version() ?></footer>
+	<footer>Eigenheim v.<?= $eigenheim->get_version() ?></footer>
 </body>
 </html>

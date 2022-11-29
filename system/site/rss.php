@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 header('Content-Type: application/rss+xml; charset=utf-8');
 

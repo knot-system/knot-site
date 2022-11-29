@@ -1,8 +1,8 @@
 <?php
 
-// Version: alpha.7
+// Version: alpha.8
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 $info = get_author_information( true );
 

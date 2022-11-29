@@ -2,7 +2,7 @@
 
 // this file creates some basic files and folderstructure and gets called, if no config.php exists yet.
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 if( file_exists(EH_ABSPATH.'config.php') && file_exists(EH_ABSPATH.'.htaccess') ) {
 	?>
@@ -12,7 +12,7 @@ if( file_exists(EH_ABSPATH.'config.php') && file_exists(EH_ABSPATH.'.htaccess') 
 }
 
 ?>
-<p>Hi. This is the first-time setup of Eigenheim <?= eigenheim_get_version() ?>.</p>
+<p>Hi. This is the first-time setup of Eigenheim <?= $eigenheim->get_version() ?>.</p>
 <p>We create some files and folders to get everything up and running.</p>
 
 <hr>

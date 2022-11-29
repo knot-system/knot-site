@@ -1,6 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 
 // NOTE: this is a wrapper for the files.php, so we can easily change to a 'real' database instead of using text files

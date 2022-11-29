@@ -2,7 +2,7 @@
 
 // this file can update the system with the latest release from github. create a empty file called 'update' or 'update.txt' in the root directory, to trigger the update
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 $step = false;
 if( ! empty($_GET['step']) ) $step = $_GET['step'];
@@ -13,7 +13,7 @@ if( ! empty($_GET['step']) ) $step = $_GET['step'];
 
 $api_url = 'https://api.github.com/repos/maxhaesslein/eigenheim/releases';
 
-$old_version = eigenheim_get_version();
+$old_version = $eigenheim->get_version();
 
 if( $step == 'check' ) {
 
@@ -97,7 +97,7 @@ if( $step == 'check' ) {
 	$ch = curl_init( $zipball );
 	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $ch, CURLOPT_USERAGENT, 'maxhaesslein/eigenheim/'.eigenheim_get_version() );
+	curl_setopt( $ch, CURLOPT_USERAGENT, 'maxhaesslein/eigenheim/'.$eigenheim->get_version() );
 	curl_setopt( $ch, CURLOPT_FILE, $file_handle );
 	curl_exec( $ch );
 	curl_close( $ch );

@@ -1,11 +1,11 @@
 <?php
 
-// Version: alpha.7
+// Version: alpha.8
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
+if( ! $eigenheim ) exit;
 
 ?>
 	</main>
-	<footer>Eigenheim v.<?= eigenheim_get_version() ?> / Default Theme v.<?= get_theme_data('version') ?></footer>
+	<footer>Eigenheim v.<?= $eigenheim->get_version() ?> / <?= get_theme_data('name') ?> v.<?= get_theme_data('version') ?></footer>
 </body>
 </html>

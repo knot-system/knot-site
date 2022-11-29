@@ -1,8 +1,6 @@
 <?php
 
-if( ! defined( 'EH_ABSPATH' ) ) exit;
-
-global $eigenheim;
+if( ! $eigenheim ) exit;
 
 $dir = 'system/functions/';
 // CLEANUP: include all the relevant files by name instead of including all files in the $dir to make the code a bit safer
