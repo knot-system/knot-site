@@ -234,9 +234,9 @@ function database_create_post( $data, $photo = false ) {
 			header( "HTTP/1.1 400 Bad Request" );
 			echo 'Photo could not be uploaded';
 			exit;
-		} elseif( $photo['type'] != 'image/jpeg' ) {
+		} elseif( $photo['type'] != 'image/jpeg' && $photo['type'] != 'image/png' ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			echo 'Photo could not be uploaded (only .jpg is allowed for now)';
+			echo 'Photo could not be uploaded (only .jpg or .png is allowed)';
 			exit;
 		}
 

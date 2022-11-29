@@ -42,7 +42,7 @@ function micropub_handle_get_request(){
 		$categories = get_categories();
 
 		$config = array(
-			// 'media-endpoint' => '',
+			// 'media-endpoint' => '', // TODO: add media endpoint for multiple images
 			'categories' => $categories
 		);
 
