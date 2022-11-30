@@ -7,7 +7,9 @@ class Eigenheim {
 	public $abspath;
 	public $basefolder;
 	public $baseurl;
+
 	public $config;
+	public $log;
 
 	function __construct() {
 
@@ -25,6 +27,7 @@ class Eigenheim {
 		$this->baseurl = $baseurl;
 
 		$this->config = new Config( $this );
+		$this->log = new Log( $this );
 
 	}
 
