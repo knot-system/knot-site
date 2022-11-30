@@ -1,6 +1,6 @@
 <?php
 
-// this file can update the system with the latest release from github. create a empty file called 'update' or 'update.txt' in the root directory, to trigger the update
+// this file can update the system with the latest release from github. create a empty file called 'update' or 'update.txt' in the root directory, and then add '?update' to the url, to trigger the update
 
 if( ! $eigenheim ) exit;
 
@@ -57,6 +57,7 @@ if( $step == 'check' ) {
 	<hr>
 
 	<form action="<?= $eigenheim->baseurl ?>" method="GET">
+		<input type="hidden" name="update" value="true">
 		<input type="hidden" name="step" value="install">
 		<button><?php if( $new_version_available ) echo 'update system'; else echo 're-install system'; ?></button> (this may take some time, please be patient)
 	</form>
@@ -201,6 +202,7 @@ if( $step == 'check' ) {
 	<p>Currently installed version: <em><?= $old_version ?></em></p>
 
 	<form action="<?= $eigenheim->baseurl ?>" method="GET">
+		<input type="hidden" name="update" value="true">
 		<input type="hidden" name="step" value="check">
 		<button>check for update</button>
 	</form>
