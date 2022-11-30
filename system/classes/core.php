@@ -31,6 +31,21 @@ class Eigenheim {
 
 	}
 
+	function debug( ...$messages ) {
+
+		if( $this->config->get('logging') ) {
+			$this->log->message( ...$messages );
+		}
+
+		if( $this->config->get('debug') ) {
+			echo '<hr><strong>ERROR</strong>';
+			foreach( $messages as $message ) {
+				echo '<br>'.$message;
+			}
+		}
+
+	}
+
 	function include( $file_path, $args = array() ) {
 
 		$eigenheim = $this;
@@ -38,8 +53,7 @@ class Eigenheim {
 		$full_file_path = $this->abspath.$file_path;
 
 		if( ! file_exists($full_file_path) ) {
-
-			if( $this->config->get('debug') ) echo '<p><strong>Error:</strong> include not found</p>';
+			$this->debug( 'include not found' );
 			exit;
 		}
 

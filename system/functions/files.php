@@ -12,7 +12,10 @@ function dir_read( $folderpath_input, $recursive = false, $filename = false, $re
 
 	$folderpath = $eigenheim->abspath.'content/'.$folderpath_input;
 
-	if( ! is_dir( $folderpath ) ) return array(); // TODO: error handling: $folderpath is no directory
+	if( ! is_dir( $folderpath ) ) {
+		$eigenheim->debug( $folderpath.' is no directory' );
+		return array();
+	}
 
 	$files = array();
 
@@ -33,7 +36,8 @@ function dir_read( $folderpath_input, $recursive = false, $filename = false, $re
 		}
 		closedir($handle);
 	} else {
-		return array(); // TODO: error handling: could not open dir
+		$eigenheim->debug( 'could not open dir' );
+		return array();
 	}
 
 	if( $reverse ) {
@@ -53,11 +57,17 @@ function file_read( $filepath ){
 
 	$filepath = $eigenheim->abspath.'content/'.$filepath;
 
-	if( ! file_exists( $filepath) ) return false; // TODO: error handling: file not found
+	if( ! file_exists( $filepath) ) {
+		$eigenheim->debug( 'file not found', $filepath );
+		return false;
+	}
 
 	$content = file_get_contents( $filepath );
 
-	if( ! $content ) return false; // TODO: error handling: empty file
+	if( ! $content ) {
+		$eigenheim->debug( 'empty file', $filepath );
+		return false;
+	}
 
 	return $content;
 }
@@ -65,7 +75,12 @@ function file_read( $filepath ){
 
 function file_write( $filename, $content ) {
 
-	if( file_exists($filename) ) return false; // TODO: error handling: file exists already
+	global $eigenheim;
+
+	if( file_exists($filename) ) {
+		$eigenheim->debug( 'file exists already', $filename );
+		return false;
+	}
 
 	$return = file_put_contents( $filename, $content );
 
@@ -77,6 +92,8 @@ function file_write( $filename, $content ) {
 
 function file_get_fields( $filename ) {
 
+	global $eigenheim;
+
 	$file_content = file_read( $filename );
 
 	if( ! $file_content ) return false;
@@ -85,7 +102,10 @@ function file_get_fields( $filename ) {
 
 	$fields = explode( "\n\n----\n\n", $file_content );
 
-	if( ! is_array($fields) || ! count($fields) ) return false; // TODO: error handling: no fields in file
+	if( ! is_array($fields) || ! count($fields) ) {
+		$eigenheim->debug( 'no fields in this file', $filename );
+		return false;
+	}
 	
 
 	$data = array();
@@ -94,7 +114,7 @@ function file_get_fields( $filename ) {
 
 		$pos = strpos( $field, ':' );
 
-		if( $pos === false ) continue; // TODO: error handling: no fieldname for this field
+		if( $pos === false ) continue;
 
 		$field_name = substr( $field, 0, $pos );
 		$field_content = substr( $field, $pos+1 );

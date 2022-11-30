@@ -6,7 +6,7 @@ class Log {
 
 	function __construct( $eigenheim ) {
 
-		if( ! $eigenheim->config->get('log') ) return;
+		if( ! $eigenheim->config->get('logging') ) return;
 
 		$log_filepath = $eigenheim->abspath.'log/';
 

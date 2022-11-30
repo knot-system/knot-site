@@ -28,6 +28,7 @@ return [
 	//'posts_per_page' => 5,
 	//'microsub' => 'https://www.example.com/microsub',
 	//'logging' => false,
+	//'debug' => false,
 	'author' => [
 		'p-name' => 'My Author Name',
 		'u-email' => 'mail@example.com',

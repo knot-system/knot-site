@@ -60,7 +60,7 @@ function handle_image_display( $file_path ) {
 		$file_extension = 'png';
 		$mime_type = 'image/png';
 	} else {
-		echo '<strong>Error:</strong> unknown image type';
+		$eigenheim->debug( 'unknown image type '.$image_type);
 		exit;
 	}
 
@@ -82,14 +82,14 @@ function handle_image_display( $file_path ) {
 	if( $image_type == IMAGETYPE_JPEG ) {
 		$src_image = imagecreatefromjpeg( $file_path );
 		if( ! $src_image ) {
-			echo '<strong>Error:</strong> could not load jpg image';
+			$eigenheim->debug( 'could not load jpg image' );
 			exit;
 		}
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$src_image = imagecreatefrompng( $file_path );
 		if( ! $src_image ) {
-			echo '<strong>Error:</strong> could not load png image';
+			$eigenheim->debug( 'could not load png image' );
 			exit;
 		}
 
@@ -103,7 +103,7 @@ function handle_image_display( $file_path ) {
 		$height = $target_dimensions[1];
 
 		if( $width <= 0 || $height <= 0 ) {
-			echo '<strong>Error:</strong> width or height <= 0';
+			$eigenheim->debug( 'width or height <= 0', $width, $height );
 			exit;
 		}
 
