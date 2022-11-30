@@ -6,6 +6,6 @@ if( ! $eigenheim ) exit;
 
 ?>
 	</main>
-	<footer>Eigenheim v.<?= $eigenheim->version() ?> / <?= get_theme_data('name') ?> v.<?= get_theme_data('version') ?></footer>
+	<footer>Eigenheim v.<?= $eigenheim->version() ?> / <?= $eigenheim->theme->get('name') ?> v.<?= $eigenheim->theme->get('version') ?></footer>
 </body>
 </html>

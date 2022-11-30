@@ -4,12 +4,15 @@ class Eigenheim {
 
 	private const VERSION = 'alpha.8';
 
+	// TODO: check, if we want those variable to be public:
+
 	public $abspath;
 	public $basefolder;
 	public $baseurl;
 
-	public $config;
 	public $log;
+	public $config;
+	public $theme;
 
 	function __construct() {
 
@@ -26,8 +29,9 @@ class Eigenheim {
 		$baseurl .= $basefolder;
 		$this->baseurl = $baseurl;
 
-		$this->config = new Config( $this );
 		$this->log = new Log( $this );
+		$this->config = new Config( $this );
+		$this->theme = new Theme( $this );
 
 	}
 
@@ -63,6 +67,21 @@ class Eigenheim {
 
 	function version() {
 		return self::VERSION;
+	}
+
+	function url( $path = '' ) {
+		$path = $this->baseurl.$path;
+		$path = $this->trailing_slash_it($path);
+		return $path;
+	}
+
+	function trailing_slash_it( $string ) {
+		// add a slash at the end, if there isn't already one ..
+
+		$string = preg_replace( '/\/*$/', '', $string );
+		$string .= '/';
+
+		return $string;
 	}
 
 }

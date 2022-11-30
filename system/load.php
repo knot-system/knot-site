@@ -13,15 +13,13 @@ if( ! file_exists($eigenheim->abspath.'config.php') || ! file_exists($eigenheim-
 	exit;
 }
 
-
-if( file_exists($eigenheim->abspath.'update') || file_exists($eigenheim->abspath.'update.txt') ) {
+if( isset($_GET['update']) && (file_exists($eigenheim->abspath.'update') || file_exists($eigenheim->abspath.'update.txt')) ) {
 	$eigenheim->include( 'system/update.php' );
 	exit;
 }
 
 
-$theme = get_theme();
-$eigenheim->include( $theme['_path'].'functions.php' );
+$eigenheim->theme->load();
 
 
 $route = get_route();
