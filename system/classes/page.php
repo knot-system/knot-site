@@ -2,13 +2,11 @@
 
 class Page {
 
+	public $id;
 	public $fields = array();
 
-	function __construct( $filename ) {
+	function __construct( $file ) {
 
-		// TODO: get by id instead of directly via filename
-
-		$file = new File($filename);
 		$data = $file->get_fields();
 
 		if( ! $data ) return false;
@@ -16,6 +14,7 @@ class Page {
 		if( ! isset($data['content']) ) return false;
 
 		$id = $file->get_id();
+		$this->id = $id;
 
 		$content_html = $data['content'];
 

@@ -264,7 +264,7 @@ if( $testcontent ) {
 			'name' => 'Testpost',
 			'content' => 'This is a first testpost. It is saved at <em>content/posts/'.date('Y').'/'.date('m').'/</em>.'
 		);
-		if( ! database_create_post( $testpost_data ) ) {
+		if( ! create_post_in_database( $testpost_data ) ) {
 			?>
 			<li><strong>ERROR:</strong> could not create testpost. we abort the setup here.</li>
 			<?php

@@ -135,13 +135,13 @@ function get_navigation(){
 	foreach( $pages as $page ) {
 
 		$is_current_page = false;
-		if( $current_page_id && $page['id'] == $current_page_id ) {
+		if( $current_page_id && $page->id == $current_page_id ) {
 			$is_current_page = true;
 		}
 
 		$navigation[] = array(
-			'title' => $page['title'],
-			'permalink' => $page['permalink'],
+			'title' => $page->fields['title'],
+			'permalink' => $page->fields['permalink'],
 			'is_current_page' => $is_current_page
 		);
 		

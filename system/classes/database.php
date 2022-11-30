@@ -2,14 +2,29 @@
 
 class Database {
 
+	public $objects = array();
 
+	function __construct( $folderpath_input, $recursive = false, $filename = false ) {
 
-	function __construct() {
+		$files = $this->read_dir( $folderpath_input, $recursive, $filename );
 
+		if( ! count($files) ) return $this;
+
+		$objects = array();
+		foreach( $files as $filename ) {
+			$file = new File( $filename );
+			$objects[$file->id] = $file;
+		}
+
+		ksort( $objects );
+
+		$this->objects = $objects;
+
+		return $this;
 	}
 
 
-	function read_dir( $folderpath_input, $recursive = false, $filename = false, $reverse = false ) {
+	function read_dir( $folderpath_input, $recursive = false, $filename = false ) {
 
 		global $eigenheim;
 
@@ -39,7 +54,7 @@ class Database {
 			}
 			closedir($handle);
 		} else {
-			$eigenheim->debug( 'could not open dir' );
+			$eigenheim->debug( 'could not open dir', $folderpath );
 			return array();
 		}
 
@@ -47,5 +62,10 @@ class Database {
 
 		return $files;
 	}
-	
+
+
+	function get() {
+		return $this->objects;
+	}
+
 }

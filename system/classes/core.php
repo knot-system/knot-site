@@ -13,7 +13,9 @@ class Eigenheim {
 	public $log;
 	public $config;
 	public $theme;
-	public $posts;
+
+	//public $pages;
+	//public $posts;
 
 	function __construct() {
 
@@ -33,7 +35,6 @@ class Eigenheim {
 		$this->config = new Config( $this );
 		$this->log = new Log( $this );
 		$this->theme = new Theme( $this );
-		//$this->posts = new Posts( $this );
 
 	}
 

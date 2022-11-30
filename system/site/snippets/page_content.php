@@ -1,14 +1,14 @@
 <?php
 
-// Version: alpha.8
+// Version: alpha.9
 
 if( ! $eigenheim ) exit;
 
 $page = $args['page'];
 if( ! $page ) return;
 
-$title = $page['title'];
-$text = $page['content_html'];
+$title = $page->fields['title'];
+$text = $page->fields['content_html'];
 
 ?>
 <article class="h-entry">

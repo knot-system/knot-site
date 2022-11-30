@@ -117,8 +117,8 @@ function micropub_create_post( $data ){
 	$photo = false;
 	if( ! empty($_FILES['photo']) ) $photo = $_FILES['photo'];
 
-	$permalink = database_create_post( $data, $photo );
-	// if something went wrong, database_create_post will exit - TODO: maybe return an error message and http status code from database_create_post() and exit here
+	$permalink = create_post_in_database( $data, $photo );
+	// if something went wrong, create_post_in_database() will exit - TODO: maybe return an error message and http status code from create_post_in_database() and exit here
 	
 	// success !
 	// Set headers, return location

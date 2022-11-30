@@ -2,15 +2,13 @@
 
 class Post {
 
+	public $id;
 	public $fields = array();
 
-	function __construct( $filename ) {
-
-		// TODO: get by id from Database() instead directly via filename
+	function __construct( $file ) {
 
 		global $eigenheim;
 
-		$file = new File( $filename );
 		$data = $file->get_fields();
 
 		if( ! $data ) return false;
@@ -30,7 +28,7 @@ class Post {
 
 		$image = false;
 		if( ! empty( $data['photo']) ) {
-			$post_folder = trailing_slash_it(pathinfo( $filename, PATHINFO_DIRNAME ));
+			$post_folder = trailing_slash_it(pathinfo( $file->filename, PATHINFO_DIRNAME ));
 
 			if( file_exists($eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
 				$image_path = $post_folder.$data['photo'];
@@ -50,6 +48,7 @@ class Post {
 
 		$timestamp = $data['timestamp'];
 		$id = $data['id'];
+		$this->id = $id;
 
 		$permalink = url('post/'.$id.'/');
 
