@@ -37,9 +37,11 @@ function trailing_slash_it( $string ){
 
 function get_author_information( $raw = false ){
 
+	global $eigenheim;
+
 	$author = array();
 
-	$conf = get_config('author');
+	$conf = $eigenheim->config->get('author');
 
 	if( ! $raw ) {
 

@@ -7,7 +7,7 @@ function get_image_html( $image_path ) {
 
 	global $eigenheim;
 
-	$target_width = get_config( 'image_target_width', 1200 );
+	$target_width = $eigenheim->config->get( 'image_target_width', 1200 );
 
 	$image_meta = getimagesize( $eigenheim->abspath.'content/'.$image_path );
 	$src_width = $image_meta[0];
@@ -39,9 +39,11 @@ function get_image_dimensions( $target_width, $src_width, $src_height ) {
 
 function handle_image_display( $file_path ) {
 
-	$cache_active = get_config( 'image_cache_active', true );
-	$target_width = get_config( 'image_target_width', 1200 );
-	$jpg_quality = get_config( 'image_jpg_quality', 80 );
+	global $eigenheim;
+
+	$cache_active = $eigenheim->config->get( 'image_cache_active', true );
+	$target_width = $eigenheim->config->get( 'image_target_width', 1200 );
+	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality', 80 );
 
 	$image_meta = getimagesize( $file_path );
 	$filesize = filesize( $file_path );
@@ -61,8 +63,6 @@ function handle_image_display( $file_path ) {
 		echo '<strong>Error:</strong> unknown image type';
 		exit;
 	}
-
-	global $eigenheim;
 
 	$cache_string = $file_path.$filesize;
 
@@ -101,6 +101,11 @@ function handle_image_display( $file_path ) {
 
 		$width = $target_dimensions[0];
 		$height = $target_dimensions[1];
+
+		if( $width <= 0 || $height <= 0 ) {
+			echo '<strong>Error:</strong> width or height <= 0';
+			exit;
+		}
 
 		$target_image = imagecreatetruecolor($width, $height);
 		imagecopyresized($target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height);

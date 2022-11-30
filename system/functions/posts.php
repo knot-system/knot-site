@@ -41,7 +41,9 @@ function get_posts_by_tag( $tag, $page = -1 ) {
 
 function paginate_posts( $posts, $page ) {
 
-	$posts_per_page = get_config( 'posts_per_page' );
+	global $eigenheim;
+
+	$posts_per_page = $eigenheim->config->get( 'posts_per_page' );
 
 	$offset = ($page-1)*$posts_per_page;
 

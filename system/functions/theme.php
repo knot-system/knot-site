@@ -7,7 +7,7 @@ function get_theme() {
 
 	global $eigenheim;
 
-	$theme_name = get_config( 'theme' );
+	$theme_name = $eigenheim->config->get( 'theme' );
 
 	if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/config.php') ) {
 		$theme_name = 'default';

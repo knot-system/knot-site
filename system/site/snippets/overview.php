@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.8
+// Version: alpha.9
 
 if( ! $eigenheim ) exit;
 
@@ -23,7 +23,7 @@ $prev_page = false;
 if( $page > 1 ) $prev_page = true;
 
 $next_page = true;
-if( count($posts) < get_config('posts_per_page') ) {
+if( count($posts) < $eigenheim->config->get('posts_per_page') ) {
 	// hide pagination if we are on the last page. this does not work, if the last page has exactle the right number of posts, then the next page will be blank, but that's 'good enough' for now
 	// TODO: make this more robust
 	$next_page = false;

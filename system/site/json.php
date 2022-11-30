@@ -6,7 +6,7 @@ if( ! $eigenheim ) exit;
 
 $json = array(
 	'version' => 'https://jsonfeed.org/version/1.1',
-	'title' => get_config( 'site_title' ),
+	'title' => $eigenheim->config->get( 'site_title' ),
 	'description' => '',
 	'home_page_url' => url(),
 	'feed_url' => url('feed/json'),

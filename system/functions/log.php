@@ -5,9 +5,9 @@ if( ! $eigenheim ) exit;
 
 function log_message( $message ) {
 
-	if( ! get_config('logging') ) return;
-
 	global $eigenheim;
+
+	if( ! $eigenheim->config->get('logging') ) return;
 
 	$timestamp = time();
 

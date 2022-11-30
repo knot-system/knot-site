@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.8
+// Version: alpha.9
 
 if( ! $eigenheim ) exit;
 
@@ -17,7 +17,7 @@ ___________.__                     .__           .__
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<title><?= get_config('site_title') ?></title>
+	<title><?= $eigenheim->config->get('site_title') ?></title>
 <?php
 	$author = get_author_information();
 	if( ! empty( $author['display_name'] ) ) :
@@ -33,10 +33,10 @@ ___________.__                     .__           .__
 
 	<link rel="authorization_endpoint" href="https://indieauth.com/auth">
 	<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
-	<link rel="me authn" href="mailto:<?= get_config('auth_mail') ?>">
+	<link rel="me authn" href="mailto:<?= $eigenheim->config->get('auth_mail') ?>">
 	<link rel="micropub" href="<?= micropub_get_endpoint( true ).'/' ?>">
 <?php
-	$microsub_endpoint = get_config('microsub');
+	$microsub_endpoint = $eigenheim->config->get('microsub');
 	if( $microsub_endpoint ) :
 	?>
 	<link rel="microsub" href="<?= $microsub_endpoint ?>">
@@ -44,14 +44,14 @@ ___________.__                     .__           .__
 	endif;
 	?>
 
-	<link rel="alternate" type="application/rss+xml" title="<?= get_config('site_title') ?> RSS Feed" href="<?= url('feed/rss') ?>">
-	<link rel="alternate" type="application/json" title="<?= get_config('site_title') ?> JSON Feed" href="<?= url('feed/json') ?>">
+	<link rel="alternate" type="application/rss+xml" title="<?= $eigenheim->config->get('site_title') ?> RSS Feed" href="<?= url('feed/rss') ?>">
+	<link rel="alternate" type="application/json" title="<?= $eigenheim->config->get('site_title') ?> JSON Feed" href="<?= url('feed/json') ?>">
 	
 </head>
 <body>
 
 	<header>
-		<h1><a href="<?= url() ?>"><?= get_config('site_title') ?></a></h1>
+		<h1><a href="<?= url() ?>"><?= $eigenheim->config->get('site_title') ?></a></h1>
 		<?php
 		$navigation = get_navigation();
 		if( $navigation ) :

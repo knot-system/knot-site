@@ -7,13 +7,12 @@ class Eigenheim {
 	public $abspath;
 	public $basefolder;
 	public $baseurl;
-
-	public $debug = false;
+	public $config;
 
 	function __construct() {
 
 		$abspath = realpath(dirname(__FILE__)).'/';
-		$abspath = preg_replace( '/system\/$/', '', $abspath );
+		$abspath = preg_replace( '/system\/classes\/$/', '', $abspath );
 		$this->abspath = $abspath;
 
 		$basefolder = str_replace( 'index.php', '', $_SERVER['PHP_SELF']);
@@ -25,7 +24,7 @@ class Eigenheim {
 		$baseurl .= $basefolder;
 		$this->baseurl = $baseurl;
 
-		$this->debug = true; // TODO: get this from the config file
+		$this->config = new Config( $this );
 
 	}
 
@@ -37,7 +36,7 @@ class Eigenheim {
 
 		if( ! file_exists($full_file_path) ) {
 
-			if( $this->debug ) echo '<p><strong>Error:</strong> include not found</p>';
+			if( $this->config->get('debug') ) echo '<p><strong>Error:</strong> include not found</p>';
 			exit;
 		}
 

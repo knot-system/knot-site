@@ -1,11 +1,11 @@
 <?php
 
-include_once( 'system/core.php' );
+include( 'system/classes.php' );
 
 global $eigenheim;
 $eigenheim = new Eigenheim();
 
-$eigenheim->include( 'system/functions.php' );
+include( 'system/functions.php' );
 
 
 if( ! file_exists($eigenheim->abspath.'config.php') || ! file_exists($eigenheim->abspath.'.htaccess') || isset($_GET['setup']) ) {
