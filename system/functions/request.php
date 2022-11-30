@@ -36,5 +36,5 @@ function get_user_agent(){
 
 	global $eigenheim;
 
-	return 'maxhaesslein/eigenheim/'.$eigenheim->get_version();
+	return 'maxhaesslein/eigenheim/'.$eigenheim->version();
 }

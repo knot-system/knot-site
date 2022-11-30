@@ -1,11 +1,11 @@
 <?php
 
-// Version: alpha.8
+// Version: alpha.9
 
 if( ! $eigenheim ) exit;
 
 ?>
 	</main>
-	<footer>Eigenheim v.<?= $eigenheim->get_version() ?></footer>
+	<footer>Eigenheim v.<?= $eigenheim->version() ?></footer>
 </body>
 </html>

@@ -12,7 +12,7 @@ if( file_exists($eigenheim->abspath.'config.php') && file_exists($eigenheim->abs
 }
 
 ?>
-<p>Hi. This is the first-time setup of Eigenheim <?= $eigenheim->get_version() ?>.</p>
+<p>Hi. This is the first-time setup of Eigenheim <?= $eigenheim->version() ?>.</p>
 <p>We create some files and folders to get everything up and running.</p>
 
 <hr>

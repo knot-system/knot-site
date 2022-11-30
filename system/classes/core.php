@@ -44,7 +44,7 @@ class Eigenheim {
 
 	}
 
-	function get_version() {
+	function version() {
 		return self::VERSION;
 	}
 
