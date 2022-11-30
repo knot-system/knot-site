@@ -6,10 +6,6 @@ if( ! $eigenheim ) exit;
 function get_posts( $page = -1 ){
 
 	$posts = database_get_posts();
-	/*
-	global $eigenheim;
-	$posts = $eigenheim->posts->get();
-	*/
 
 	if( $page > -1 ) {
 		$posts = paginate_posts( $posts, $page );

@@ -3,10 +3,6 @@
 if( ! $eigenheim ) exit;
 
 
-// NOTE: this is a wrapper for the files.php, so we can easily change to a 'real' database instead of using text files
-
-
-
 function database_get_pages() {
 
 	global $eigenheim;
@@ -18,7 +14,7 @@ function database_get_pages() {
 	$pages = array();
 
 	foreach( $files as $filename ) {
-		$pages[] = database_get_page_by_filename( $filename );
+		$pages[] = database_get_page_by_filename( $filename )->get(); // TODO: use page object
 	}
 
 	return $pages;
@@ -47,41 +43,12 @@ function database_get_page( $page_id ) {
 
 	$page = database_get_page_by_filename( $page_name );
 
-	return $page;
+	return $page->get(); // TODO: return page object
 }
 
 
 function database_get_page_by_filename( $filename ) {
-
-	$file = new File($filename);
-	$data = $file->get_fields();
-
-	if( ! $data ) return false;
-
-	if( ! isset($data['content']) ) return false;
-
-	$file = new File( $filename );
-	$id = $file->get_id();
-
-	$content_html = $data['content'];
-
-	$content_text = strip_tags($content_html); // TODO: revisit this in the future
-
-	$content_html = text_cleanup( $content_html );
-
-	$title = ucwords($id);
-	if( ! empty($data['title']) ) $title = $data['title'];
-
-	$permalink = url($id);
-
-	$page = array(
-		'id' => $id,
-		'title' => $title,
-		'content_html' => $content_html,
-		'content_text' => $content_text,
-		'permalink' => $permalink
-	);
-
+	$page = new Page( $filename );
 	return $page;
 }
 
@@ -99,7 +66,7 @@ function database_get_posts() {
 	$posts = array();
 
 	foreach( $files as $filename ) {
-		$posts[] = database_get_post_by_filename( $filename );
+		$posts[] = database_get_post_by_filename( $filename )->get(); // TODO: use post object
 	}
 
 	return $posts;
@@ -130,77 +97,12 @@ function database_get_post( $post_id ) {
 
 	$post = database_get_post_by_filename( $post_name );
 
-	return $post;
+	return $post->get();  // TODO: return post object
 }
 
 
 function database_get_post_by_filename( $filename ) {
-
-	global $eigenheim;
-
-	$file = new File( $filename );
-	$data = $file->get_fields();
-
-	if( ! $data ) return false;
-
-
-	$author_information = get_author_information();
-	$author = false;
-	if( ! empty( $author_information['display_name'] ) ) $author = $author_information['display_name'];
-
-	if( ! isset($data['content']) ) return false;
-
-	$content_html = $data['content'];
-
-	$content_text = strip_tags( $content_html ); // TODO: revisit this in the future
-
-	$content_html = text_cleanup( $content_html );
-
-	$image = false;
-	if( ! empty( $data['photo']) ) {
-		$post_folder = trailing_slash_it(pathinfo( $filename, PATHINFO_DIRNAME ));
-
-		if( file_exists($eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
-			$image_path = $post_folder.$data['photo'];
-			$image_html = get_image_html( $image_path );
-	
-			$content_html = '<p>'.$image_html.'</p>'.$content_html;
-
-		}
-
-	}
-
-	$title = '';
-	if( ! empty($data['name']) ) $title = $data['name'];
-
-	$tags = array();
-	if( ! empty($data['category']) ) $tags = json_decode( $data['category'] ); 
-	if( ! is_array($tags) ) $tags = array();
-
-	$timestamp = $data['timestamp'];
-	$id = $data['id'];
-
-	$permalink = url('post/'.$id.'/');
-
-	$date_published = date( 'c', $timestamp );
-
-	$date_modified = $date_published; // TODO: add modified date
-
-	// this is the structure that the json feed wants for a post, see https://www.jsonfeed.org/version/1.1/ (with some additional fields we use elsewhere)
-	$post = array(
-		'id' => $id,
-		'title' => $title,
-		'author' => $author,
-		'permalink' => $permalink,
-		'content_html' => $content_html,
-		'content_text' => $content_text,
-		'tags' => $tags,
-		'date_published' => $date_published,
-		'date_modified' => $date_modified,
-		'timestamp' => $timestamp,
-		'image' => $image,
-	);
-
+	$post = new Post( $filename );
 	return $post;
 }
 
