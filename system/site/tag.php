@@ -6,6 +6,7 @@ snippet( 'header' );
 
 $tag = $args['tag'];
 $posts = $args['posts'];
-snippet( 'overview', array( 'posts' => $posts, 'tag' => $tag ) );
+$page = $args['page'];
+snippet( 'overview', array( 'posts' => $posts, 'tag' => $tag, 'page' => $page ) );
 
 snippet( 'footer' );

@@ -6,7 +6,7 @@ class Posts {
 
 	function __construct( $eigenheim ){
 
-		$this->eigenheim = $eigenheim; // TODO: how do we want to handle this
+		$this->eigenheim = $eigenheim; // TODO: how do we want to handle this?
 
 		$database = new Database( $eigenheim, 'posts/', true, 'post.txt' );
 		$objects = $database->reverse()->get();

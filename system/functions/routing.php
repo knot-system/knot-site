@@ -54,19 +54,25 @@ function get_route(){
 		$tag = $request[1];
 		$posts = get_posts_by_tag( $tag );
 
-		// TODO: add pagination for tags overview
+		$pagination = 0;
+		if( ! empty($request[2]) && $request[2] == 'page' && isset($request[3]) ) {
+			$pagination = (int)$request[3];
+		}
 
-		if( ! count($posts) ) {
+		if( ! count($posts->get()) ) {
 			return array(
 				'template' => '404',
 			);
 		}
 
+		if( $pagination < 1 ) $pagination = 1;
+
 		return array(
 			'template' => 'tag',
 			'args' => array(
 				'tag' => $tag,
-				'posts' => $posts
+				'posts' => $posts,
+				'page' => $pagination
 			)
 		);
 
@@ -111,7 +117,7 @@ function get_route(){
 
 	// default overview (may be paginated)
 	if( $pagination < 1 ) $pagination = 1;
-	$posts = get_posts( $pagination );
+	$posts = get_posts();
 	return array(
 		'template' => 'index',
 		'args' => array(

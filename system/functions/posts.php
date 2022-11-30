@@ -3,51 +3,21 @@
 if( ! $eigenheim ) exit;
 
 
-function get_posts( $page = -1 ){
-
+function get_posts(){
 	global $eigenheim;
-
-	$posts_objects = $eigenheim->posts;
-	
-	if( $page > -1 ) {
-		$posts_objects = $posts_objects->paginate( $page );
-	}
-
-	$posts = array();
-	foreach( $posts_objects->get() as $post ) {
-		$posts[] = $post->get();
-	}
-
-	return $posts;
+	return $eigenheim->posts;
 }
 
 
 function get_post( $post_id ) {
 	global $eigenheim;
-	$post = $eigenheim->posts->get( $post_id );
-
-	return $post->get(); // TODO: return post object
+	return $eigenheim->posts->get( $post_id );
 }
 
 
-function get_posts_by_tag( $tag, $page = -1 ) {
-
+function get_posts_by_tag( $tag ) {
 	global $eigenheim;
-
-	$posts_objects = $eigenheim->posts;
-
-	$posts_objects = $posts_objects->filter_by_tag( $tag );
-
-	if( $page > -1 ) {
-		$posts_objects = $posts_objects->paginate( $page );
-	}
-
-	$posts = array();
-	foreach( $posts_objects->get() as $post ) {
-		$posts[] = $post->get();
-	}
-
-	return $posts;
+	return $eigenheim->posts->filter_by_tag( $tag );
 }
 
 
@@ -58,7 +28,7 @@ function get_categories(){
 	$categories = array();
 
 	foreach( $posts as $post ){
-		foreach( $post['tags'] as $tag ) {
+		foreach( $post->fields['tags'] as $tag ) {
 			$categories[] = $tag;
 		}
 	}

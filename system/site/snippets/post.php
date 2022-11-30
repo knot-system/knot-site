@@ -1,26 +1,27 @@
 <?php
 
-// Version: alpha.8
+// Version: alpha.9
 
 if( ! $eigenheim ) exit;
 
 $post = $args['post'];
+
 if( ! $post ) return;
 
-$title = $post['title'];
-$text = $post['content_html'];
-$tags = $post['tags'];
-$permalink = $post['permalink'];
+$title = $post->fields['title'];
+$text = $post->fields['content_html'];
+$tags = $post->fields['tags'];
+$permalink = $post->fields['permalink'];
 
 $date = false;
-if( $post['timestamp'] > 0 ) $date = date( 'd.m.Y', $post['timestamp'] );
+if( $post->fields['timestamp'] > 0 ) $date = date( 'd.m.Y', $post->fields['timestamp'] );
 
 ?>
 <article class="h-entry">
-	<a class="anchor" name="<?= $post['id'] ?>"></a>
+	<a class="anchor" name="<?= $post->fields['id'] ?>"></a>
 	<?php
 
-	if( $date ) echo '<time class="dt-published" datetime="'.$date.'"><a href="'.$post['permalink'].'">'.$date.'</a></time>';
+	if( $date ) echo '<time class="dt-published" datetime="'.$date.'"><a href="'.$post->fields['permalink'].'">'.$date.'</a></time>';
 	
 	if( $title ) echo '<h2 class="p-name"><a href="'.$permalink.'">'.$title.'</a></h2>';
 	
