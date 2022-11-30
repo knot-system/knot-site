@@ -13,6 +13,7 @@ class Eigenheim {
 	public $log;
 	public $config;
 	public $theme;
+	public $posts;
 
 	function __construct() {
 
@@ -29,9 +30,10 @@ class Eigenheim {
 		$baseurl .= $basefolder;
 		$this->baseurl = $baseurl;
 
-		$this->log = new Log( $this );
 		$this->config = new Config( $this );
+		$this->log = new Log( $this );
 		$this->theme = new Theme( $this );
+		//$this->posts = new Posts( $this );
 
 	}
 

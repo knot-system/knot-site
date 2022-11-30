@@ -6,9 +6,12 @@ if( ! $eigenheim ) exit;
 // NOTE: this is a wrapper for the files.php, so we can easily change to a 'real' database instead of using text files
 
 
+
 function database_get_pages() {
-	
-	$files = dir_read( '', true, 'page.txt' );
+
+	global $eigenheim;
+	$database = new Database();
+	$files = $database->read_dir( '', true, 'page.txt' );
 
 	if( ! count($files) ) return array();
 
@@ -24,13 +27,16 @@ function database_get_pages() {
 
 function database_get_page( $page_id ) {
 
-	$files = dir_read( '', true, 'page.txt' );
+	global $eigenheim;
+	$database = new Database();
+	$files = $database->read_dir( '', true, 'page.txt' );
 
 	if( ! count($files) ) return false;
 
 	$page_name = false;
 	foreach( $files as $filename ) {
-		$file_id = file_get_id( $filename );
+		$file = new File( $filename );
+		$file_id = $file->get_id();
 		if( $file_id == $page_id ) {
 			$page_name = $filename;
 			break;
@@ -47,13 +53,15 @@ function database_get_page( $page_id ) {
 
 function database_get_page_by_filename( $filename ) {
 
-	$data = file_get_fields( $filename );
+	$file = new File($filename);
+	$data = $file->get_fields();
 
 	if( ! $data ) return false;
 
 	if( ! isset($data['content']) ) return false;
 
-	$id = file_get_id( $filename );
+	$file = new File( $filename );
+	$id = $file->get_id();
 
 	$content_html = $data['content'];
 
@@ -80,7 +88,11 @@ function database_get_page_by_filename( $filename ) {
 
 function database_get_posts() {
 
-	$files = dir_read( 'posts/', true, 'post.txt', true );
+	global $eigenheim;
+	$database = new Database();
+	$files = $database->read_dir( 'posts/', true, 'post.txt' );
+	rsort($files);
+
 
 	if( ! count($files) ) return array();
 
@@ -96,13 +108,18 @@ function database_get_posts() {
 
 function database_get_post( $post_id ) {
 
-	$files = dir_read( 'posts/', true, 'post.txt', true );
+	global $eigenheim;
+	$database = new Database();
+	$files = $database->read_dir( 'posts/', true, 'post.txt' );
+	rsort($files);
+
 
 	if( ! count($files) ) return false;
 
 	$post_name = false;
 	foreach( $files as $filename ) {
-		$file_id = file_get_id( $filename );
+		$file = new File( $filename );
+		$file_id = $file->get_id();
 		if( $file_id == $post_id ) {
 			$post_name = $filename;
 			break;
@@ -119,7 +136,10 @@ function database_get_post( $post_id ) {
 
 function database_get_post_by_filename( $filename ) {
 
-	$data = file_get_fields( $filename );
+	global $eigenheim;
+
+	$file = new File( $filename );
+	$data = $file->get_fields();
 
 	if( ! $data ) return false;
 
@@ -135,8 +155,6 @@ function database_get_post_by_filename( $filename ) {
 	$content_text = strip_tags( $content_html ); // TODO: revisit this in the future
 
 	$content_html = text_cleanup( $content_html );
-
-	global $eigenheim;
 
 	$image = false;
 	if( ! empty( $data['photo']) ) {
@@ -193,12 +211,12 @@ function database_create_post( $data, $photo = false ) {
 
 	$year = date('Y', $data['timestamp']);
 	$month = date('m', $data['timestamp']);
-	$target_folder = $eigenheim->abspath.'content/posts/'.$year.'/'.$month.'/';
-	if( ! is_dir($target_folder) ) {
-		mkdir( $target_folder, 0777, true );
-		if( ! is_dir($target_folder) ) {
+	$target_folder = 'posts/'.$year.'/'.$month.'/';
+	if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
+		mkdir( $eigenheim->abspath.'content/'.$target_folder, 0777, true );
+		if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
-			echo "Folder could not be created";
+			$eigenheim->debug( 'Folder could not be created' );
 			exit;
 		}
 	}
@@ -207,14 +225,14 @@ function database_create_post( $data, $photo = false ) {
 	do {
 		$post_id = uniqid();
 		$foldername = $prefix.'_'.$post_id.'/';
-	} while( is_dir($target_folder.$foldername) );
+	} while( is_dir($eigenheim->abspath.'content/'.$target_folder.$foldername) );
 
 	$target_folder .= $foldername;
 
-	mkdir( $target_folder, 0777 );
-	if( ! is_dir($target_folder) ) {
+	mkdir( $eigenheim->abspath.'content/'.$target_folder, 0777 );
+	if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
-		echo "Folder could not be created";
+		$eigenheim->debug( "Folder could not be created" );
 		exit;
 	}
 
@@ -228,40 +246,40 @@ function database_create_post( $data, $photo = false ) {
 
 		if( empty($photo['name']) || ! isset($photo['error']) || ! isset($photo['tmp_name']) || ! isset($photo['size']) || ! isset($photo['type']) ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			echo "Photo could not be uploaded";
+			$eigenheim->debug( "Photo could not be uploaded" );
 			exit;
 		} elseif( $photo['error'] > 0 ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			echo 'Photo could not be uploaded (errorcode '.$photo['error'].')';
+			$eigenheim->debug( 'Photo could not be uploaded (errorcode '.$photo['error'].')' );
 			exit;
 		} elseif( $photo['size'] <= 0 ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			echo 'Photo could not be uploaded';
+			$eigenheim->debug( 'Photo could not be uploaded' );
 			exit;
 		} elseif( $photo['type'] != 'image/jpeg' && $photo['type'] != 'image/png' ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			echo 'Photo could not be uploaded (only .jpg or .png is allowed)';
+			$eigenheim->debug( 'Photo could not be uploaded (only .jpg or .png is allowed)' );
 			exit;
 		}
 
 
-		$photo_target = $target_folder.$photo['name'];
+		$photo_target = $eigenheim->abspath.'content/'.$target_folder.$photo['name'];
 
 		if( file_exists($photo_target) ) {
 			// TODO: rename photo name, if this already exists, instead of showing an error message and aborting here
 			header( "HTTP/1.1 500 Internal Server Error" );
-			echo "Photo could not be moved to the target location - this file already exists";
+			$eigenheim->debug( "Photo could not be moved to the target location - this file already exists" );
 			exit;
 		}
 		
 		if( ! rename( $photo['tmp_name'], $photo_target ) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
-			echo 'Photo could not be moved to the target location';
+			$eigenheim->debug( 'Photo could not be moved to the target location' );
 			exit;
 		}
 		if( ! chmod( $photo_target, 0644) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
-			echo 'Photo was uploaded, but could not be set to readable';
+			$eigenheim->debug( 'Photo was uploaded, but could not be set to readable' );
 			exit;	
 		}
 
@@ -278,16 +296,17 @@ function database_create_post( $data, $photo = false ) {
 		$data_string .= $key.': '.$value."\r\n\r\n----\r\n\r\n";
 	}
 
-	if( ! file_write( $file_target, $data_string ) ) {
+	$file = new File( $file_target, $data_string );
+	if( ! $file ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
-		echo "File could not be written";
+		$eigenheim->debug(  "File could not be written" );
 		exit;
 	}
 
-
 	// when we get here, everything should have worked and the post was created.
 
-	$permalink = url('post/'.$post_id);
+	$permalink = url('post/'.$post_id); // TODO: this should be retreived from $file
 
 	return $permalink;
 }
+
