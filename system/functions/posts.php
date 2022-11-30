@@ -7,14 +7,15 @@ function get_posts( $page = -1 ){
 
 	global $eigenheim;
 
-	$posts_objects = $eigenheim->posts->get();
-	$posts = array();
-	foreach( $posts_objects as $post ) {
-		$posts[] = $post->get();
+	$posts_objects = $eigenheim->posts;
+	
+	if( $page > -1 ) {
+		$posts_objects = $posts_objects->paginate( $page );
 	}
 
-	if( $page > -1 ) {
-		$posts = paginate_posts( $posts, $page );
+	$posts = array();
+	foreach( $posts_objects->get() as $post ) {
+		$posts[] = $post->get();
 	}
 
 	return $posts;
@@ -22,52 +23,29 @@ function get_posts( $page = -1 ){
 
 
 function get_post( $post_id ) {
-
 	global $eigenheim;
-	$database = new Database( $eigenheim, 'posts/', true, 'post.txt' );
-	$objects = $database->get();
+	$post = $eigenheim->posts->get( $post_id );
 
-	if( ! array_key_exists($post_id, $objects) ) return false;
-
-	$post = new Post( $objects[$post_id] );
-	
 	return $post->get(); // TODO: return post object
 }
 
 
 function get_posts_by_tag( $tag, $page = -1 ) {
 
-	$all_posts = get_posts();
-
-	$posts = array();
-
-	foreach( $all_posts as $post ) {
-
-		if( empty($post['tags']) || ! is_array($post['tags']) || ! count($post['tags']) ) continue;
-
-		if( ! in_array( $tag, $post['tags']) ) continue;
-
-		$posts[] = $post;
-
-	}
-
-	if( $page > -1 ) {
-		$posts = paginate_posts( $posts, $page );
-	}
-
-	return $posts;
-}
-
-
-function paginate_posts( $posts, $page ) {
-
 	global $eigenheim;
 
-	$posts_per_page = $eigenheim->config->get( 'posts_per_page' );
+	$posts_objects = $eigenheim->posts;
 
-	$offset = ($page-1)*$posts_per_page;
+	$posts_objects = $posts_objects->filter_by_tag( $tag );
 
-	$posts = array_slice( $posts, $offset, $posts_per_page );
+	if( $page > -1 ) {
+		$posts_objects = $posts_objects->paginate( $page );
+	}
+
+	$posts = array();
+	foreach( $posts_objects->get() as $post ) {
+		$posts[] = $post->get();
+	}
 
 	return $posts;
 }

@@ -54,7 +54,7 @@ function get_route(){
 		$tag = $request[1];
 		$posts = get_posts_by_tag( $tag );
 
-		// TODO: add pagination
+		// TODO: add pagination for tags overview
 
 		if( ! count($posts) ) {
 			return array(
