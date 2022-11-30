@@ -1,3 +1,10 @@
+alpha.9
+
+some snippets (system/site/snippets/) were update to alpha.9; you need to update them, if you use them in a custom theme: footer.php, header.php, overview.php, page-content.php & post.php
+
+- code restructuring. no new features
+
+
 alpha.8
 
 you should delete the old '.htaccess' and 'media.php' files and the content of the 'cache/' folder before updating.
