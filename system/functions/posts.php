@@ -6,15 +6,11 @@ if( ! $eigenheim ) exit;
 function get_posts( $page = -1 ){
 
 	global $eigenheim;
-	$database = new Database( $eigenheim, 'posts/', true, 'post.txt' );
-	$objects = $database->get();
-	krsort($objects);
 
+	$posts_objects = $eigenheim->posts->get();
 	$posts = array();
-
-	foreach( $objects as $object ) {
-		$post = new Post( $object );
-		$posts[] = $post->get(); // TODO: use post object
+	foreach( $posts_objects as $post ) {
+		$posts[] = $post->get();
 	}
 
 	if( $page > -1 ) {

@@ -66,4 +66,11 @@ class Database {
 		return $this->objects;
 	}
 
+
+	function reverse() {
+		$this->objects = array_reverse($this->objects);
+
+		return $this;
+	}
+
 }

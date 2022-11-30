@@ -7,16 +7,18 @@ class Post {
 
 	function __construct( $file ) {
 
-		global $eigenheim;
-
 		$data = $file->get_fields();
 
 		if( ! $data ) return false;
 
 		if( ! isset($data['content']) ) return false;
 
-		$author_information = get_author_information();
+
+		$eigenheim = $file->eigenheim; // TODO: how do we want to handle this?
+
+
 		$author = false;
+		$author_information = $eigenheim->get_author_information();
 		if( ! empty( $author_information['display_name'] ) ) $author = $author_information['display_name'];
 
 		$content_html = $data['content'];
@@ -26,18 +28,20 @@ class Post {
 		$text = new Text($content_html);
 		$content_html = $text->text_cleanup()->get();
 
+
 		$image = false;
 		if( ! empty( $data['photo']) ) {
-			$post_folder = trailing_slash_it(pathinfo( $file->filename, PATHINFO_DIRNAME ));
+			$post_folder = $eigenheim->trailing_slash_it(pathinfo( $file->filename, PATHINFO_DIRNAME ));
 
 			if( file_exists($eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
 				$image_path = $post_folder.$data['photo'];
-				$image_html = get_image_html( $image_path );
+				$image_html = $eigenheim->get_image_html( $image_path );
 		
 				$content_html = '<p>'.$image_html.'</p>'.$content_html;
 			}
 
 		}
+
 
 		$title = '';
 		if( ! empty($data['name']) ) $title = $data['name'];
@@ -50,7 +54,7 @@ class Post {
 		$id = $data['id'];
 		$this->id = $id;
 
-		$permalink = url('post/'.$id.'/');
+		$permalink = $eigenheim->url('post/'.$id.'/');
 
 		$date_published = date( 'c', $timestamp );
 

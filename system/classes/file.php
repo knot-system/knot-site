@@ -13,6 +13,8 @@ class File {
 		// if we provide $raw_content, we need to create the file
 		// TODO: check if we want to handle it like this, or if we need another way to create or read a file
 
+		$this->eigenheim = $eigenheim; // TODO: how do we want to handle this?
+
 		$filepath = $eigenheim->abspath.'content/'.$filename;
 
 		if( $raw_content ) {
