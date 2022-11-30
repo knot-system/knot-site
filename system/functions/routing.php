@@ -96,7 +96,7 @@ function get_route(){
 		// maybe static page
 
 		$page_id = $request[0];
-		$page = get_page( $page_id );
+		$page = $eigenheim->pages->get($page_id);
 		if( $page ) {
 			return array(
 				'template' => 'page',

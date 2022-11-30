@@ -120,7 +120,9 @@ function get_author_information( $raw = false ){
 
 function get_navigation(){
 
-	$pages = get_pages();
+	global $eigenheim;
+
+	$pages = $eigenheim->pages->get();
 
 	if( ! $pages ) return false;
 

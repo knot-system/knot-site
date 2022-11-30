@@ -4,15 +4,15 @@ class Database {
 
 	public $objects = array();
 
-	function __construct( $folderpath_input, $recursive = false, $filename = false ) {
+	function __construct( $eigenheim, $folderpath_input, $recursive = false, $filename = false ) {
 
-		$files = $this->read_dir( $folderpath_input, $recursive, $filename );
+		$files = $this->read_dir( $eigenheim, $folderpath_input, $recursive, $filename );
 
 		if( ! count($files) ) return $this;
 
 		$objects = array();
 		foreach( $files as $filename ) {
-			$file = new File( $filename );
+			$file = new File( $eigenheim, $filename );
 			$objects[$file->id] = $file;
 		}
 
@@ -24,9 +24,7 @@ class Database {
 	}
 
 
-	function read_dir( $folderpath_input, $recursive = false, $filename = false ) {
-
-		global $eigenheim;
+	function read_dir( $eigenheim, $folderpath_input, $recursive = false, $filename = false ) {
 
 		$folderpath = $eigenheim->abspath.'content/'.$folderpath_input;
 
@@ -43,7 +41,7 @@ class Database {
 
 				if( is_dir($folderpath.$file) ) {
 					if( $recursive ){
-						$files = array_merge( $files, $this->read_dir( $folderpath_input.$file.'/', true, $filename ) );
+						$files = array_merge( $files, $this->read_dir( $eigenheim, $folderpath_input.$file.'/', true, $filename ) );
 					}
 					continue;
 				}

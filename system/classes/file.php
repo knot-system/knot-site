@@ -5,14 +5,13 @@ class File {
 	public $id;
 	public $filename;
 	public $raw_content;
+	public $url;
 	public $fields = array();
 
-	function __construct( $filename, $raw_content = false ) {
+	function __construct( $eigenheim, $filename, $raw_content = false ) {
 
 		// if we provide $raw_content, we need to create the file
 		// TODO: check if we want to handle it like this, or if we need another way to create or read a file
-
-		global $eigenheim;
 
 		$filepath = $eigenheim->abspath.'content/'.$filename;
 
@@ -27,14 +26,6 @@ class File {
 		}
 
 
-		// fill out ->filename
-		$this->filename = $filename;
-
-
-		// fill out ->raw_content
-		$this->raw_content = file_get_contents( $filepath );
-
-
 		// fill out ->id
 
 		$filepath_exp = explode( '/', $filepath );
@@ -43,6 +34,18 @@ class File {
 		$id_exp = explode('_', $id);
 
 		$this->id = end($id_exp);
+
+
+		// fill out ->filename
+		$this->filename = $filename;
+
+
+		// fill out ->raw_content
+		$this->raw_content = file_get_contents( $filepath );
+
+
+		// fill out ->url
+		$this->url = $eigenheim->url( $this->id );
 
 
 		// fill out ->fields:

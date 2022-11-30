@@ -6,7 +6,7 @@ if( ! $eigenheim ) exit;
 function get_posts( $page = -1 ){
 
 	global $eigenheim;
-	$database = new Database( 'posts/', true, 'post.txt' );
+	$database = new Database( $eigenheim, 'posts/', true, 'post.txt' );
 	$objects = $database->get();
 	krsort($objects);
 
@@ -28,7 +28,7 @@ function get_posts( $page = -1 ){
 function get_post( $post_id ) {
 
 	global $eigenheim;
-	$database = new Database( 'posts/', true, 'post.txt' );
+	$database = new Database( $eigenheim, 'posts/', true, 'post.txt' );
 	$objects = $database->get();
 
 	if( ! array_key_exists($post_id, $objects) ) return false;
@@ -188,7 +188,7 @@ function create_post_in_database( $data, $photo = false ) {
 		$data_string .= $key.': '.$value."\r\n\r\n----\r\n\r\n";
 	}
 
-	$file = new File( $file_target, $data_string );
+	$file = new File( $eigenheim, $file_target, $data_string );
 	if( ! $file ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
 		$eigenheim->debug(  "File could not be written" );

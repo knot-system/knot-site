@@ -11,13 +11,7 @@ class Text {
 	}
 
 	function text_cleanup() {
-
-		// TODO: revisit this in the future. do we want to allow html in the text?
-
-		$this->content = text_auto_a( $this->content);
-		$this->content = text_auto_p( $this->content );
-
-		return $this;
+		return $this->text_auto_a()->text_auto_p();
 	}
 
 

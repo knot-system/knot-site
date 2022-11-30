@@ -3,6 +3,7 @@
 class Page {
 
 	public $id;
+	public $url;
 	public $fields = array();
 
 	function __construct( $file ) {
@@ -26,14 +27,15 @@ class Page {
 		$title = ucwords($id);
 		if( ! empty($data['title']) ) $title = $data['title'];
 
-		$permalink = url($id);
+		$url = $file->url;
+		$this->url = $url;
 
 		$this->fields = array(
 			'id' => $id,
 			'title' => $title,
 			'content_html' => $content_html,
 			'content_text' => $content_text,
-			'permalink' => $permalink
+			'permalink' => $url
 		);
 
 		return $this;
