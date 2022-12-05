@@ -1,7 +1,5 @@
 <?php
 
-if( ! $eigenheim ) exit;
-
 
 function request_post( $url, $headers = array() ){
 

@@ -1,7 +1,5 @@
 <?php
 
-if( ! $eigenheim ) exit;
-
 
 function get_posts(){
 	global $eigenheim;
@@ -23,6 +21,8 @@ function get_posts_by_tag( $tag ) {
 
 function get_categories(){
 	
+	// TODO: this doesn't seem to work anymore?
+
 	$posts = get_posts();
 
 	$categories = array();

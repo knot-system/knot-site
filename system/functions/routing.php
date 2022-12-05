@@ -1,7 +1,5 @@
 <?php
 
-if( ! $eigenheim ) exit;
-
 
 function get_route(){
 

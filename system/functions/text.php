@@ -1,6 +1,5 @@
 <?php
 
-if( ! $eigenheim ) exit;
 
 // TODO: get rid of these helper functions?
 

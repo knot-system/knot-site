@@ -1,6 +1,5 @@
 <?php
 
-if( ! $eigenheim ) exit;
 
 // micropub spec: https://www.w3.org/TR/micropub/
 

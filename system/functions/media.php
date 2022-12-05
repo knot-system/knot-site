@@ -1,7 +1,5 @@
 <?php
 
-if( ! $eigenheim ) exit;
-
 
 function get_image_html( $image_path ) {
 	global $eigenheim;
