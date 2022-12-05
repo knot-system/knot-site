@@ -15,7 +15,15 @@ function get_image_html( $image_path ) {
 	$width = $target_dimensions[0];
 	$height = $target_dimensions[1];
 
-	$html = '<img src="'.$eigenheim->baseurl.'content/'.$image_path.'" width="'.$width.'" height="'.$height.'" loading="lazy">';
+	if( $width > $height ) {
+		$format = 'landscape';
+	} elseif( $width < $height ) {
+		$format = 'portrait';
+	} else {
+		$format = 'square';
+	}
+
+	$html = '<img class="image-format-'.$format.'" src="'.$eigenheim->baseurl.'content/'.$image_path.'" width="'.$width.'" height="'.$height.'" loading="lazy">';
 
 	return $html;
 }
