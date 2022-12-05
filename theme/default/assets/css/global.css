@@ -157,11 +157,17 @@ section.author {
 		font-size: 1.2em;
 	}
 
-img {
+figure.content-image {
 	display: block;
 	max-width: 100%;
 	height: auto;
+	background-color: #333;
 }
+
+	figure.content-image img {
+		width: 100%;
+		height: auto;
+	}
 
 .error-404 {
 	padding-top: 1em;
