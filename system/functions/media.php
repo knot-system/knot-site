@@ -23,7 +23,12 @@ function get_image_html( $image_path ) {
 		$format = 'square';
 	}
 
-	$html = '<img class="image-format-'.$format.'" src="'.$eigenheim->baseurl.'content/'.$image_path.'" width="'.$width.'" height="'.$height.'" loading="lazy">';
+	$classes = array( 'content-image', 'content-image-format-'.$format );
+	$src = $eigenheim->baseurl.'content/'.$image_path;
+
+	$preview_base64 = get_image_preview_base64($eigenheim->abspath.'content/'.$image_path);
+
+	$html = '<figure class="'.implode(' ', $classes).'" style="background: url('.$preview_base64.') no-repeat center center / cover;"><img src="'.$src.'" width="'.$width.'" height="'.$height.'" loading="lazy"></figure>';
 
 	return $html;
 }
@@ -39,6 +44,92 @@ function get_image_dimensions( $target_width, $src_width, $src_height ) {
 	$height = (int) round($src_height/$src_width*$width);
 
 	return array( $width, $height );
+}
+
+
+function get_image_preview_base64( $file_path ) {
+
+	global $eigenheim;
+
+	$cache_active = $eigenheim->config->get( 'image_cache_active' );
+	
+	$target_width = 50;
+	$jpg_quality = 40;
+
+	$image_meta = getimagesize( $file_path );
+	$filesize = filesize( $file_path );
+
+	$src_width = $image_meta[0];
+	$src_height = $image_meta[1];
+	$image_type = $image_meta[2];
+
+	$cache_string = $file_path.$filesize;
+
+	$cache_folder = $eigenheim->abspath.'cache/';
+	$cache_name = md5($cache_string).'_preview_base64.txt';
+	$cache_file = $cache_folder.$cache_name;
+
+	if( $cache_active && file_exists($cache_file) ) {
+		// return cached file, then end
+		$cache_content = file_get_contents($cache_file);
+
+		return $cache_content;
+	}
+
+	if( $image_type == IMAGETYPE_JPEG ) {
+		$src_image = imagecreatefromjpeg( $file_path );
+		if( ! $src_image ) {
+			$eigenheim->debug( 'could not load jpg image' );
+			exit;
+		}
+
+	} elseif( $image_type == IMAGETYPE_PNG ) {
+		$src_image = imagecreatefrompng( $file_path );
+		if( ! $src_image ) {
+			$eigenheim->debug( 'could not load png image' );
+			exit;
+		}
+
+	} else {
+		$eigenheim->debug( 'unknown image type '.$image_type);
+		exit;	
+	}
+
+
+	$target_dimensions = get_image_dimensions( $target_width, $src_width, $src_height);
+
+	$width = $target_dimensions[0];
+	$height = $target_dimensions[1];
+
+	if( $width <= 0 || $height <= 0 ) {
+		imagedestroy( $src_image );
+		$eigenheim->debug( 'width or height <= 0', $width, $height );
+		exit;
+	}
+
+	$target_image = imagecreatetruecolor($width, $height);
+	imagecopyresized($target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height);
+
+	for( $i = 0; $i < 5; $i++ ) {
+		imagefilter( $target_image, IMG_FILTER_GAUSSIAN_BLUR );
+	}
+
+	imagedestroy($src_image);
+
+	ob_start();
+	imagejpeg( $target_image, NULL, $jpg_quality );
+	$image_data = ob_get_contents();
+	ob_end_clean();
+
+	$base64_data = 'data:image/jpeg;base64,'.base64_encode($image_data);
+
+	if( $cache_active ) {
+		file_put_contents( $cache_file, $base64_data );
+	}
+
+	imagedestroy( $target_image );
+
+	return $base64_data;
 }
 
 
@@ -75,7 +166,7 @@ function handle_image_display( $file_path ) {
 	$cache_name = md5($cache_string).'_'.$target_width.'_'.$jpg_quality.'.'.$file_extension;
 	$cache_file = $cache_folder.$cache_name;
 
-	if( file_exists($cache_file) ) {
+	if( $cache_active && file_exists($cache_file) ) {
 		// return cached file, then end
 		$fp = fopen($cache_file, 'rb');
 		header("Content-Type: ".$mime_type);
@@ -108,6 +199,7 @@ function handle_image_display( $file_path ) {
 		$height = $target_dimensions[1];
 
 		if( $width <= 0 || $height <= 0 ) {
+			imagedestroy( $src_image );
 			$eigenheim->debug( 'width or height <= 0', $width, $height );
 			exit;
 		}
