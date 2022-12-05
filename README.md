@@ -61,7 +61,17 @@ return [
 
 ## Updating
 
-When you want update the system, download the latest release. Backup your *content/* folder and your *config.php* (and your custom theme, if you have any). You can delete the *system/* folder, the *index.php* and the *theme/default/* folder, and then re-upload them from the release .zip file. We'll add an option to automatically update the system in the future.
+**Important:** Before updating, backup your `content/` folder and your `config.php` (and your custom theme inside the `theme/` folder, if you have any). Better be safe than sorry.
+
+Read the release notes of all the releases back to your version. Sometimes, you may need to manually update specific files in your custom theme.
+
+Create a new empty file called `update` (or `update.txt`) in the root folder of your installation. Then open the website, and append `?update` to the URL to trigger the update process. Follow the steps.
+
+If you don't finish the update, manually delete the `update` (or `update.txt`) file (if the update process finishes, this file gets deleted automatically).
+
+After updating, open your website and check if everything works as expected.
+
+If you want to perform a manual update, delete the `system/` and `theme/default/` folders, as well as the `index.php` and `.htaccess` files from the root folder. Then download the latest (or an older) release from the releases page. Upload the `system/` and `theme/default/` folders and the `index.php` file from the downloaded release zip-file into your web directory. Then open the url in a webbrowser.
 
 If you want to reset the whole system, delete the following files and folders and open the url in a webbrowser to re-trigger the setup process:
 - `.htaccess`
