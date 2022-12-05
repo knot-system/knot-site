@@ -27,7 +27,7 @@ $image_html = $post->fields['image_html'];
 	
 	if( $title ) echo '<h2 class="p-name"><a href="'.$permalink.'">'.$title.'</a></h2>';
 	
-	if( $image_html ) echo $image_html;
+	if( $image_html ) echo '<p>'.$image_html.'</p>';
 
 	if( $text ) echo '<div class="e-content">'.$text.'</div>';
 
