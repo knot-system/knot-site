@@ -140,6 +140,7 @@ function handle_image_display( $file_path ) {
 	$cache_active = $eigenheim->config->get( 'image_cache_active' );
 	$target_width = $eigenheim->config->get( 'image_target_width' );
 	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
+	$png_to_jpg = $eigenheim->config->get( 'image_png_to_jpg' );
 
 	$image_meta = getimagesize( $file_path );
 	$filesize = filesize( $file_path );
@@ -155,6 +156,11 @@ function handle_image_display( $file_path ) {
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$file_extension = 'png';
 		$mime_type = 'image/png';
+
+		if( $png_to_jpg ) {
+			$file_extension = 'jpg';
+			$mime_type = 'image/jpeg';
+		}
 	} else {
 		$eigenheim->debug( 'unknown image type '.$image_type);
 		exit;
@@ -213,10 +219,9 @@ function handle_image_display( $file_path ) {
 		$target_image = $src_image;
 	}
 
-
-
-	if( $image_type == IMAGETYPE_JPEG ) {
-		header( 'Content-Type: '.$mime_type );
+	if( $image_type == IMAGETYPE_JPEG
+	 || ($png_to_jpg && $image_type == IMAGETYPE_PNG) ) {
+		header( 'Content-Type: image/jpeg' );
 		imagejpeg( $target_image, NULL, $jpg_quality );
 
 		if( $cache_active ) {
@@ -224,7 +229,7 @@ function handle_image_display( $file_path ) {
 		}
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
-		header( 'Content-Type: '.$mime_type );
+		header( 'Content-Type: image/png' );
 		imagepng($target_image);
 
 		if( $cache_active ) {

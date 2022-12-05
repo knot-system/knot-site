@@ -8,6 +8,7 @@ class Config {
 		'image_cache_active' => true,
 		'image_target_width' => 1200,
 		'image_jpg_quality' => 70,
+		'image_png_to_jpg' => true,
 	);
 
 	function __construct( $eigenheim ) {
