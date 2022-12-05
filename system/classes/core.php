@@ -2,7 +2,7 @@
 
 class Eigenheim {
 
-	private const VERSION = 'alpha.9';
+	private const VERSION = 'alpha.10';
 
 	// TODO: check, if we want those variable to be public:
 

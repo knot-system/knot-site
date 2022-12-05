@@ -1,3 +1,17 @@
+alpha.10
+
+the snippet 'post.php' was updated to alpha.10; if you use a custom theme, you may also need to update your css, because the image html changed.
+
+- images are no longer automatically added to the 'content_html' field in posts; they are now instead their own field, 'image_html' (and for the raw url, the field 'image' is now provided; you should use the 'image_html' though, because it comes with a new blurry preview image)
+- .png images get now automatically converted to .jpg - this can be disabled via the config.php, see example config in the README
+- images now have a blurry preview image, while the big image gets loaded; the image html changed, so you may need to update your custom theme
+- html elements get filtered from the post 'content_html'; allowed html elements can be defined via the config.php file, see example config in the README
+- micropub endpoint: bugfix for categories/tags list
+- bugfix for json and rss feeds
+- some more code restructuring
+- bugfix for the auto-update code - this should now be ready for use with the next update
+
+
 alpha.9
 
 some snippets (system/site/snippets/) were update to alpha.9; you need to update them, if you use them in a custom theme: footer.php, header.php, overview.php, page-content.php & post.php
