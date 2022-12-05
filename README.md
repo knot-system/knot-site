@@ -38,14 +38,14 @@ return [
 	],
 	//'image_cache_active' => true, // cache resized images
 	//'image_target_width' => 1200, // resize bigger images to this width
-	//'image_jpg_quality' => 80,    // when resizing/caching, use this quality for jpg files
+	//'image_jpg_quality' => 70,    // when resizing/caching, use this quality for jpg files
 	//'image_png_to_jpg' => true,   // automatically convert .png images to .jpg, for faster loading
 	//'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
 ];
 
 ```
 
-If you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line. You can also add additional author information - use h-card properties here (but not all may be used in the frontend; this will be expanded later).
+If you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line. You can also add additional author information - use h-card properties here (but not all may be used in the frontend; this will be expanded later). All other options can be uncommented as well, the values displayed here are their default values, you can change them accordingly.
 
 ## Custom Theme
 
