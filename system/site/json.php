@@ -23,6 +23,7 @@ if( $author ) {
 }
 
 $posts = get_posts();
+if( $posts ) $posts = $posts->posts;
 if( count($posts) ) $json['items'] = $posts;
 
 header('Content-Type: application/json; charset=utf-8');

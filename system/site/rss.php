@@ -5,6 +5,7 @@ if( ! $eigenheim ) exit;
 header('Content-Type: application/rss+xml; charset=utf-8');
 
 $posts = get_posts();
+if( $posts ) $posts = $posts->posts;
 
 ?><?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
@@ -20,7 +21,9 @@ $posts = get_posts();
 		<pubDate></pubDate>
 */ ?>
 
-<?php foreach( $posts as $post ) : ?>
+<?php foreach( $posts as $post ) :
+	$post = $post->fields;
+	?>
 		<item>
 			<title><?= $post['title'] ?></title>
 			<description><![CDATA[<?= $post['content_html'] ?>]]></description>
