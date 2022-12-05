@@ -47,7 +47,7 @@ class File {
 
 
 		// fill out ->url
-		$this->url = $eigenheim->url( $this->id );
+		$this->url = url( $this->id );
 
 
 		// fill out ->fields:

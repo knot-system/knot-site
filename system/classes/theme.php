@@ -23,7 +23,7 @@ class Theme {
 
 		$this->folder_name = $theme_name;
 		$this->path = 'theme/'.$theme_name.'/';
-		$this->url = $eigenheim->url('theme/'.$theme_name.'/');
+		$this->url = url('theme/'.$theme_name.'/');
 
 	}
 

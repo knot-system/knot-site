@@ -3,13 +3,20 @@
 
 function url( $path = '' ) {
 	global $eigenheim;
-	return $eigenheim->url( $path );
+	
+	$path = $eigenheim->baseurl.$path;
+	$path = trailing_slash_it($path);
+	return $path;
 }
 
 
 function trailing_slash_it( $string ){
-	global $eigenheim;
-	return $eigenheim->trailing_slash_it( $string );
+	// add a slash at the end, if there isn't already one ..
+
+	$string = preg_replace( '/\/*$/', '', $string );
+	$string .= '/';
+
+	return $string;
 }
 
 
@@ -35,15 +42,6 @@ function get_class_attribute( $classes ) {
 	if( ! count($classes) ) return '';
 
 	return ' class="'.implode( ' ', $classes ).'"';
-}
-
-
-function get_author_information( $raw = false ){
-
-	global $eigenheim;
-	$author = $eigenheim->get_author_information( $raw );
-
-	return $author;
 }
 
 
