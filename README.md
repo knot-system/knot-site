@@ -39,6 +39,7 @@ return [
 	//'image_cache_active' => true, // cache resized images
 	//'image_target_width' => 1200, // resize bigger images to this width
 	//'image_jpg_quality' => 80,    // when resizing/caching, use this quality for jpg files
+	//'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
 ];
 
 ```

@@ -4,14 +4,27 @@ class Text {
 
 	public $content;
 
+
 	function __construct( $text ) {
 		$this->content = $text;
 
 		return $this;
 	}
 
+
 	function text_cleanup() {
-		return $this->text_auto_a()->text_auto_p();
+		return $this->text_remove_html_elements()->text_auto_a()->text_auto_p();
+	}
+
+
+	function text_remove_html_elements() {
+		global $eigenheim;
+
+		$allowed_html_elements = $eigenheim->config->get('allowed_html_elements');
+
+		$this->content = strip_tags( $this->content, $allowed_html_elements );
+
+		return $this;
 	}
 
 

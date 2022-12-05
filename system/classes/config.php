@@ -3,7 +3,8 @@
 class Config {
 
 	public $config = array(
-		'posts_per_page' => 5
+		'posts_per_page' => 5,
+		'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ],
 	);
 
 	function __construct( $eigenheim ) {
