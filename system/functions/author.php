@@ -4,26 +4,9 @@
 function get_author_information( $raw = false ) {
 	global $eigenheim;
 
-	$author = array();
+	$author = $eigenheim->config->get('author');
 
-	$conf = $eigenheim->config->get('author');
-
-	if( ! $raw ) {
-
-		// "special" named fields:
-		if( ! empty($conf['p-name']) ) $author['display_name'] = $conf['p-name'];
-		if( ! empty($conf['p-given-name']) ) $author['given_name'] = $conf['p-given-name'];
-		if( ! empty($conf['p-last-name']) ) $author['family_name'] = $conf['p-last-name'];
-		if( ! empty($conf['p-note']) ) $author['description'] = $conf['p-note'];
-		if( ! empty($conf['u-email']) ) $author['email'] = $conf['u-email'];
-		if( ! empty($conf['u-url']) ) $author['url'] = $conf['u-url'];
-		if( ! empty($conf['u-photo']) ) $author['avatar'] = $conf['u-photo'];
-
-		if( ! empty($author['given_name']) && ! empty($author['family_name']) && empty($author['display_name']) ) $author['display_name'] = $author['given_name'].' '.$author['family_name'];
-
-	}
-
-	// see https://microformats.org/wiki/h-card
+	// allowed fields; see https://microformats.org/wiki/h-card
 	// TODO: we need to test those fields
 	$additional_hcard_properties = array(
 		'p-name',
@@ -70,10 +53,28 @@ function get_author_information( $raw = false ) {
 		//'u-sound'
 	);
 
-	foreach( $additional_hcard_properties as $additional_hcard_property ) {
-		if( ! empty($conf[$additional_hcard_property]) ) $author[$additional_hcard_property] = $conf[$additional_hcard_property];
+	// make sure to only include allowed fields:
+	foreach( $author as $field_name => $field_content ) {
+		if( ! in_array($field_name, $additional_hcard_properties) ) {
+			continue;
+		}
+	}
+
+
+	if( ! $raw ) {
+
+		// "special" named fields:
+		if( ! empty($author['p-name']) ) $author['display_name'] = $author['p-name'];
+		if( ! empty($author['p-given-name']) ) $author['given_name'] = $author['p-given-name'];
+		if( ! empty($author['p-last-name']) ) $author['family_name'] = $author['p-last-name'];
+		if( ! empty($author['p-note']) ) $author['description'] = $author['p-note'];
+		if( ! empty($author['u-email']) ) $author['email'] = $author['u-email'];
+		if( ! empty($author['u-url']) ) $author['url'] = $author['u-url'];
+		if( ! empty($author['u-photo']) ) $author['avatar'] = $author['u-photo'];
+
+		if( ! empty($author['given_name']) && ! empty($author['family_name']) && empty($author['display_name']) ) $author['display_name'] = $author['given_name'].' '.$author['family_name'];
+
 	}
 
 	return $author;
-
 }
