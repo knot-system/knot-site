@@ -38,9 +38,9 @@ function handle_image_display( $file_path ) {
 
 	global $eigenheim;
 
-	$cache_active = $eigenheim->config->get( 'image_cache_active', true );
-	$target_width = $eigenheim->config->get( 'image_target_width', 1200 );
-	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality', 80 );
+	$cache_active = $eigenheim->config->get( 'image_cache_active' );
+	$target_width = $eigenheim->config->get( 'image_target_width' );
+	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
 
 	$image_meta = getimagesize( $file_path );
 	$filesize = filesize( $file_path );
