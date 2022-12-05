@@ -21,9 +21,11 @@ function get_posts_by_tag( $tag ) {
 
 function get_categories(){
 	
-	// TODO: this doesn't seem to work anymore?
-
 	$posts = get_posts();
+
+	if( ! $posts ) return array();
+
+	$posts = $posts->posts;
 
 	$categories = array();
 
