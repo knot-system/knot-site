@@ -23,6 +23,8 @@ if( $posts ) $posts = $posts->posts;
 
 <?php foreach( $posts as $post ) :
 	$post = $post->fields;
+
+	if( ! empty($post['image']) ) $post['content_html'] = '<p><img src="'.$post['image'].'"></p>'.$post['content_html'];
 	?>
 		<item>
 			<title><?= $post['title'] ?></title>

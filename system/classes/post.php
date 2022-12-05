@@ -27,15 +27,15 @@ class Post {
 		$content_html = $text->text_cleanup()->get();
 
 
-		$image = false;
+		$image_html = false;
+		$image_url = false;
 		if( ! empty( $data['photo']) ) {
 			$post_folder = trailing_slash_it(pathinfo( $file->filename, PATHINFO_DIRNAME ));
 
 			if( file_exists($eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
 				$image_path = $post_folder.$data['photo'];
 				$image_html = get_image_html( $image_path );
-		
-				$content_html = '<p>'.$image_html.'</p>'.$content_html;
+				$image_url = url('content/'.$image_path, false);
 			}
 
 		}
@@ -66,11 +66,12 @@ class Post {
 			'permalink' => $permalink,
 			'content_html' => $content_html,
 			'content_text' => $content_text,
+			'image_html' => $image_html,
+			'image' => $image_url,
 			'tags' => $tags,
 			'date_published' => $date_published,
 			'date_modified' => $date_modified,
 			'timestamp' => $timestamp,
-			'image' => $image,
 		);
 
 		return $this;

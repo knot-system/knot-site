@@ -1,11 +1,15 @@
 <?php
 
 
-function url( $path = '' ) {
+function url( $path = '', $trailing_slash = true ) {
 	global $eigenheim;
 	
 	$path = $eigenheim->baseurl.$path;
-	$path = trailing_slash_it($path);
+
+	if( $trailing_slash ) {
+		$path = trailing_slash_it($path);
+	}
+	
 	return $path;
 }
 
