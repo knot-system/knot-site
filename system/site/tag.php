@@ -2,11 +2,10 @@
 
 if( ! $eigenheim ) exit;
 
+$args = $eigenheim->route->get('args');
+
 snippet( 'header' );
 
-$tag = $args['tag'];
-$page = $args['page'];
-
-snippet( 'overview', array( 'tag' => $tag, 'page' => $page ) );
+snippet( 'overview', $args );
 
 snippet( 'footer' );
