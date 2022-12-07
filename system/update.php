@@ -29,12 +29,13 @@ if( $step == 'check' ) {
 	$latest_release = $json[0];
 
 	$release_name = $latest_release->name;
-	$release_notes = $latest_release->body;
 
 	?>
 	<p>Latest release: <strong><?= $release_name ?></strong><br>
 	Currently installed: <strong><?= $old_version ?></strong></p>
 	<?php
+
+	$release_notes = array();
 
 	$new_version_available = false;
 	if( $release_name != $old_version ) {
@@ -46,14 +47,35 @@ if( $step == 'check' ) {
 			$dot_new = $version_number_new[$i];
 			if( $dot_new > $dot_old ) $new_version_available = true;
 		}
-		
-		if( $new_version_available ) {
-			echo '<p><strong>New version available!</strong> You should update your system.</p>';
-		}
-	}
 
+		if( $new_version_available ) {
+
+			foreach( $json as $release ) {
+				$release_number = explode('.', str_replace('alpha.', '0.0.', $release->tag_name));
+
+				$newer_version = false;
+				for( $i = 0; $i < count($release_number); $i++ ){
+					$dot_old = $version_number_old[$i];
+					$dot_new = $release_number[$i];
+					if( $dot_new > $dot_old ) $newer_version = true;
+				}
+
+				if( ! $newer_version ) break;
+
+				$release_notes[] = '<h3>'.$release->tag_name."</h3>\n\n".$release->body;
+			}
+		
+			echo '<p><strong>New version available!</strong> You should update your system.</p>';
+
+			if( count($release_notes) ) {
+				?>
+				<p><h2>Release notes:</h2></p><?= text_auto_p(implode("\n\n\n", $release_notes)) ?>
+				<?php
+			}
+		}
+
+	}
 	?>
-	<p><strong>Release notes:</strong></p><?= text_auto_p($release_notes) ?>
 	<hr>
 
 	<form action="<?= $eigenheim->baseurl ?>" method="GET">
