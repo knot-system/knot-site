@@ -25,7 +25,7 @@ if( $author ) {
 $limit_count = $eigenheim->config->get('feed_limit_posts');
 $posts = $eigenheim->posts->limit($limit_count)->get();
 
-if( count($posts) ) $json['items'] = $posts;
+if( count($posts) ) $json['items'] = array_values($posts);
 
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode( $json );
