@@ -69,8 +69,10 @@ if( $step == 'check' ) {
 
 			if( count($release_notes) ) {
 				?>
-				<p><h2>Release notes:</h2></p><?= text_auto_p(implode("\n\n\n", $release_notes)) ?>
+				<h2>Release notes:</h2>
 				<?php
+				$text = new Text( implode("\n\n\n", $release_notes) );
+				echo $text->auto_p()->get();
 			}
 		}
 

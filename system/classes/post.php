@@ -24,7 +24,7 @@ class Post {
 		$content_text = strip_tags( $content_html ); // TODO: revisit this in the future
 
 		$text = new Text($content_html);
-		$content_html = $text->text_cleanup()->get();
+		$content_html = $text->cleanup()->get();
 
 
 		$image_html = false;

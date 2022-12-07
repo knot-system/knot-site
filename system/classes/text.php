@@ -12,12 +12,12 @@ class Text {
 	}
 
 
-	function text_cleanup() {
-		return $this->text_remove_html_elements()->text_auto_a()->text_auto_p();
+	function cleanup() {
+		return $this->remove_html_elements()->auto_a()->auto_p();
 	}
 
 
-	function text_remove_html_elements() {
+	function remove_html_elements() {
 		global $eigenheim;
 
 		$allowed_html_elements = $eigenheim->config->get('allowed_html_elements');
@@ -28,7 +28,7 @@ class Text {
 	}
 
 
-	function text_auto_p() {
+	function auto_p() {
 
 		$text = $this->content;
 
@@ -78,9 +78,9 @@ class Text {
 	}
 
 
-	function text_auto_a() {
+	function auto_a() {
 
-		// TODO/CLEANUP: this will break existing a-tags at the moment. revisit this in the future - do we want to allow html in the text? if so, we need to skip a-tags here.
+		// TODO: this will break existing a-tags (and img-tags, iframes ...) at the moment. revisit this in the future - do we want to allow html in the text? if so, we need to skip a-tags here.
 
 		$regexp = "/(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)?/";
 
