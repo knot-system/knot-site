@@ -77,5 +77,6 @@ If you want to perform a manual update, delete the `system/` and `theme/default/
 If you want to reset the whole system, delete the following files and folders and open the url in a webbrowser to re-trigger the setup process:
 - `.htaccess`
 - `config.php`
+- the `cache/` folder
 - maybe the `content/` folder, if you want to reset the content as well
 - maybe the custom theme folders in the `theme/` directory (leave the `theme/default/` directory there, though)
