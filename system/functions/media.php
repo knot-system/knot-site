@@ -52,6 +52,13 @@ function get_image_preview_base64( $file_path ) {
 	global $eigenheim;
 
 	$cache_active = $eigenheim->config->get( 'image_cache_active' );
+
+	if( $cache_active && ! is_dir($eigenheim->abspath.'cache') ) {
+		if( mkdir( $eigenheim->abspath.'cache/', 0777, true ) === false ) {
+			$eigenheim->debug( 'could not create cache dir' );
+			$cache_active = false;
+		}
+	}
 	
 	$target_width = 50;
 	$jpg_quality = 40;
@@ -141,6 +148,13 @@ function handle_image_display( $file_path ) {
 	$target_width = $eigenheim->config->get( 'image_target_width' );
 	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
 	$png_to_jpg = $eigenheim->config->get( 'image_png_to_jpg' );
+
+	if( $cache_active && ! is_dir($eigenheim->abspath.'cache') ) {
+		if( mkdir( $eigenheim->abspath.'cache/', 0777, true ) === false ) {
+			$eigenheim->debug( 'could not create cache dir' );
+			$cache_active = false;
+		}
+	}
 
 	$image_meta = getimagesize( $file_path );
 	$filesize = filesize( $file_path );
