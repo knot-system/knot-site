@@ -41,6 +41,7 @@ return [
 	//'image_jpg_quality' => 70,    // when resizing/caching, use this quality for jpg files
 	//'image_png_to_jpg' => true,   // automatically convert .png images to .jpg, for faster loading
 	//'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
+	//'feed_limit_posts' => 20, // limit the number of posts that get displayed in the rss or json feed
 ];
 
 ```

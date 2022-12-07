@@ -22,8 +22,9 @@ if( $author ) {
 	if( ! empty($author['avatar']) ) $json['authors']['avatar'] = $author['avatar'];
 }
 
-$posts = get_posts();
-if( $posts ) $posts = $posts->posts;
+$limit_count = $eigenheim->config->get('feed_limit_posts');
+$posts = $eigenheim->posts->limit($limit_count)->get();
+
 if( count($posts) ) $json['items'] = $posts;
 
 header('Content-Type: application/json; charset=utf-8');

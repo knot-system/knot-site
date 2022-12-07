@@ -80,4 +80,12 @@ class Posts {
 		return $this;
 	}
 
+
+	function limit( $number ) {
+
+		$this->posts = array_slice( $this->posts, 0, $number );
+
+		return $this;
+	}
+
 }

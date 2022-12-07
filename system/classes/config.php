@@ -9,6 +9,7 @@ class Config {
 		'image_target_width' => 1200,
 		'image_jpg_quality' => 70,
 		'image_png_to_jpg' => true,
+		'feed_limit_posts' => 20,
 	);
 
 	function __construct( $eigenheim ) {

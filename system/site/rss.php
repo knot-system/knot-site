@@ -4,8 +4,8 @@ if( ! $eigenheim ) exit;
 
 header('Content-Type: application/rss+xml; charset=utf-8');
 
-$posts = get_posts();
-if( $posts ) $posts = $posts->posts;
+$limit_count = $eigenheim->config->get('feed_limit_posts');
+$posts = $eigenheim->posts->limit($limit_count)->get();
 
 ?><?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
