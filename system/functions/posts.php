@@ -60,14 +60,20 @@ function create_post_in_database( $data, $photo = false ) {
 		}
 
 
-		$photo_target = $eigenheim->abspath.'content/'.$target_folder.$photo['name'];
+		$photo_name = explode('.', $photo['name']);
+		$extension = array_pop($photo_name);
+		$count = 0;
+		do {
+			$count_string = '';
+			if( $count > 0 ) $count_string = '_'.$count.'_';
 
-		if( file_exists($photo_target) ) {
-			// TODO: rename photo name, if this already exists, instead of showing an error message and aborting here
-			header( "HTTP/1.1 500 Internal Server Error" );
-			$eigenheim->debug( "Photo could not be moved to the target location - this file already exists" );
-			exit;
-		}
+			$photo_name_string = implode('.', $photo_name).$count_string.'.'.$extension;
+			$photo_target = $eigenheim->abspath.'content/'.$target_folder.$photo_name_string;
+
+			$count++;
+
+		} while( file_exists($photo_target) );
+
 		
 		if( ! rename( $photo['tmp_name'], $photo_target ) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
@@ -80,7 +86,7 @@ function create_post_in_database( $data, $photo = false ) {
 			exit;	
 		}
 
-		$data['photo'] = $photo['name'];
+		$data['photo'] = $photo_name_string;
 
 	}
 
