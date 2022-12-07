@@ -88,4 +88,25 @@ class Posts {
 		return $this;
 	}
 
+
+	function categories() {
+
+		$posts = $this->posts;
+
+		if( ! $posts ) return array();
+
+		$categories = array();
+		foreach( $posts as $post ){
+			foreach( $post->fields['tags'] as $tag ) {
+				$categories[] = $tag;
+			}
+		}
+
+		$categories = array_unique( $categories );
+		$categories = array_filter( $categories ); // remove empty entries
+		$categories = array_values( $categories ); // get rid of keys
+
+		return $categories;
+	}
+
 }

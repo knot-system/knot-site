@@ -1,41 +1,6 @@
 <?php
 
-
-function get_posts(){
-	global $eigenheim;
-	return $eigenheim->posts;
-}
-
-
-function get_post( $post_id ) {
-	global $eigenheim;
-	return $eigenheim->posts->get( $post_id );
-}
-
-
-function get_categories(){
-	
-	$posts = get_posts();
-
-	if( ! $posts ) return array();
-
-	$posts = $posts->posts;
-
-	$categories = array();
-
-	foreach( $posts as $post ){
-		foreach( $post->fields['tags'] as $tag ) {
-			$categories[] = $tag;
-		}
-	}
-
-	$categories = array_unique( $categories );
-	$categories = array_filter( $categories ); // remove empty entries
-	$categories = array_values( $categories ); // get rid of keys
-
-	return $categories;
-}
-
+// TODO: move to posts class ?
 
 function create_post_in_database( $data, $photo = false ) {
 

@@ -34,11 +34,13 @@ function micropub_check_request(){
 
 function micropub_handle_get_request(){
 
+	global $eigenheim;
+
 	if( empty($_GET['q']) ) return;
 
 	if( $_GET['q'] == 'config' ) {
 
-		$categories = get_categories();
+		$categories = $eigenheim->posts->categories();
 
 		$config = array(
 			// 'media-endpoint' => '', // TODO: add media endpoint for multiple images

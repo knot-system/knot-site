@@ -31,7 +31,7 @@ class Route {
 			// single post view
 
 			$post_id = $request[1];
-			$post = get_post( $post_id );
+			$post = $eigenheim->posts->get( $post_id );
 
 			if( $post ) {
 				$this->route = array(
