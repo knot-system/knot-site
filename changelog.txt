@@ -1,3 +1,17 @@
+alpha.11
+
+The following snippet was updated: overview.php; there are also new snippets available: 404.php & pagination.php
+
+- posts are now sorted correctly in reverse chronological order
+- automatically rename photo, if a file with the same name already exists
+- added 404 snippet (content of the 'not found' page)
+- limit number of posts in the rss & json feed (this can be set via config.php, see readme)
+- pagination bugfix: the 'next page' link will no longer be active, if the current page ends on the 'posts_per_page' boundary
+- thumbnail generator: automatically re-create cache/ directory, if it is missing
+- auto-updater: show all release notes for not installed versions, instead of only showing the newest release notes
+- code cleanup & code restructuring
+
+
 alpha.10
 
 the snippet 'post.php' was updated to alpha.10; if you use a custom theme, you may also need to update your css, because the image html changed.
