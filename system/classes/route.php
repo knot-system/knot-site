@@ -25,6 +25,10 @@ class Route {
 				$this->route = array(
 					'template' => 'json',
 				);
+			} else {
+				$this->route = array(
+					'template' => '404'
+				);
 			}
 
 		} elseif( ! empty($request[0]) && $request[0] == 'post' && ! empty($request[1]) ){
@@ -59,34 +63,48 @@ class Route {
 				$pagination = (int)$request[3];
 			}
 
-			if( ! count($eigenheim->posts->get()) ) {
+			if( $pagination < 1 ) $pagination = 1;
+			$eigenheim->posts->paginate($pagination);
+
+			if( count($eigenheim->posts->get()) > 0 ) {
+				$this->route = array(
+					'template' => 'tag',
+					'args' => array(
+						'tag' => $tag,
+						'page' => $pagination
+					)
+				);
+			} else {
 				$this->route = array(
 					'template' => '404',
 				);
 			}
 
+		} elseif( ! empty($request[0]) && $request[0] == micropub_get_endpoint() ) {
+			// micropub
+
+			if( micropub_check_request() ) {
+				exit;
+			}
+
+			$this->route = array(
+				'template' => '404'
+			);
+
+		} elseif( ! empty($request[0]) && $request[0] == 'page' && isset($request[1]) ) {
+			// overview, pagination
+
+			$pagination = (int) $request[1];
+
 			if( $pagination < 1 ) $pagination = 1;
 			$eigenheim->posts->paginate($pagination);
 
 			$this->route = array(
-				'template' => 'tag',
+				'template' => 'index',
 				'args' => array(
-					'tag' => $tag,
 					'page' => $pagination
 				)
 			);
-
-		} elseif( ! empty($request[0]) && $request[0] == micropub_get_endpoint() ) {
-			// micropub
-
-			// TODO: return micropub template here? or maybe return a function instead of a template?
-			// the 'exit' should maybe not happen here, but in the load.php
-			micropub_check_request();
-			exit;
-
-		} elseif( ! empty($request[0]) && $request[0] == 'page' && isset($request[1]) ) {
-			// overview, pagination
-			$pagination = (int)$request[1];
 
 		} elseif( ! empty($request[0]) && $request[0] == 'content' ) {
 			// maybe image
@@ -97,6 +115,10 @@ class Route {
 				handle_image_display( implode('/', $request) );
 				exit;
 			}
+
+			$this->route = array(
+				'template' => '404'
+			);
 
 		} elseif( ! empty($request[0]) ) {
 			// maybe static page
@@ -111,20 +133,20 @@ class Route {
 						'page' => $page
 					)
 				);
+			} else {
+				$this->route = array(
+					'template' => '404'
+				);
 			}
 
-		}
+		} else {
+			// default overview (posts pagination 1)
 
-		if( empty($this->route) ) {
-			// default overview (may be paginated)
-				
-			if( $pagination < 1 ) $pagination = 1;
-			$eigenheim->posts->paginate($pagination);
-
+			$eigenheim->posts->paginate(1);
 			$this->route = array(
 				'template' => 'index',
 				'args' => array(
-					'page' => $pagination
+					'page' => 1
 				)
 			);
 		}

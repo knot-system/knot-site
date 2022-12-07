@@ -18,17 +18,19 @@ function micropub_check_request(){
 
 	if( ! empty($_POST) ) {
 		micropub_handle_post_request();
-		return;
+		return true;
 	} elseif( ! empty($_GET) ) {
 		micropub_handle_get_request();
-		return;
+		return true;
 	}
 
 	$json = json_decode(file_get_contents('php://input'), true);
 	if( $json ) {
 		micropub_handle_json_request( $json );
-		return;
+		return true;
 	}
+
+	return false;
 
 }
 
