@@ -31,10 +31,8 @@ if( isset($_GET['update']) && (file_exists($eigenheim->abspath.'update')
 $eigenheim->theme->load();
 
 
-$route = get_route();
-
-$template = $route['template'];
+$route = $eigenheim->route;
+$template = $route->get('template');
 $args = false;
-if( ! empty($route['args']) ) $args = $route['args'];
-
+if( ! empty($route->get('args')) ) $args = $route->get('args');
 $eigenheim->include( 'system/site/'.$template.'.php', $args );

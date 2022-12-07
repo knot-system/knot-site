@@ -10,13 +10,15 @@ class Eigenheim {
 	public $basefolder;
 	public $baseurl;
 
-	public $log;
 	public $config;
+	public $log;
 	public $theme;
 
 	public $pages;
 	public $posts;
 
+	public $route;
+	
 	function __construct() {
 
 		global $eigenheim;
@@ -38,8 +40,11 @@ class Eigenheim {
 		$this->config = new Config( $this );
 		$this->log = new Log( $this );
 		$this->theme = new Theme( $this );
+
 		$this->pages = new Pages( $this );
 		$this->posts = new Posts( $this );
+
+		$this->route = new Route( $this );
 
 	}
 

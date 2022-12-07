@@ -57,10 +57,10 @@ function get_navigation(){
 
 	if( ! $pages ) return false;
 
-	$route = get_route();
+	$route = $eigenheim->route;
 	$current_page_id = false;
-	if( $route['template'] == 'page' && ! empty($route['args']['page_id']) ) {
-		$current_page_id = $route['args']['page_id'];
+	if( $route->get('template') == 'page' && ! empty($route->get('args')['page_id']) ) {
+		$current_page_id = $route->get('args')['page_id'];
 	}
 
 	$navigation = false;
