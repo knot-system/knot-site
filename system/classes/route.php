@@ -51,14 +51,15 @@ class Route {
 			// single tag view
 
 			$tag = $request[1];
-			$posts = get_posts_by_tag( $tag );
+
+			$eigenheim->posts->filter_by_tag( $tag );
 
 			$pagination = 0;
 			if( ! empty($request[2]) && $request[2] == 'page' && isset($request[3]) ) {
 				$pagination = (int)$request[3];
 			}
 
-			if( ! count($posts->get()) ) {
+			if( ! count($eigenheim->posts->get()) ) {
 				$this->route = array(
 					'template' => '404',
 				);
@@ -79,7 +80,7 @@ class Route {
 			// micropub
 
 			// TODO: return micropub template here? or maybe return a function instead of a template?
-			// the 'exit' should maybe not happen here, but in the root index.php
+			// the 'exit' should maybe not happen here, but in the load.php
 			micropub_check_request();
 			exit;
 
@@ -114,16 +115,19 @@ class Route {
 
 		}
 
-		// default overview (may be paginated)
-		if( $pagination < 1 ) $pagination = 1;
-		$eigenheim->posts->paginate($pagination);
+		if( empty($this->route) ) {
+			// default overview (may be paginated)
+				
+			if( $pagination < 1 ) $pagination = 1;
+			$eigenheim->posts->paginate($pagination);
 
-		$this->route = array(
-			'template' => 'index',
-			'args' => array(
-				'page' => $pagination
-			)
-		);
+			$this->route = array(
+				'template' => 'index',
+				'args' => array(
+					'page' => $pagination
+				)
+			);
+		}
 
 		return $this;
 	}
@@ -131,6 +135,9 @@ class Route {
 	function get( $name = false ) {
 
 		if( $name ) {
+
+			if( ! is_array($this->route) ) return false;
+
 			if( ! array_key_exists($name, $this->route) ) return false;
 
 			return $this->route[$name];

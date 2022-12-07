@@ -3,6 +3,9 @@
 class Posts {
 
 	public $posts = array();
+	public $tag = false;
+	public $page;
+	public $maxPage;
 
 	function __construct( $eigenheim ){
 
@@ -18,6 +21,12 @@ class Posts {
 		}
 
 		$this->posts = $posts;
+
+		$posts_per_page = $eigenheim->config->get( 'posts_per_page' );
+		$maxPage = count($posts) / $posts_per_page;
+
+		$this->page = 1;
+		$this->maxPage = ceil($maxPage);
 
 		return $this;
 	}
@@ -39,7 +48,11 @@ class Posts {
 
 		$offset = ($page-1)*$posts_per_page;
 
+		$oldCount = count($this->posts);
+
 		$this->posts = array_slice( $this->posts, $offset, $posts_per_page );
+
+		$this->page = $page;
 
 		return $this;
 	}
@@ -57,7 +70,12 @@ class Posts {
 			$posts[$post_id] = $post;
 		}
 
+		$this->tag = $tag;
+
 		$this->posts = $posts;
+
+		$posts_per_page = $this->eigenheim->config->get( 'posts_per_page' );
+		$this->maxPage = count($posts) / $posts_per_page;
 
 		return $this;
 	}

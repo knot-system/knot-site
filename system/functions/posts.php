@@ -13,12 +13,6 @@ function get_post( $post_id ) {
 }
 
 
-function get_posts_by_tag( $tag ) {
-	global $eigenheim;
-	return $eigenheim->posts->filter_by_tag( $tag );
-}
-
-
 function get_categories(){
 	
 	$posts = get_posts();
