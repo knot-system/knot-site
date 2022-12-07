@@ -4,6 +4,7 @@ class File {
 
 	public $id;
 	public $filename;
+	public $timestamp;
 	public $raw_content;
 	public $url;
 	public $fields = array();
@@ -18,7 +19,7 @@ class File {
 
 		if( $raw_content ) {
 			$return = $this->create( $filepath, $raw_content );
-			return $return;;
+			return $return;
 		}
 
 		if( ! file_exists( $filepath) ) {
@@ -51,8 +52,6 @@ class File {
 
 		// fill out ->fields:
 
-		$this->data = array();
-
 		$file_content = str_replace("\r\n", "\n", $this->raw_content);
 
 		$fields = explode( "\n\n----\n\n", $file_content );
@@ -77,7 +76,15 @@ class File {
 
 		}
 
+		// timestamp fallback: file creation date
+		if( empty($data['timestamp']) ) $data['timestamp'] = filemtime($filepath);
+
 		$this->fields = $data;
+
+
+		// fill out ->timestamp
+		$this->timestamp = $data['timestamp'];
+
 
 	}
 
