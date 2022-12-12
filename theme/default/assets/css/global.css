@@ -146,6 +146,7 @@ article {
 	article time {
 		font-size: 0.8em;
 		opacity: 0.7;
+		display: block;
 	}
 
 		article time a {
@@ -176,9 +177,7 @@ img {
 }
 
 figure.content-image {
-	display: block;
 	max-height: 90vh;
-	background-color: #333;
 }
 
 .error-404 {
