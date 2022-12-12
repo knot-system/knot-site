@@ -4,7 +4,7 @@ class Config {
 
 	public $config = array(
 		'posts_per_page' => 5,
-		'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ],
+		'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span', 'img' ],
 		'image_cache_active' => true,
 		'image_target_width' => 1200,
 		'image_jpg_quality' => 70,
