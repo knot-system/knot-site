@@ -62,7 +62,15 @@ class Theme {
 	function add_stylesheet( $path ) {
 		if( ! file_exists($this->path.$path) ) return;
 
-		$this->stylesheets[] = $this->url.$path;
+		$this->stylesheets[] = $path;
+	}
+
+
+	function remove_stylesheet( $path ) {
+		$array_key = array_search($path, $this->stylesheets);
+		if( $array_key === false ) return;
+
+		unset($this->stylesheets[$array_key]);
 	}
 
 
@@ -72,8 +80,8 @@ class Theme {
 
 		foreach( $this->stylesheets as $stylesheet ) {
 		?>
-	<link rel="stylesheet" href="<?= $stylesheet ?>?v=<?= $version ?>">
-	<?php
+	<link rel="stylesheet" href="<?= $this->url.$stylesheet ?>?v=<?= $version ?>">
+<?php
 		}
 
 	}

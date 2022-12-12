@@ -30,6 +30,12 @@ function add_stylesheet( $path ) {
 }
 
 
+function remove_stylesheet( $path ) {
+	global $eigenheim;
+	$eigenheim->theme->remove_stylesheet( $path );
+}
+
+
 function snippet( $path, $args = array(), $return = false ) {
 	global $eigenheim;
 	return $eigenheim->theme->snippet( $path, $args, $return );
