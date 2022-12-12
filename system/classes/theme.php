@@ -60,6 +60,8 @@ class Theme {
 
 
 	function add_stylesheet( $path ) {
+		if( ! file_exists($this->path.$path) ) return;
+
 		$this->stylesheets[] = $this->url.$path;
 	}
 
