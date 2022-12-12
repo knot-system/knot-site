@@ -3,10 +3,12 @@
 class Text {
 
 	public $content;
-
+	public $links;
 
 	function __construct( $text ) {
 		$this->content = $text;
+
+		$this->match_links();
 
 		return $this;
 	}
@@ -80,9 +82,19 @@ class Text {
 
 	function auto_a() {
 
-		$regexp = '/(?<!src=[\"\'])(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
+		global $eigenheim;
 
-		$this->content = preg_replace( $regexp, '<a href="$1://$2.$3$4" target="_blank" rel="noopener" title="$1://$2.$3$4">$2.$3$4</a>', $this->content );
+		$regexp = $this->get_link_regex_pattern();
+
+		$replace = '<a href="$1://$2.$3$4" target="_blank" rel="noopener" title="$1://$2.$3$4">$2.$3$4</a>';
+
+		$add_footnote_to_links = $eigenheim->config->get('add_footnote_to_links');
+
+		if( $add_footnote_to_links ) {
+			$replace .= '<sup class="footnote"><a href="#$2.$3$4">*</a></sup>';
+		}
+
+		$this->content = preg_replace( $regexp, $replace, $this->content );
 
 		return $this;
 	}
@@ -90,6 +102,49 @@ class Text {
 
 	function get() {
 		return $this->content;
+	}
+
+
+	function match_links() {
+
+		$regexp = $this->get_link_regex_pattern();
+
+		$links = array();
+
+		if( preg_match_all( $regexp, $this->content, $matches ) ) {
+
+			foreach( $matches[0] as $link ) {
+				$links[] = $link;
+			}
+
+		}
+
+		$this->links = $links;
+
+		return $this;
+	}
+
+
+	function get_link_preview() {
+
+		if( ! count($this->links ) ) return '';
+
+$html = '<ol class="link-preview-list">
+';
+foreach( $this->links as $link ) {
+$html .= '			<li>
+				<a name="'.str_replace(array('https://','http://'), '', $link).'" href="'.$link.'" target="_blank" rel="noopener">'.$link.'</a>
+			</li>
+';
+}
+$html .= '		</ol>';
+
+		return $html;
+	}
+
+
+	private function get_link_regex_pattern(){
+		return '/(?<!src=[\"\'])(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
 	}
 
 

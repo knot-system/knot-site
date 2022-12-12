@@ -10,6 +10,7 @@ class Config {
 		'image_jpg_quality' => 70,
 		'image_png_to_jpg' => true,
 		'feed_limit_posts' => 20,
+		'add_footnote_to_links' => true,
 	);
 
 	function __construct( $eigenheim ) {

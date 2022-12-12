@@ -26,6 +26,8 @@ class Post {
 		$text = new Text($content_html);
 		$content_html = $text->cleanup()->get();
 
+		$link_preview = $text->get_link_preview();
+
 
 		$image_html = false;
 		$image_url = false;
@@ -66,6 +68,7 @@ class Post {
 			'permalink' => $permalink,
 			'content_html' => $content_html,
 			'content_text' => $content_text,
+			'link_preview' => $link_preview,
 			'image_html' => $image_html,
 			'image' => $image_url,
 			'tags' => $tags,

@@ -12,6 +12,7 @@ $title = $post->fields['title'];
 $text = $post->fields['content_html'];
 $tags = $post->fields['tags'];
 $permalink = $post->fields['permalink'];
+$link_preview = $post->fields['link_preview'];
 
 $date = false;
 if( $post->fields['timestamp'] > 0 ) $date = date( 'd.m.Y', $post->fields['timestamp'] );
@@ -55,6 +56,18 @@ if( $text ) {
 <?php
 }
 
+
+if( $link_preview ) {
+?>
+
+		<div class="link-preview">
+		<?= $link_preview ?>
+
+		</div>
+<?php
+}
+
+
 if( count($tags) ) {
 ?>
 
@@ -65,6 +78,7 @@ if( count($tags) ) {
 		</ul>
 <?php
 }
+
 ?>
 
 	</article>
