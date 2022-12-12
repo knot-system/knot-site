@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.11
+// Version: alpha.12
 
 if( ! $eigenheim ) exit;
 
@@ -25,23 +25,33 @@ if( $show_pagination ) {
 	$pre_url = '';
 	if( ! empty($tag) ) $pre_url = 'tag/'.$tag.'/';
 
-	?>
+?>
+
 	<nav class="pagination">
 		<ul>
-			<?php
+<?php
 			if( $prev_page ) {
-				echo '<li><a href="'.url($pre_url.'page/'.($eigenheim->posts->page-1)).'" rel="prev">&laquo; previous page</a></li>';
+?>
+			<li><a href="<?= url($pre_url.'page/'.($eigenheim->posts->page-1)) ?>" rel="prev">&laquo; previous page</a></li>
+<?php
 			} else {
-				echo '<li>&laquo; previous page</li>';
+?>
+			<li>&laquo; previous page</li>
+<?php
 			}
 			
 			if( $next_page ) {
-				echo '<li><a href="'.url($pre_url.'page/'.($eigenheim->posts->page+1)).'" rel="next">next page &raquo;</a></li>';
+?>
+			<li><a href="<?= url($pre_url.'page/'.($eigenheim->posts->page+1)) ?>" rel="next">next page &raquo;</a></li>
+<?php
 			} else {
-				echo '<li>next page &raquo;</li>';
+?>
+			<li>next page &raquo;</li>
+<?php
 			}
 			?>
 		</ul>
 	</nav>
-	<?php
+
+<?php
 }

@@ -90,6 +90,15 @@ footer {
 	padding: 15px;
 }
 
+.tag-notice {
+	margin-top: 0;
+	text-align: center;
+	background: var(--color-box-background);
+	border-radius: 8px;
+	border: 1px solid var(--color-box-border);
+	padding: 1em;
+}
+
 article {
 	border-top: 1px solid var(--color-box-border);
 	padding: 2em;
@@ -158,13 +167,11 @@ section.author {
 	}
 
 figure {
-	margin-left: 0;
-	margin-right: 0;
+	margin: 1em 0 0
 }
 
 figure.content-image {
-	display: inline-block;
-	margin: 0;
+	display: block;
 }
 
 img {

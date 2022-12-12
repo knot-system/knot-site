@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.8
+// Version: alpha.12
 
 if( ! $eigenheim ) exit;
 
@@ -9,37 +9,37 @@ $info = get_author_information( true );
 if( ! count($info) ) return;
 
 ?>
-<section class="h-card author">
 
-	<h2>Information</h2>
+	<section class="h-card author">
 
-	<?php
-	foreach( $info as $property => $content ) {
+		<h2>Information</h2>
 
-		if( $property == 'p-additional-name' ) {
-			?>
-			<abbr class="<?= $property ?>"><?= $content ?></abbr>
-			<?php
-		} elseif( $property == 'u-photo' ) {
-			?>
-			<img class="<?= $property ?>" src="<?= $content ?>">
-			<?php
-		} elseif( str_starts_with( $property, 'u-') ) {
-			?>
-			<a class="<?= $property ?>" href="<?= $content ?>" target="_blank" rel="noopener"><?= $content ?></a>
-			<?php
-		} elseif( str_starts_with( $property, 'dt-') ) {
-			?>
-			<time class="<?= $property ?>"><?= $content ?></time>
-			<?php
-		} else { // starts with p- or any other field
-			?>
-			<div class="<?= $property ?>"><?= $content ?></div>
-			<?php
+<?php
+		foreach( $info as $property => $content ) {
+
+			if( $property == 'p-additional-name' ) {
+				?>
+		<abbr class="<?= $property ?>"><?= $content ?></abbr>
+<?php
+			} elseif( $property == 'u-photo' ) {
+				?>
+		<img class="<?= $property ?>" src="<?= $content ?>">
+<?php
+			} elseif( str_starts_with( $property, 'u-') ) {
+				?>
+		<a class="<?= $property ?>" href="<?= $content ?>" target="_blank" rel="noopener"><?= $content ?></a>
+<?php
+			} elseif( str_starts_with( $property, 'dt-') ) {
+				?>
+		<time class="<?= $property ?>"><?= $content ?></time>
+<?php
+			} else { // starts with p- or any other field
+				?>
+		<div class="<?= $property ?>"><?= $content ?></div>
+<?php
+			}
+
 		}
+?>
 
-		?>
-		<?php
-	}
-	?>
-</section>
+	</section>

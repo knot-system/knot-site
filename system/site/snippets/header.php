@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.9
+// Version: alpha.12
 
 if( ! $eigenheim ) exit;
 
@@ -50,26 +50,25 @@ ___________.__                     .__           .__
 </head>
 <body>
 
-	<header>
-		<h1><a href="<?= url() ?>"><?= $eigenheim->config->get('site_title') ?></a></h1>
+<header>
+	<h1><a href="<?= url() ?>"><?= $eigenheim->config->get('site_title') ?></a></h1>
+	<?php
+	$navigation = get_navigation();
+	if( $navigation ) :
+	?><nav>
+		<ul>
 		<?php
-		$navigation = get_navigation();
-		if( $navigation ) :
-		?><nav>
-			<ul>
-			<?php
-			foreach( $navigation as $page ) :
-				$classes = array();
-				if( $page['is_current_page'] ) $classes[] = 'current-page';
-				?>	<li<?= get_class_attribute($classes) ?>><a href="<?= $page['permalink'] ?>"><?= $page['title'] ?></a></li>
-			<?php
-			endforeach;
-			?></ul>
-		</nav><?php
-		endif;
-		?>
-	
-	</header>
+		foreach( $navigation as $page ) :
+			$classes = array();
+			if( $page['is_current_page'] ) $classes[] = 'current-page';
+			?>	<li<?= get_class_attribute($classes) ?>><a href="<?= $page['permalink'] ?>"><?= $page['title'] ?></a></li>
+		<?php
+		endforeach;
+		?></ul>
+	</nav><?php
+	endif;
+	?>
 
-	<main>
+</header>
 
+<main>

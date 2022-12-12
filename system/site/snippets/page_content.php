@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.9
+// Version: alpha.12
 
 if( ! $eigenheim ) exit;
 
@@ -11,12 +11,24 @@ $title = $page->fields['title'];
 $text = $page->fields['content_html'];
 
 ?>
-<article class="h-entry">
-	<?php
-	
-	if( $title ) echo '<h2 class="p-name">'.$title.'</h2>';
-	
-	if( $text ) echo '<div class="e-content">'.$text.'</div>';
 
-	?>
-</article>
+	<article class="h-entry">
+
+<?php
+if( $title ) {
+?>
+		<h2 class="p-name"><?= $title ?></h2>
+
+<?php
+}
+
+if( $text ) {
+?>
+		<div class="e-content">
+			<?= $text ?>
+		</div>
+<?php
+}
+?>
+
+	</article>

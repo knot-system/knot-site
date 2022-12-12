@@ -1,13 +1,20 @@
 <?php
 
-// Version: alpha.11
+// Version: alpha.12
 
 if( ! $eigenheim ) exit;
 
 $tag = false;
 if( ! empty($args['tag']) ) $tag = $args['tag'];
 
-if( $tag ) echo '<p><em>only showing posts with tag <strong>'.$tag.'</strong></em></p>';
+if( $tag ) {
+?>
+		
+	<p class="tag-notice"><em>only showing posts with the tag <strong><?= $tag ?></strong></em></p>
+
+<?php
+}
+
 
 foreach( $eigenheim->posts->get() as $post ) snippet( 'post', array( 'post' => $post ) );
 
