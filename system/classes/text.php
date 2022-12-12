@@ -80,9 +80,7 @@ class Text {
 
 	function auto_a() {
 
-		// TODO: at the moment, this will break existing a-tags and img-tags and iframes ...
-
-		$regexp = '/(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
+		$regexp = '/(?<!src=[\"\'])(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
 
 		$this->content = preg_replace( $regexp, '<a href="$1://$2.$3$4" target="_blank" rel="noopener" title="$1://$2.$3$4">$2.$3$4</a>', $this->content );
 
