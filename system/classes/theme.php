@@ -25,6 +25,8 @@ class Theme {
 		$this->path = 'theme/'.$theme_name.'/';
 		$this->url = url('theme/'.$theme_name.'/');
 
+		$this->add_stylesheet( 'css/eigenheim.css', 'global' );
+
 	}
 
 
@@ -59,28 +61,50 @@ class Theme {
 	}
 
 
-	function add_stylesheet( $path ) {
-		if( ! file_exists($this->path.$path) ) return;
+	function add_stylesheet( $path, $type = 'theme' ) {
 
-		$this->stylesheets[] = $path;
+		global $eigenheim;
+
+		$global_path = $eigenheim->abspath.'system/site/assets/';
+		$global_url = $eigenheim->baseurl.'/system/site/assets/';
+
+		if( $type == 'theme' && file_exists($this->path.$path) ) {
+			$type = 'theme';
+			$url = $this->url.$path;
+		} elseif( $type == 'global' && file_exists($global_path.$path) ) {
+			$type = 'global';
+			$url = $global_url.$path;
+		} else {
+			return;
+		}
+
+		$this->stylesheets[$path] = [
+			'path' => $path,
+			'url' => $url,
+			'type' => $type
+		];
 	}
 
 
 	function remove_stylesheet( $path ) {
-		$array_key = array_search($path, $this->stylesheets);
-		if( $array_key === false ) return;
+		if( ! array_key_exists($path, $this->stylesheets) ) return;
 
-		unset($this->stylesheets[$array_key]);
+		unset($this->stylesheets[$path]);
 	}
 
 
 	function print_stylesheets() {
 
-		$version = $this->get('version');
+		global $eigenheim;
 
 		foreach( $this->stylesheets as $stylesheet ) {
+			if( $stylesheet['type'] == 'global' ) {
+				$version = $eigenheim->version();
+			} else {
+				$version = $this->get('version');
+			}
 		?>
-	<link rel="stylesheet" href="<?= $this->url.$stylesheet ?>?v=<?= $version ?>">
+	<link rel="stylesheet" href="<?= $stylesheet['url'] ?>?v=<?= $version ?>">
 <?php
 		}
 

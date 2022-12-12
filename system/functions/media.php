@@ -29,7 +29,7 @@ function get_image_html( $image_path ) {
 	$preview_base64 = get_image_preview_base64($eigenheim->abspath.'content/'.$image_path);
 
 	$html = '<figure class="'.implode(' ', $classes).'" style="aspect-ratio: '.$width/$height.'">
-			<span class="content-image-inner" style="background: url('.$preview_base64.') no-repeat center center / cover; display: block;">
+			<span class="content-image-inner" style="background-image: url('.$preview_base64.');">
 				<img src="'.$src.'" width="'.$width.'" height="'.$height.'" loading="lazy" style="background: transparent; display: block;">
 			</span>
 		</figure>';

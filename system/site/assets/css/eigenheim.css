@@ -1,0 +1,17 @@
+figure.content-image {
+	display: inline-block;
+	max-width: 100%;
+	width: auto;
+	height: auto;
+	position: relative;
+}
+
+	figure.content-image .content-image-inner {
+		display: block;
+		background: no-repeat center center / contain;
+	}
+
+	figure.content-image img {
+		max-width: 100%;
+		height: auto;
+	}

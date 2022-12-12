@@ -24,13 +24,13 @@ function trailing_slash_it( $string ){
 }
 
 
-function add_stylesheet( $path ) {
+function add_stylesheet( $path, $type = 'theme' ) {
 	global $eigenheim;
-	$eigenheim->theme->add_stylesheet( $path );
+	$eigenheim->theme->add_stylesheet( $path, $type );
 }
 
 
-function remove_stylesheet( $path ) {
+function remove_stylesheet( $path, $type = 'theme' ) {
 	global $eigenheim;
 	$eigenheim->theme->remove_stylesheet( $path );
 }

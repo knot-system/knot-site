@@ -170,28 +170,16 @@ figure {
 	margin: 1em 0 0
 }
 
-figure.content-image {
-	display: block;
-}
-
 img {
 	max-width: 100%;
 	height: auto;
 }
 
 figure.content-image {
-	max-width: 100%;
+	display: block;
 	max-height: 90vh;
-	width: auto;
-	height: auto;
 	background-color: #333;
-	position: relative;
 }
-
-	figure.content-image img {
-		max-width: 100%;
-		height: auto;
-	}
 
 .error-404 {
 	padding-top: 1em;
