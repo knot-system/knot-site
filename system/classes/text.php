@@ -143,9 +143,17 @@ foreach( $this->links as $link ) {
 	}
 
 
+	$preview_image = '';
+	$preview_title = '';
+	$preview_description = '';
+
+	if( $link_info->preview_image ) $preview_image = '<span class="link-preview-image">'.$link_info->preview_image.'</span>';
+	if( $link_info->title ) $preview_title = '<span class="link-preview-title">'.$link_info->title.'</span>';
+	if( $link_info->description ) $preview_description = '<span class="link-preview-description">'.$link_info->description.'</span>';
+
 
 $html .= '			<li>
-				<a id="'.$link_id.'" class="link-preview" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener">'.$link_info->title.'</a>
+				<a id="'.$link_id.'" class="link-preview" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener">'.$preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description.'</span></a>
 			</li>
 ';
 }

@@ -20,6 +20,8 @@ class Cache {
 			$this->cache_folder .= 'images/';
 		} elseif( $type == 'link' ) {
 			$this->cache_folder .= 'link-previews/';
+		} else {
+			$this->cache_folder .= $type.'/';
 		}
 
 		$this->checkCacheFolder();
@@ -52,6 +54,23 @@ class Cache {
 		if( ! file_put_contents( $eigenheim->abspath.$this->cache_file, $data ) ) {
 			$eigenheim->debug( 'could not create cache file', $this->cache_file );
 		}
+	}
+
+
+
+	function get_remote_file( $url ) {
+
+		$ch = curl_init( $url );
+		$fp = fopen( $this->cache_file, 'wb' );
+		curl_setopt( $ch, CURLOPT_FILE, $fp );
+		curl_setopt( $ch, CURLOPT_HEADER, 0 );
+		curl_setopt( $ch, CURLOPT_USERAGENT, get_user_agent() );
+		curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+		curl_exec( $ch );
+		curl_close( $ch );
+		fclose( $fp );
+
+		return $this;
 	}
 
 

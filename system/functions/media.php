@@ -1,12 +1,20 @@
 <?php
 
 
-function get_image_html( $image_path ) {
+function get_image_html( $image_path, $type = false ) {
 	global $eigenheim;
 
 	$target_width = $eigenheim->config->get( 'image_target_width', 1200 );
 
-	$image_meta = getimagesize( $eigenheim->abspath.'content/'.$image_path );
+	if( $type == 'remote' ) {
+		$local_image_path = $eigenheim->abspath.'cache/remote-image/'.$image_path;
+		$local_image_url = $eigenheim->baseurl.'remote-image/'.$image_path; // TODO: check, how we want to handle this
+	} else {
+		$local_image_path = $eigenheim->abspath.'content/'.$image_path;
+		$local_image_url = $eigenheim->baseurl.'content/'.$image_path;
+	}
+
+	$image_meta = getimagesize( $local_image_path );
 	$src_width = $image_meta[0];
 	$src_height = $image_meta[1];
 
@@ -24,13 +32,12 @@ function get_image_html( $image_path ) {
 	}
 
 	$classes = array( 'content-image', 'content-image-format-'.$format );
-	$src = $eigenheim->baseurl.'content/'.$image_path;
 
-	$preview_base64 = get_image_preview_base64($eigenheim->abspath.'content/'.$image_path);
+	$preview_base64 = get_image_preview_base64( $local_image_path );
 
 	$html = '<figure class="'.implode(' ', $classes).'" style="aspect-ratio: '.$width/$height.'">
 			<span class="content-image-inner" style="background-image: url('.$preview_base64.');">
-				<img src="'.$src.'" width="'.$width.'" height="'.$height.'" loading="lazy" style="background: transparent; display: block;">
+				<img src="'.$local_image_url.'" width="'.$width.'" height="'.$height.'" loading="lazy" style="background: transparent; display: block;">
 			</span>
 		</figure>';
 
@@ -136,7 +143,6 @@ function handle_image_display( $file_path ) {
 
 	global $eigenheim;
 
-	$cache_active = $eigenheim->config->get( 'image_cache_active' );
 	$target_width = $eigenheim->config->get( 'image_target_width' );
 	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
 	$png_to_jpg = $eigenheim->config->get( 'image_png_to_jpg' );

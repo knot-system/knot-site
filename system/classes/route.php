@@ -120,6 +120,21 @@ class Route {
 				'template' => '404'
 			);
 
+		} elseif( ! empty($request[0]) && $request[0] == 'remote-image' ) {
+			// maybe cached remote image
+
+			$hash = $request[1];
+
+			if( file_exists($eigenheim->abspath.'cache/remote-image/'.$hash) ) {
+				handle_image_display( $eigenheim->abspath.'cache/remote-image/'.$hash );
+				exit;
+			}
+			
+
+			$this->route = array(
+				'template' => '404'
+			);
+
 		} elseif( ! empty($request[0]) ) {
 			// maybe static page
 

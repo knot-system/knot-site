@@ -20,7 +20,8 @@ var LinkPreview = {
 		// TODO: for now, we refresh a link multiple times if there are multpile link-previews for the same link on the page. revisit this in the future, to make sure to only update every ID once for the whole page
 
 
-		console.log('refresh', id)
+		// TODO: refresh the link preview, and if we have new data, add a 'refresh' link next to the link-preview, so the user can refresh the preview html
+		//console.log('refresh', id)
 
 	}
 

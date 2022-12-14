@@ -48,14 +48,27 @@ Class Link {
 
 		$html = request_get_remote( $url );
 
-		$pattern = '/<title>(.*?)<\/title>/is';
-		$title = $this->extract_information( $html, $pattern, $this->short_url );
+		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->short_url );
 
-		// TODO: get og tags and preview thumbnail and so on
+		$description = $this->extract_information( $html, '/<meta.*?name="description".*?content="(.*?)".*?>/is' );
+
+		$preview_image = $this->extract_information( $html, '/<meta.*?property="og:image".*?content="(.*?)".*?>/is' );
+
+		if( $preview_image ) {
+			// cache remote image locally
+			$preview_image_name = explode('/', $preview_image);
+			$preview_image_name = end($preview_image_name);
+			$preview_image_cache = new Cache( 'remote-image', $preview_image_name );
+			$preview_image_cache->get_remote_file( $preview_image );
+
+			$preview_image = get_image_html( $preview_image_cache->hash, 'remote' );
+		}
 
 		$data = [
 			'url' => $url,
 			'title' => $title,
+			'preview_image' => $preview_image,
+			'description' => $description,
 			'last_refresh' => time()
 		];
 
