@@ -30,6 +30,19 @@ function get_remote_json( $url, $headers = array() ) {
 }
 
 
+function request_get_remote( $url, $headers = array() ) {
+
+	$ch = curl_init( $url );
+	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+	curl_setopt( $ch, CURLOPT_USERAGENT, get_user_agent() );
+	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+	$response = curl_exec( $ch );
+	curl_close( $ch );
+
+	return $response;
+}
+
+
 function get_user_agent(){
 
 	global $eigenheim;

@@ -132,8 +132,20 @@ class Text {
 $html = '<ol class="link-preview-list">
 ';
 foreach( $this->links as $link ) {
+
+	$link = new Link( $link );
+	$link_id = $link->id;
+
+
+	$link_info = $link->getPreview();
+	if( ! $link_info ) {
+		$link_info = $link->getLinkInfo()->getPreview(); // TODO: move this to a ajax request, because 'getLinkInfo' takes some time
+	}
+
+
+
 $html .= '			<li>
-				<a name="'.str_replace(array('https://','http://'), '', $link).'" href="'.$link.'" target="_blank" rel="noopener">'.$link.'</a>
+				<a id="'.$link_id.'" class="link-preview" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener">'.$link_info->title.'</a>
 			</li>
 ';
 }
@@ -144,6 +156,7 @@ $html .= '		</ol>';
 
 
 	private function get_link_regex_pattern(){
+		// TODO: maybe we also want to support gopher:// or other protocols?
 		return '/(?<!src=[\"\'])(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
 	}
 
