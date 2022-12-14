@@ -29,6 +29,7 @@ ___________.__                     .__           .__
 
 <?php
 	$eigenheim->theme->print_stylesheets();
+	$eigenheim->theme->print_scripts();
 	?>
 
 	<link rel="authorization_endpoint" href="https://indieauth.com/auth">

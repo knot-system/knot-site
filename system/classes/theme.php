@@ -8,6 +8,7 @@ class Theme {
 	public $config;
 
 	public $stylesheets = array();
+	public $scripts = array();
 
 
 	function __construct( $eigenheim ) {
@@ -26,6 +27,7 @@ class Theme {
 		$this->url = url('theme/'.$theme_name.'/');
 
 		$this->add_stylesheet( 'css/eigenheim.css', 'global' );
+		$this->add_script( 'js/eigenheim.js', 'global', 'async' );
 
 	}
 
@@ -105,6 +107,64 @@ class Theme {
 			}
 		?>
 	<link rel="stylesheet" href="<?= $stylesheet['url'] ?>?v=<?= $version ?>">
+<?php
+		}
+
+	}
+
+
+	function add_script( $path, $type = 'theme', $loading = false ) {
+
+		// $loading is meant for 'async' or 'defer' attributes
+
+		global $eigenheim;
+
+		$global_path = $eigenheim->abspath.'system/site/assets/';
+		$global_url = $eigenheim->baseurl.'/system/site/assets/';
+
+		if( $type == 'theme' && file_exists($this->path.$path) ) {
+			$type = 'theme';
+			$url = $this->url.$path;
+		} elseif( $type == 'global' && file_exists($global_path.$path) ) {
+			$type = 'global';
+			$url = $global_url.$path;
+		} else {
+			return;
+		}
+
+		$this->scripts[$path] = [
+			'path' => $path,
+			'url' => $url,
+			'type' => $type,
+			'loading' => $loading
+		];
+	}
+
+
+	function remove_script( $path ) {
+		if( ! array_key_exists($path, $this->scripts) ) return;
+
+		unset($this->scripts[$path]);
+	}
+
+
+	function print_scripts() {
+
+		global $eigenheim;
+
+		foreach( $this->scripts as $script ) {
+			if( $script['type'] == 'global' ) {
+				$version = $eigenheim->version();
+			} else {
+				$version = $this->get('version');
+			}
+
+			$loading = '';
+			if( ! empty($script['loading']) ) $loading = ' '.$script['loading'];
+
+		?>
+	<link rel="script" href="<?= $script['url'] ?>?v=<?= $version ?>">
+	<script<?= $loading ?> src="<?= $script['url'] ?>?v=<?= $version ?>"></script>
 <?php
 		}
 

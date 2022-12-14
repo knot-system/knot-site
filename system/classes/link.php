@@ -48,13 +48,8 @@ Class Link {
 
 		$html = request_get_remote( $url );
 
-		$title = false;
 		$pattern = '/<title>(.*?)<\/title>/is';
-		if( preg_match( $pattern, $html, $matches ) ) {
-			$title = $matches[1];
-		} else {
-			$title = $this->short_url;
-		}
+		$title = $this->extract_information( $html, $pattern, $this->short_url );
 
 		// TODO: get og tags and preview thumbnail and so on
 
@@ -67,6 +62,16 @@ Class Link {
 		$this->updatePreview( $data );
 
 		return $this;
+	}
+
+
+	function extract_information( $html, $pattern, $return = false ) {
+
+		if( preg_match( $pattern, $html, $matches ) ) {
+			$return = $matches[1];
+		}
+
+		return $return;
 	}
 
 

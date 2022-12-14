@@ -36,6 +36,18 @@ function remove_stylesheet( $path, $type = 'theme' ) {
 }
 
 
+function add_script( $path, $type = 'theme', $loading = false ) {
+	global $eigenheim;
+	$eigenheim->theme->add_script( $path, $type, $loading );
+}
+
+
+function remove_script( $path, $type = 'theme' ) {
+	global $eigenheim;
+	$eigenheim->theme->remove_script( $path );
+}
+
+
 function snippet( $path, $args = array(), $return = false ) {
 	global $eigenheim;
 	return $eigenheim->theme->snippet( $path, $args, $return );
