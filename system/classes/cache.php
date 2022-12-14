@@ -14,6 +14,10 @@ class Cache {
 
 		// TODO: add config option to disable cache
 
+		// TODO: check other cache files, if we maybe want to delete one
+		// every cache file should have a max timestamp in their filename, so we can
+		// easily filter and delete cache files we no longer need, or that need refreshing
+
 		global $eigenheim;
 
 		if( $type == 'image' || $type == 'image-preview' ) {

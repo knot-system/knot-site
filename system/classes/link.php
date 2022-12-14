@@ -51,8 +51,17 @@ Class Link {
 		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->short_url );
 
 		$description = $this->extract_information( $html, '/<meta.*?name="description".*?content="(.*?)".*?>/is' );
+		if( ! $description ) {
+			$description = $this->extract_information( $html, '/<meta.*?property="og:description".*?content="(.*?)".*?>/is' );
+		}
+		if( ! $description ) {
+			$description = $this->extract_information( $html, '/<meta.*?property="twitter:description".*?content="(.*?)".*?>/is' );
+		}
 
 		$preview_image = $this->extract_information( $html, '/<meta.*?property="og:image".*?content="(.*?)".*?>/is' );
+		if( ! $preview_image ) {
+			$preview_image = $this->extract_information( $html, '/<meta.*?property="twitter:image".*?content="(.*?)".*?>/is' );
+		}
 
 		if( $preview_image ) {
 			// cache remote image locally
