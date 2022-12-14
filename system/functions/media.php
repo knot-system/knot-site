@@ -54,15 +54,6 @@ function get_image_dimensions( $target_width, $src_width, $src_height ) {
 function get_image_preview_base64( $file_path ) {
 
 	global $eigenheim;
-
-	$cache_active = $eigenheim->config->get( 'image_cache_active' );
-
-	if( $cache_active && ! is_dir($eigenheim->abspath.'cache') ) {
-		if( mkdir( $eigenheim->abspath.'cache/', 0777, true ) === false ) {
-			$eigenheim->debug( 'could not create cache dir' );
-			$cache_active = false;
-		}
-	}
 	
 	$target_width = 50;
 	$jpg_quality = 40;
@@ -74,18 +65,17 @@ function get_image_preview_base64( $file_path ) {
 	$src_height = $image_meta[1];
 	$image_type = $image_meta[2];
 
+
 	$cache_string = $file_path.$filesize;
 
-	$cache_folder = $eigenheim->abspath.'cache/';
-	$cache_name = md5($cache_string).'_preview_base64.txt';
-	$cache_file = $cache_folder.$cache_name;
+	$cache = new Cache( 'image-preview', $cache_string );
 
-	if( $cache_active && file_exists($cache_file) ) {
+	$cache_content = $cache->getData();
+	if( $cache_content ) {
 		// return cached file, then end
-		$cache_content = file_get_contents($cache_file);
-
 		return $cache_content;
 	}
+
 
 	if( $image_type == IMAGETYPE_JPEG ) {
 		$src_image = imagecreatefromjpeg( $file_path );
@@ -134,9 +124,7 @@ function get_image_preview_base64( $file_path ) {
 
 	$base64_data = 'data:image/jpeg;base64,'.base64_encode($image_data);
 
-	if( $cache_active ) {
-		file_put_contents( $cache_file, $base64_data );
-	}
+	$cache->addData( $base64_data );
 
 	imagedestroy( $target_image );
 
@@ -152,13 +140,6 @@ function handle_image_display( $file_path ) {
 	$target_width = $eigenheim->config->get( 'image_target_width' );
 	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
 	$png_to_jpg = $eigenheim->config->get( 'image_png_to_jpg' );
-
-	if( $cache_active && ! is_dir($eigenheim->abspath.'cache') ) {
-		if( mkdir( $eigenheim->abspath.'cache/', 0777, true ) === false ) {
-			$eigenheim->debug( 'could not create cache dir' );
-			$cache_active = false;
-		}
-	}
 
 	$image_meta = getimagesize( $file_path );
 	$filesize = filesize( $file_path );
@@ -184,20 +165,18 @@ function handle_image_display( $file_path ) {
 		exit;
 	}
 
-	$cache_string = $file_path.$filesize;
+	$cache_string = $file_path.$filesize.$target_width.$jpg_quality;
+	$cache = new Cache( 'image', $cache_string );
 
-	$cache_folder = $eigenheim->abspath.'cache/';
-	$cache_name = md5($cache_string).'_'.$target_width.'_'.$jpg_quality.'.'.$file_extension;
-	$cache_file = $cache_folder.$cache_name;
-
-	if( $cache_active && file_exists($cache_file) ) {
+	$cache_content = $cache->getData();
+	if( $cache_content ) {
 		// return cached file, then end
-		$fp = fopen($cache_file, 'rb');
 		header("Content-Type: ".$mime_type);
-		header("Content-Length: ".filesize($cache_file));
-		fpassthru($fp);
+		header("Content-Length: ".$cache->filesize);
+		echo $cache_content;
 		exit;
 	}
+
 
 	if( $image_type == IMAGETYPE_JPEG ) {
 		$src_image = imagecreatefromjpeg( $file_path );
@@ -239,20 +218,25 @@ function handle_image_display( $file_path ) {
 
 	if( $image_type == IMAGETYPE_JPEG
 	 || ($png_to_jpg && $image_type == IMAGETYPE_PNG) ) {
-		header( 'Content-Type: image/jpeg' );
-		imagejpeg( $target_image, NULL, $jpg_quality );
 
-		if( $cache_active ) {
-			imagejpeg( $target_image, $cache_file, $jpg_quality );
-		}
+		ob_start();
+		imagejpeg( $target_image, NULL, $jpg_quality );
+		$data = ob_get_contents();
+		ob_end_clean();
+		$cache->addData( $data );
+
+		header( 'Content-Type: image/jpeg' );
+		echo $data;
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
-		header( 'Content-Type: image/png' );
-		imagepng($target_image);
 
-		if( $cache_active ) {
-			imagepng( $target_image, $cache_file );
-		}
+		ob_start();
+		$data = imagepng( $target_image );
+		ob_end_clean();
+		$cache->addData( $data );
+
+		header( 'Content-Type: image/png' );
+		echo $data;
 
 	}
 
