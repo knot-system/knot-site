@@ -96,6 +96,9 @@ class Text {
 
 		$this->content = preg_replace( $regexp, $replace, $this->content );
 
+		// remove trailing slash from link preview text:
+		$this->content = str_replace( '/</a>', '</a>', $this->content );
+
 		return $this;
 	}
 
