@@ -26,7 +26,7 @@ Class Link {
 
 		$json = json_decode($cache_content);
 
-		// TODO: check last_refresh, and maybe call getLinkInfo() ??
+		if( $json->last_refresh > time() + 60*60*24 ) return false; // refresh preview after one day - TODO: revisit this and check if we want to handle it like this
 
 		return $json;
 	}
