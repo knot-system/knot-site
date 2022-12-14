@@ -60,7 +60,7 @@ if( $text ) {
 if( $link_preview ) {
 ?>
 
-		<div class="link-preview">
+		<div class="link-preview-container">
 		<?= $link_preview ?>
 
 		</div>
