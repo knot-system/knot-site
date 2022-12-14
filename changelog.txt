@@ -1,3 +1,22 @@
+alpha.12
+
+The following snippets were updated; only (mostly) whitespace is affected, to make 'view-source' better readable, so you may skip updating your custom theme snippets this time: author_info.php, footer.php, overview.php, page_content.php, pagination.php.
+The following snippets need to be updated in your custom theme, if you want to display the new link previews: header.php, post.php
+
+- *NEW*: basic link previews. currently, link previews get refreshed after 24 hours
+- default theme: update to alpha.12 with link previews & new tag filter message style
+- added a global 'eigenheim.css' stylesheet with relevant styles for the image display. you can remove it in your themes functions.php with remove_stylesheet('css/eigenheim.css');
+- added a global 'eigenheim.js' script with relevant functionality for link preview refreshing. you can remove it in your themes functions.php with remove_script('js/eigenheim.js');
+- new Cache class for easier cache handling (cache can no longer be disabled, this option may be re-added later)
+- new Link class for link preview handling
+- HTML beautify, to make 'view-source' better readable
+- 'add_stylesheet( $path )': now checks if the file exists at the path before including it
+- new function 'remove_stylesheet( $path )'
+- new functions 'add_script( $path )' and 'remove_script( $path )'
+- much better URL matching in the content (for auto link detection)
+- the auto-updater now lists all the snippets in custom themes, that need to be updated (when updating from alpha.12 to a newer version)
+
+
 alpha.11
 
 The following snippet was updated: overview.php; there are also new snippets available: 404.php & pagination.php
