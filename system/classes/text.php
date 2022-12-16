@@ -141,22 +141,31 @@ foreach( $this->links as $link ) {
 
 
 	$link_info = $link->getPreview();
-	if( ! $link_info ) {
-		$link_info = $link->getLinkInfo()->getPreview(); // TODO: move this to a ajax request, because 'getLinkInfo' takes some time
+
+	$classes = array( 'link-preview' );
+
+	if( empty($link_info->last_refresh) || $link_info->last_refresh < time()-60*60*24 ) { // TODO: finetune refresh timeout
+		$classes[] = 'link-preview-needs-refresh';
+		
+		// TODO: try to get preview of ONE link (per load),
+		// so that we don't overwhelm the page generation
+		// other links will get fetched on the next reload, or via ajax
+		//$link_info = $link->getLinkInfo()->getPreview();
+
 	}
 
-
+	// TODO: this code is currently copied to api.php; we need one place for both
+	$preview_title = '<span class="link-preview-title">'.$link->short_url.'</span>';
 	$preview_image = '';
-	$preview_title = '';
 	$preview_description = '';
+	if( ! empty($link_info->preview_image) ) $preview_image = '<span class="link-preview-image">'.$link_info->preview_image.'</span>';
+	if( ! empty($link_info->title) ) $preview_title = '<span class="link-preview-title">'.$link_info->title.'</span>';
+	if( ! empty($link_info->description) ) $preview_description = '<span class="link-preview-description">'.$link_info->description.'</span>';
 
-	if( $link_info->preview_image ) $preview_image = '<span class="link-preview-image">'.$link_info->preview_image.'</span>';
-	if( $link_info->title ) $preview_title = '<span class="link-preview-title">'.$link_info->title.'</span>';
-	if( $link_info->description ) $preview_description = '<span class="link-preview-description">'.$link_info->description.'</span>';
-
+	$inner_html = $preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description;
 
 $html .= '			<li>
-				<a id="'.$link_id.'" class="link-preview" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener">'.$preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description.'</span></a>
+				<a id="'.$link_id.'" class="'.implode(' ', $classes).'" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener">'.$inner_html.'</span></a>
 			</li>
 ';
 }

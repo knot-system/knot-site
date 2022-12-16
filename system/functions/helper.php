@@ -24,6 +24,15 @@ function trailing_slash_it( $string ){
 }
 
 
+function un_trailing_slash_it( $string ) {
+	// remove slash at the end
+
+	$string = preg_replace( '/\/*$/', '', $string );
+
+	return $string;
+}
+
+
 function add_stylesheet( $path, $type = 'theme' ) {
 	global $eigenheim;
 	$eigenheim->theme->add_stylesheet( $path, $type );

@@ -4,24 +4,51 @@ var LinkPreview = {
 
 	init: function(){
 
-		var linkPreviews = document.querySelectorAll( 'a.link-preview' );
+		var linkPreviews = document.querySelectorAll( 'a.link-preview-needs-refresh' );
 
 		if( ! linkPreviews || ! linkPreviews.length ) return;
 
+		var timeout = 1000;
 		for( var linkPreview of linkPreviews ) {
-			LinkPreview.refresh(linkPreview);
+			var id = linkPreview.id.replace('link-','');
+			setTimeout( LinkPreview.refresh, timeout, id);
+			timeout += 700;
 		}
 
 	},
 
-	refresh: function( linkPreview ) {
+	refresh: function( id ) {
+		
+		var url = Eigenheim.API.url+'?link_preview='+id;
+		fetch( url, {
+			mode: 'same-origin'
+		}).then( response => response.json() ).then(function(response){
 
-		var id = linkPreview.id;
-		// TODO: for now, we refresh a link multiple times if there are multpile link-previews for the same link on the page. revisit this in the future, to make sure to only update every ID once for the whole page
+			if( ! response.success ) return;
 
+			var data = response.data,
+				html = response.html;
 
-		// TODO: refresh the link preview, and if we have new data, add a 'refresh' link next to the link-preview, so the user can refresh the preview html
-		//console.log('refresh', id)
+			if( ! data.url || ! data.id ) return;
+
+			if( data.id != id ) return;
+
+			var linkPreview = document.getElementById('link-'+data.id);
+
+			var refreshButton = document.createElement('div');
+			refreshButton.classList.add('link-preview-refresh');
+
+			refreshButton.addEventListener( 'click', function(e){
+				e.preventDefault();
+				this.parentNode.innerHTML = html;
+			});
+
+			linkPreview.appendChild(refreshButton);
+			linkPreview.classList.remove('link-preview-needs-refresh');
+
+		}).catch(function(error){
+			console.warn('AJAX error', error); // DEBUG
+		});
 
 	}
 

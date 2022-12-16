@@ -91,6 +91,18 @@ class Route {
 				'template' => '404'
 			);
 
+		} elseif( ! empty($request[0]) && $request[0] == api_get_endpoint() ) {
+			// api
+			// NOTE: this is subject to change!
+
+			if( api_check_request() ) {
+				exit;
+			}
+
+			$this->route = array(
+				'template' => '404'
+			);
+
 		} elseif( ! empty($request[0]) && $request[0] == 'page' && isset($request[1]) ) {
 			// overview, pagination
 

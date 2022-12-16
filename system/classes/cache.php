@@ -10,7 +10,7 @@ class Cache {
 	public $hash;
 	public $filesize;
 	
-	function __construct( $type, $name ) {
+	function __construct( $type, $input, $use_hash = false ) {
 
 		// TODO: add config option to disable cache
 
@@ -31,10 +31,19 @@ class Cache {
 		$this->checkCacheFolder();
 
 		$this->type = $type;
-		$this->name = $name;
 
-		// TODO: check if we want to create the hash like this
-		$this->hash = hash( 'tiger128,3', $this->name );
+		if( $use_hash ) {
+
+			$this->hash = $input;
+
+		} else {
+
+			$this->name = $input;
+
+			// TODO: check if we want to create the hash like this
+			$this->hash = hash( 'tiger128,3', $this->name );
+
+		}
 
 		$this->cache_file = $this->cache_folder.$this->hash;
 

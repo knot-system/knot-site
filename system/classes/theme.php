@@ -157,6 +157,13 @@ class Theme {
 
 		global $eigenheim;
 
+		// TODO: move this to somewhere else:
+		?>
+	<script type="text/javascript">
+		const Eigenheim = { API: { url: "<?= url(api_get_endpoint()) ?>" } };
+	</script>
+<?php
+
 		foreach( $this->scripts as $script ) {
 			if( $script['type'] == 'global' ) {
 				$version = $eigenheim->version();
@@ -172,7 +179,6 @@ class Theme {
 			if( ! empty($script['loading']) ) $loading = ' '.$script['loading'];
 
 		?>
-	<link rel="script" href="<?= $script['url'] ?>?v=<?= $version ?>">
 	<script<?= $loading ?> src="<?= $script['url'] ?>?v=<?= $version ?>"></script>
 <?php
 		}

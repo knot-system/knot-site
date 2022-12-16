@@ -2,18 +2,54 @@
 
 Class Link {
 
-	public $url;
 	public $id;
+	public $url;
+	public $short_url;
 
-	function __construct( $url ) {
+	private $cache;
 
-		$this->url = $url;
-		$this->short_url = str_replace(array('https://','http://'), '', $url);
+	function __construct( $input, $use_id = false ) {
 
-		$this->cache = new Cache( 'link', $url );
+		if( $use_id ) {
 
-		$this->id = 'link-'.$this->cache->hash;
+			$id = $input;
 
+			$this->id = $id;
+			$this->cache = new Cache( 'link', $id, true );
+
+			$data = $this->cache->getData();
+
+			if( ! $data ) {
+				throw new Exception( 'no data' );
+			}
+
+			$data = json_decode($data);
+
+			$this->url = $data->url;
+
+		} else {
+
+			$url = $input;
+
+			$this->url = $url;
+			$this->cache = new Cache( 'link', $url );
+			$this->id = 'link-'.$this->cache->hash;
+
+			$data = $this->cache->getData();
+			if( ! $data ) {
+				// create cache file with basic info
+				$data = [
+					'id' => $this->id,
+					'url' => $url
+				];
+				$this->updatePreview( $data );
+			}
+
+		}
+
+		$this->short_url = str_replace(array('https://','http://'), '', $this->url);
+		$this->short_url = un_trailing_slash_it($this->short_url);
+		
 		return $this;
 	}
 
@@ -25,8 +61,6 @@ Class Link {
 		if( ! $cache_content ) return false;
 
 		$json = json_decode($cache_content);
-
-		if( $json->last_refresh > time() + 60*60*24 ) return false; // refresh preview after one day - TODO: revisit this and check if we want to handle it like this
 
 		return $json;
 	}
@@ -74,6 +108,7 @@ Class Link {
 		}
 
 		$data = [
+			'id' => $this->id,
 			'url' => $url,
 			'title' => $title,
 			'preview_image' => $preview_image,
