@@ -1,3 +1,11 @@
+alpha.13
+
+- link previews now get refreshed asyncronously, so the loading time is much faster
+- when a link preview gets generated or refreshes asyncronously, a small icon is displayed to refresh the html that the user needs to click, to prevent layout shifts - the next time the page loads, the new/refreshed link preview will be shown automatically
+- link preview cache lifetime is now 6 hours (this may be finetuned in the future)
+- cache-buster for CSS and JS files, if debug option is active
+
+
 alpha.12
 
 The following snippets were updated; only (mostly) whitespace is affected, to make 'view-source' better readable, so you may skip updating your custom theme snippets this time: author_info.php, footer.php, overview.php, page_content.php, pagination.php.
