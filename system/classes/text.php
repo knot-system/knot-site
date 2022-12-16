@@ -147,12 +147,18 @@ foreach( $this->links as $link ) {
 	if( empty($link_info['last_refresh']) || $link_info['last_refresh'] < time()-60*60 ) { // we currently refresh links after 1 hour - TODO: finetune this value
 
 		$classes[] = 'link-preview-needs-refresh';
-		
-		// TODO: try to get preview of ONE link (per load),
-		// so that we don't overwhelm the page generation
-		// other links will get fetched on the next reload, or via ajax
-		//$link_info = $link->getLinkInfo()->getPreview();
 
+		global $eigenheim;
+		if( ! isset($eigenheim->is_link_refreshing) ) {
+			// NOTE: we refresh only on link for every request, because this can take a few seconds,
+			// depending on the url and how fast the other server is.
+			// by default, the link refresh also happens async via js, so all the links that don't get
+			// refreshed with this request, should be done by the time this page refreshes again.
+			// this is just a fallback, if js is not active, or doesn't get executed, or is removed by the theme
+			$eigenheim->is_link_refreshing = true;
+			$link_info = $link->getLinkInfo()->getPreview();
+		}
+		
 	}
 
 
