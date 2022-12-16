@@ -40,8 +40,7 @@ class Cache {
 
 			$this->name = $input;
 
-			// TODO: check if we want to create the hash like this
-			$this->hash = hash( 'tiger128,3', $this->name );
+			$this->hash = get_hash( $this->name );
 
 		}
 
