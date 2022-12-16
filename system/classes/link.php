@@ -60,13 +60,22 @@ Class Link {
 
 		if( ! $cache_content ) return false;
 
-		$json = json_decode($cache_content, true);
+		$data = json_decode($cache_content, true);
 
-		if( ! isset( $json['title']) ) $json['title'] = false;
-		if( ! isset( $json['description']) ) $json['description'] = false;
-		if( ! isset( $json['preview_image']) ) $json['preview_image'] = false;
 
-		return $json;
+		$preview_title = '<span class="link-preview-title">'.$this->short_url.'</span>';
+		$preview_image = '';
+		$preview_description = '';
+		if( ! empty($data['preview_image']) ) $preview_image = '<span class="link-preview-image">'.$data['preview_image'].'</span>';
+		if( ! empty($data['title']) ) $preview_title = '<span class="link-preview-title">'.$data['title'].'</span>';
+		if( ! empty($data['description']) ) $preview_description = '<span class="link-preview-description">'.$data['description'].'</span>';
+		$preview_html = $preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description;
+
+
+		$data['preview_html'] = $preview_html;
+		$data['preview_html_hash'] = get_hash( $preview_html );
+
+		return $data;
 	}
 
 
@@ -100,6 +109,8 @@ Class Link {
 		if( ! $preview_image ) {
 			$preview_image = $this->extract_information( $html, '/<meta.*?property="twitter:image".*?content="(.*?)".*?>/is' );
 		}
+
+		// TODO: maybe we want to get information from other meta tags as well. revisit this in the future
 
 		if( $preview_image ) {
 			// cache remote image locally

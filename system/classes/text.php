@@ -161,19 +161,8 @@ foreach( $this->links as $link ) {
 		
 	}
 
-
-	// TODO: this code is currently copied to api.php; we need one place for both
-	$preview_title = '<span class="link-preview-title">'.$link->short_url.'</span>';
-	$preview_image = '';
-	$preview_description = '';
-	if( ! empty($link_info['preview_image']) ) $preview_image = '<span class="link-preview-image">'.$link_info['preview_image'].'</span>';
-	if( ! empty($link_info['title']) ) $preview_title = '<span class="link-preview-title">'.$link_info['title'].'</span>';
-	if( ! empty($link_info['description']) ) $preview_description = '<span class="link-preview-description">'.$link_info['description'].'</span>';
-
-	$inner_html = $preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description;
-
 $html .= '			<li>
-				<a id="'.$link_id.'" class="'.implode(' ', $classes).'" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener">'.$inner_html.'</span></a>
+				<a id="'.$link_id.'" class="'.implode(' ', $classes).'" name="'.$link->short_url.'" href="'.$link->url.'" target="_blank" rel="noopener" data-preview-hash="'.$link_info['preview_html_hash'].'">'.$link_info['preview_html'].'</span></a>
 			</li>
 ';
 }

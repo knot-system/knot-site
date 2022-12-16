@@ -26,23 +26,27 @@ var LinkPreview = {
 
 			if( ! response.success ) return;
 
-			var data = response.data,
-				html = response.html;
+			var data = response.data;
 
 			if( ! data.url || ! data.id ) return;
 
 			if( data.id != id ) return;
 
-			// TODO: make sure to only show refresh button if content changed
-
 			var linkPreview = document.getElementById('link-'+data.id);
+
+			var previewHash = linkPreview.dataset.previewHash;
+
+			if( previewHash && data.preview_html_hash == previewHash ) {
+				return;
+			}
+
 
 			var refreshButton = document.createElement('div');
 			refreshButton.classList.add('link-preview-refresh');
 
 			refreshButton.addEventListener( 'click', function(e){
 				e.preventDefault();
-				this.parentNode.innerHTML = html;
+				this.parentNode.innerHTML = data.preview_html;
 			});
 
 			linkPreview.appendChild(refreshButton);

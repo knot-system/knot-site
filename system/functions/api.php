@@ -35,40 +35,12 @@ function api_check_request(){
 			exit;
 		}
 
-
-		$old_data = $link->getPreview();
 		$data = $link->getLinkInfo()->getPreview();
-
-		$changed = false;
-		if( $data['title'] != $old_data['title'] ) $changed = true;
-		elseif( $data['preview_image'] != $old_data['preview_image'] ) $changed = true;
-		elseif( $data['description'] != $old_data['description'] ) $changed = true;
-
-		if( ! $changed ) {
-			header('Content-Type: application/json; charset=utf-8');
-			echo json_encode(array(
-				'success' => false,
-				'message' => 'data did not change'
-			));
-			exit;
-		}
-
-
-		// TODO: this code is currently copied to text.php; we need one place for both
-		$preview_title = '<span class="link-preview-title">'.$link->short_url.'</span>';
-		$preview_image = '';
-		$preview_description = '';
-		if( ! empty($data['preview_image']) ) $preview_image = '<span class="link-preview-image">'.$data['preview_image'].'</span>';
-		if( ! empty($data['title']) ) $preview_title = '<span class="link-preview-title">'.$data['title'].'</span>';
-		if( ! empty($data['description']) ) $preview_description = '<span class="link-preview-description">'.$data['description'].'</span>';
-
-		$inner_html = $preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description;
 
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode(array(
 			'success' => true,
-			'data' => $data,
-			'html' => $inner_html
+			'data' => $data
 		));
 		exit;
 	}
