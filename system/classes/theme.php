@@ -105,6 +105,11 @@ class Theme {
 			} else {
 				$version = $this->get('version');
 			}
+
+			if( $eigenheim->config->get('debug') ) {
+				$version .= '.'.time();
+			}
+
 		?>
 	<link rel="stylesheet" href="<?= $stylesheet['url'] ?>?v=<?= $version ?>">
 <?php
@@ -157,6 +162,10 @@ class Theme {
 				$version = $eigenheim->version();
 			} else {
 				$version = $this->get('version');
+			}
+
+			if( $eigenheim->config->get('debug') ) {
+				$version .= '.'.time();
 			}
 
 			$loading = '';
