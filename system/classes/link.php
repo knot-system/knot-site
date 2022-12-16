@@ -60,7 +60,11 @@ Class Link {
 
 		if( ! $cache_content ) return false;
 
-		$json = json_decode($cache_content);
+		$json = json_decode($cache_content, true);
+
+		if( ! isset( $json['title']) ) $json['title'] = false;
+		if( ! isset( $json['description']) ) $json['description'] = false;
+		if( ! isset( $json['preview_image']) ) $json['preview_image'] = false;
 
 		return $json;
 	}

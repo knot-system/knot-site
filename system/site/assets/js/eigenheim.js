@@ -33,6 +33,8 @@ var LinkPreview = {
 
 			if( data.id != id ) return;
 
+			// TODO: make sure to only show refresh button if content changed
+
 			var linkPreview = document.getElementById('link-'+data.id);
 
 			var refreshButton = document.createElement('div');

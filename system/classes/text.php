@@ -144,7 +144,8 @@ foreach( $this->links as $link ) {
 
 	$classes = array( 'link-preview' );
 
-	if( empty($link_info->last_refresh) || $link_info->last_refresh < time()-60*60*24 ) { // TODO: finetune refresh timeout
+	if( empty($link_info['last_refresh']) || $link_info['last_refresh'] < time()-60*60 ) { // we currently refresh links after 1 hour - TODO: finetune this value
+
 		$classes[] = 'link-preview-needs-refresh';
 		
 		// TODO: try to get preview of ONE link (per load),
@@ -154,13 +155,14 @@ foreach( $this->links as $link ) {
 
 	}
 
+
 	// TODO: this code is currently copied to api.php; we need one place for both
 	$preview_title = '<span class="link-preview-title">'.$link->short_url.'</span>';
 	$preview_image = '';
 	$preview_description = '';
-	if( ! empty($link_info->preview_image) ) $preview_image = '<span class="link-preview-image">'.$link_info->preview_image.'</span>';
-	if( ! empty($link_info->title) ) $preview_title = '<span class="link-preview-title">'.$link_info->title.'</span>';
-	if( ! empty($link_info->description) ) $preview_description = '<span class="link-preview-description">'.$link_info->description.'</span>';
+	if( ! empty($link_info['preview_image']) ) $preview_image = '<span class="link-preview-image">'.$link_info['preview_image'].'</span>';
+	if( ! empty($link_info['title']) ) $preview_title = '<span class="link-preview-title">'.$link_info['title'].'</span>';
+	if( ! empty($link_info['description']) ) $preview_description = '<span class="link-preview-description">'.$link_info['description'].'</span>';
 
 	$inner_html = $preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description;
 
