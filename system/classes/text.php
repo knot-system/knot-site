@@ -144,7 +144,7 @@ foreach( $this->links as $link ) {
 
 	$classes = array( 'link-preview' );
 
-	if( empty($link_info['last_refresh']) || $link_info['last_refresh'] < time()-60*60 ) { // we currently refresh links after 1 hour - TODO: finetune this value
+	if( empty($link_info['last_refresh']) || $link_info['last_refresh'] < time()-60*60*6 ) { // we currently refresh links after 6 hours - TODO: finetune this value
 
 		$classes[] = 'link-preview-needs-refresh';
 
