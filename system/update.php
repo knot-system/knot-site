@@ -188,7 +188,7 @@ if( $step == 'check' ) {
 
 	deleteDirectory( $eigenheim->abspath.'theme/default/' );
 	deleteDirectory( $eigenheim->abspath.'system/' );
-	@unlink( $eigenheim->abspath.'.htacces' );
+	unlink( $eigenheim->abspath.'.htacces' );
 	unlink( $eigenheim->abspath.'index.php' );
 	unlink( $eigenheim->abspath.'README.md');
 	unlink( $eigenheim->abspath.'changelog.txt');
