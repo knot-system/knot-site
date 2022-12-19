@@ -10,7 +10,7 @@ if( ! empty($args['tag']) ) $tag = $args['tag'];
 if( $tag ) {
 ?>
 		
-	<p class="tag-notice"><em>only showing posts with the tag <strong><?= $tag ?></strong></em></p>
+	<p class="tag-notice"><em>only showing posts with the tag <strong><?= $tag ?></strong></em> <a class="tag-notice-close" href="<?= url() ?>">close</a></p>
 
 <?php
 }
