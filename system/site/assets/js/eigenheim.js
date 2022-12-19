@@ -1,4 +1,14 @@
+/*
+NOTE: this file refreshes link previews in the background,
+if they need refreshing, and then shows a reload button
+(.link-preview-refresh) next to the link preview; the html
+updates after the user clicks the button, so no layout shift
+happens on its own.
+you can remove this file in your custom themes functions.php via:
+remove_script('js/eigenheim.js');
+*/
 (function(){
+
 
 var LinkPreview = {
 
