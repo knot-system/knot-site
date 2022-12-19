@@ -34,11 +34,16 @@ class Posts {
 
 	function get( $post_id = false ) {
 
-		if( ! $post_id ) return $this->posts;
+		if( $post_id && ! array_key_exists($post_id, $this->posts) ) return false;
 
-		if( ! array_key_exists($post_id, $this->posts) ) return false;
+		if( $post_id ) return $this->posts[$post_id]->initialize();
 
-		return $this->posts[$post_id];
+		foreach( $this->posts as $post ) {
+			$post->initialize(); // TODO: check this
+		}
+
+		return $this->posts;
+
 	}
 
 

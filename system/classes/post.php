@@ -4,6 +4,7 @@ class Post {
 
 	public $id;
 	public $fields = array();
+	private $raw_data;
 
 	function __construct( $file ) {
 
@@ -13,7 +14,20 @@ class Post {
 
 		if( ! isset($data['content']) ) return false;
 
-		$eigenheim = $file->eigenheim; // TODO: how do we want to handle this?
+		$this->eigenheim = $file->eigenheim; // TODO: how do we want to handle this?
+
+		$this->raw_data = $data;
+		$this->raw_file = $file;
+
+		$id = $data['id'];
+		$this->id = $id;
+
+		return $this;
+	}
+
+	function initialize() {
+
+		$data = $this->raw_data;
 
 		$author = false;
 		$author_information = get_author_information();
@@ -31,10 +45,11 @@ class Post {
 
 		$image_html = false;
 		$image_url = false;
-		if( ! empty( $data['photo']) ) {
-			$post_folder = trailing_slash_it(pathinfo( $file->filename, PATHINFO_DIRNAME ));
 
-			if( file_exists($eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
+		if( ! empty( $data['photo']) ) {
+			$post_folder = trailing_slash_it(pathinfo( $this->raw_file->filename, PATHINFO_DIRNAME ));
+
+			if( file_exists($this->eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
 				$image_path = $post_folder.$data['photo'];
 				$image_html = get_image_html( $image_path );
 				$image_url = url('content/'.$image_path, false);
@@ -51,10 +66,8 @@ class Post {
 		if( ! is_array($tags) ) $tags = array();
 
 		$timestamp = $data['timestamp'];
-		$id = $data['id'];
-		$this->id = $id;
 
-		$permalink = url('post/'.$id.'/');
+		$permalink = url('post/'.$this->id.'/');
 
 		$date_published = date( 'c', $timestamp );
 
@@ -62,7 +75,7 @@ class Post {
 
 		// this is the structure that the json feed wants for a post, see https://www.jsonfeed.org/version/1.1/ (with some additional fields we use elsewhere)
 		$this->fields = array(
-			'id' => $id,
+			'id' => $this->id,
 			'title' => $title,
 			'author' => $author,
 			'permalink' => $permalink,
@@ -81,7 +94,7 @@ class Post {
 	}
 
 	function get() {
-		return $this->fields;
+		return $this->initialize()->fields;
 	}
 
 }
