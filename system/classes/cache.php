@@ -1,5 +1,8 @@
 <?php
 
+// NOTE: in system/classes/core.php there is also the 'refresh_cache()' function
+// that takes care of deleting old, obsolete cache files
+
 class Cache {
 
 	private $cache_folder = 'cache/';
@@ -128,17 +131,6 @@ class Cache {
 		}
 
 		return $filename;
-	}
-
-
-	function refresh_cache() {
-
-
-
-		// TODO: check other cache files, if we maybe want to delete one
-		// every cache file should have a max timestamp in their filename, so we can
-		// easily filter and delete cache files we no longer need, or that need refreshing
-
 	}
 
 

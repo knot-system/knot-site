@@ -46,6 +46,8 @@ class Eigenheim {
 
 		$this->route = new Route( $this );
 
+		$this->refresh_cache();
+
 	}
 
 	function debug( ...$messages ) {
@@ -80,6 +82,37 @@ class Eigenheim {
 
 	function version() {
 		return self::VERSION;
+	}
+
+
+	function refresh_cache() {
+		// NOTE: see system/classes/cache.php for general cache handling
+		// this function clears out old cache files.
+
+		$folderpath = $this->abspath.'cache/';
+
+		$files = read_folder( $folderpath, true );
+
+		foreach( $files as $file ) {
+			$path = explode( '/', $file );
+			$filename = explode( '_', end($path));
+
+			$timestamp = (int) $filename[0];
+			
+			if( ! $timestamp ) {
+				$this->debug( 'cachefile has no timestamp', $file );
+				exit;
+			}
+
+			$lifetime = $this->config->get( 'cache_lifetime' );
+
+			if( time()-$timestamp > $lifetime ) {
+				// cachefile too old
+				@unlink($file); // delete old cache file; fail silently
+			}
+
+		}
+
 	}
 
 }

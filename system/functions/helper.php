@@ -134,3 +134,41 @@ function doing_feed(){
 
 	return !! $eigenheim->doing_feed;
 }
+
+
+function read_folder( $folderpath, $recursive = false ) {
+
+	global $eigenheim;
+
+	$files = [];
+
+	if( ! is_dir( $folderpath ) ) {
+		$eigenheim->debug( $folderpath.' is no directory' );
+		return array();
+	}
+
+	$filename = false;
+	if( $handle = opendir($folderpath) ){
+		while( false !== ($file = readdir($handle)) ){
+			if( substr($file,0,1) == '.' ) continue; // skip hidden files, ./ and ../
+
+			if( is_dir($folderpath.$file) ) {
+
+				if( $recursive ) {
+					$files = array_merge( $files, read_folder($folderpath.$file.'/', $recursive));
+				}
+
+				continue;
+			}
+
+			$files[] = $folderpath.$file;
+
+		}
+		closedir($handle);
+	} else {
+		$eigenheim->debug( 'could not open dir', $folderpath );
+		return array();
+	}
+
+	return $files;
+}
