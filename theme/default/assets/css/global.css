@@ -248,6 +248,22 @@ article {
 						margin: 0;
 					}
 
+				article .link-preview .link-preview-description {
+					display: block;
+					margin: 0 0 3px;
+				}
+
+				article .link-preview .link-preview-url {
+					font-size: 0.7em;
+					display: block;
+					opacity: 0.5;
+				}
+
+					article .link-preview:hover .link-preview-url {
+						color: var(--color-link-hover);
+						opacity: 1;
+					}
+
 	@media ( max-width: 660px ) {
 
 		article .link-preview {

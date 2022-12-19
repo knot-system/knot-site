@@ -70,6 +70,7 @@ Class Link {
 		if( ! empty($data['title']) ) $preview_title = '<span class="link-preview-title">'.$data['title'].'</span>';
 		if( ! empty($data['description']) ) $preview_description = '<span class="link-preview-description">'.$data['description'].'</span>';
 		$preview_html = $preview_image.'<span class="link-preview-text">'.$preview_title.$preview_description;
+		$preview_html .= ' <span class="link-preview-url">'.$this->short_url.'</span>';
 
 
 		$data['preview_html'] = $preview_html;
