@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.12
+// Version: alpha.14
 
 if( ! $eigenheim ) exit;
 
@@ -10,7 +10,7 @@ if( ! $eigenheim ) exit;
 </main>
 
 <footer>
-	Eigenheim v.<?= $eigenheim->version() ?>
+	<a href="https://github.com/maxhaesslein/eigenheim" target="_blank" rel="noopener">Eigenheim</a> v.<?= $eigenheim->version() ?>
 
 </footer>
 
