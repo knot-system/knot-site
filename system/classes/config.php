@@ -10,7 +10,7 @@ class Config {
 		'image_png_to_jpg' => true,
 		'feed_limit_posts' => 20,
 		'add_footnote_to_links' => true,
-		'cache_lifetime' => 60*60*6, // in seconds
+		'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
 	);
 
 	function __construct( $eigenheim ) {
