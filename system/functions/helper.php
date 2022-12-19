@@ -123,3 +123,14 @@ function get_hash( $input ) {
 
 	return $hash;
 }
+
+
+function doing_feed(){
+	// currently displaying rss or json feed
+	
+	global $eigenheim;
+
+	if( empty($eigenheim->doing_feed) ) return false;
+
+	return !! $eigenheim->doing_feed;
+}

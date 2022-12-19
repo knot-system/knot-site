@@ -2,6 +2,8 @@
 
 if( ! $eigenheim ) exit;
 
+$eigenheim->doing_feed = true;
+
 header('Content-Type: application/rss+xml; charset=utf-8');
 
 $limit_count = $eigenheim->config->get('feed_limit_posts');

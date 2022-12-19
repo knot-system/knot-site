@@ -90,6 +90,13 @@ class Post {
 			'timestamp' => $timestamp,
 		);
 
+		if( doing_feed() ) {
+			// json feed: remove obsolete fields:
+			unset($this->fields['link_preview']);
+			unset($this->fields['image_html']);
+			unset($this->fields['timestamp']);
+		}
+
 		return $this;
 	}
 

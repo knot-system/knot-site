@@ -90,6 +90,8 @@ class Text {
 
 		$add_footnote_to_links = $eigenheim->config->get('add_footnote_to_links');
 
+		if( doing_feed() ) $add_footnote_to_links = false;
+
 		if( $add_footnote_to_links ) {
 			$replace .= '<sup class="footnote"><a href="#$2.$3$4">*</a></sup>';
 		}

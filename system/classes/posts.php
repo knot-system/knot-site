@@ -43,7 +43,6 @@ class Posts {
 		}
 
 		return $this->posts;
-
 	}
 
 

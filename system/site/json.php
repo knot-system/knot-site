@@ -2,8 +2,9 @@
 
 if( ! $eigenheim ) exit;
 
-// see https://www.jsonfeed.org/version/1.1/ for details
+$eigenheim->doing_feed = true;
 
+// see https://www.jsonfeed.org/version/1.1/ for details
 $json = array(
 	'version' => 'https://jsonfeed.org/version/1.1',
 	'title' => $eigenheim->config->get( 'site_title' ),
@@ -25,7 +26,12 @@ if( $author ) {
 $limit_count = $eigenheim->config->get('feed_limit_posts');
 $posts = $eigenheim->posts->limit($limit_count)->get();
 
-if( count($posts) ) $json['items'] = array_values($posts);
+if( count($posts) ) {
+	$json['items'] = array();
+	foreach( $posts as $post ) {
+		$json['items'][] = $post->fields;
+	}
+}
 
 header('Content-Type: application/json; charset=utf-8');
 echo json_encode( $json );
