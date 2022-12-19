@@ -1,8 +1,8 @@
 # Eigenheim
 
-A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. this will be part of a larger system.
+A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This will be part of a larger system. More details will be added later.
 
-This is currently a very early alpha stage. **You should not use this for now. THINGS WILL BREAK!**
+This is currently in a early alpha stage. **You should not use this for now. THINGS WILL BREAK!**
 
 Here be dragons:
 
@@ -12,11 +12,15 @@ Your server needs to run at least PHP 8.0 or later.
 
 Copy all the files into a directory on your webserver, then open the url to this path in a webbrowser. Follow the installation instructions.
 
-You can then edit the textfiles that get created in the *content/* folder to change the content, and log in to a micropub client with your url to add new posts.
+This will create a `config.php` in the root folder that will hold the configuration of your system, als well as a `content/` folder where all the content of your websites (posts and pages) live. These two items, the `config.php` and `content/` folder, are unique to your website and very important - keep a backup around, if you want to make sure to not lose anything.
+
+The setup also creates some other files that are needed, like a (hidden) `.htaccess` file and a `cache/` folder. When delete those item, they will be re-created as needed. They will also be automatically deleted and recreated when you make a system update.
+
+You can now edit the textfiles that get created in the `content/` folder to change the content, and log in to a micropub client with your url to add new posts.
 
 ## Additional Options
 
-You may want to edit the *config.php* a bit after the initial setup and add additional information:
+You may want to edit the `config.php` a bit after the initial setup and add additional information:
 
 ```php
 <?php
@@ -45,13 +49,17 @@ return [
 
 ```
 
-If you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line. You can also add additional author information - use h-card properties here (but not all may be used in the frontend; this will be expanded later). All other options can be uncommented as well, the values displayed here are their default values, you can change them accordingly.
+If you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line. You can also add additional author information - use h-card properties here (but not all may be used in the frontend; this will be expanded later). All other options can be uncommented as well, the values displayed here are their default values, you can change them accordingly. The option names *may change* in a later version of this system. This section of the README will be expanded later, when we reach a stable state.
 
 ## Custom Theme
 
-You can duplicate the *theme/default/* folder, rename it and update the theme name and author information in the *theme/{themename}/config.php*. You can also create a *theme/{themename}/snippets/* folder and copy files from *system/site/snippets/* into this folder, to overwrite them on a per-theme basis. All the files in the *snippets/* folder have a version number at the start of the file, so you can see if they were updated since you last copied them. The *theme/{themename}/functions.php* contains some functions that get called when the theme gets loaded.
+You can duplicate the `theme/default/` folder, rename it and update the theme name and author information in the `theme/{themename}/config.php`.
 
-You can define the theme your site uses in the *config.php* file like this:
+You can also create a `theme/{themename}/snippets/` folder and copy files from `system/site/snippets/` into this folder, to overwrite them on a per-theme basis. All the files in the `snippets/` folder have a version number at the start of the file, so you can see if they were updated since you last copied them. The auto-updater will also show you, which of the snippets in your custom theme are out of date and need updating.
+
+The `theme/{themename}/functions.php` contains some functions that get called when the theme gets loaded.
+
+You can define the theme your site uses in the `config.php` file like this:
 ```php
 return [
 	// site_title and other fields ...
@@ -59,19 +67,25 @@ return [
 ];
 ```
 
+If the theme folder does not exist, the system will automatically use the *default* theme.
+
 ## Updating
 
 **Important:** Before updating, backup your `content/` folder and your `config.php` (and your custom theme inside the `theme/` folder, if you have any). Better be safe than sorry.
 
-Read the release notes of all the releases back to your version. Sometimes, you may need to manually update specific files in your custom theme.
+Create a new empty file called `update` (or `update.txt`) in the root folder of your installation. Then open the website, and append `?update` to the URL to trigger the update process. **Important:** if you don't finish the update, manually delete the `update` (or `update.txt`) file (if the update process finishes, this file gets deleted automatically).
 
-Create a new empty file called `update` (or `update.txt`) in the root folder of your installation. Then open the website, and append `?update` to the URL to trigger the update process. Follow the steps.
+Follow the steps of the updater. It will show you all of the new release notes that happened since your currently installed version - read them carefully, especially at the moment, because some things will change and may need manual intervention. After the update is complete, and if you have a custom theme installed, it will list all the files you manually need to update in your custom theme - you should do so, or you may miss out on new functionality, or the site may even break completely.
 
-If you don't finish the update, manually delete the `update` (or `update.txt`) file (if the update process finishes, this file gets deleted automatically).
+After updating, open your website; this will trigger the setup process again, that creates some missing files. Then check if everything works as expected.
 
-After updating, open your website and check if everything works as expected.
+### manual update
 
-If you want to perform a manual update, delete the `system/` and `theme/default/` folders, as well as the `index.php` and `.htaccess` files from the root folder. Then download the latest (or an older) release from the releases page. Upload the `system/` and `theme/default/` folders and the `index.php` file from the downloaded release zip-file into your web directory. Then open the url in a webbrowser.
+If you want to perform a manual update, delete the `system/`, `theme/default/` and `cache/` folders, as well as the `index.php`, `.htaccess`, `README.md` and `changelog.txt` files from the root folder. Then download the latest (or an older) release from the releases page. Upload the `system/` and `theme/default/` folders and the `index.php`, `README.md` and `changelog.txt` file from the downloaded release zip-file into your web directory. Then open the url in a webbrowser; this will trigger the setup process again and create some missing files.
+
+If you have a custom theme active, make sure all your snippets are up to date and at least the same version as the corresponding files inside `system/site/snippets/`.
+
+### system reset
 
 If you want to reset the whole system, delete the following files and folders and open the url in a webbrowser to re-trigger the setup process:
 - `.htaccess`
