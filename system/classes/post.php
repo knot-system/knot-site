@@ -22,6 +22,11 @@ class Post {
 		$id = $data['id'];
 		$this->id = $id;
 
+		$tags = array();
+		if( ! empty($data['category']) ) $tags = json_decode( $data['category'] ); 
+		if( ! is_array($tags) ) $tags = array();
+		$this->tags = $tags;
+
 		return $this;
 	}
 
@@ -61,10 +66,6 @@ class Post {
 		$title = '';
 		if( ! empty($data['name']) ) $title = $data['name'];
 
-		$tags = array();
-		if( ! empty($data['category']) ) $tags = json_decode( $data['category'] ); 
-		if( ! is_array($tags) ) $tags = array();
-
 		$timestamp = $data['timestamp'];
 
 		$permalink = url('post/'.$this->id.'/');
@@ -84,7 +85,7 @@ class Post {
 			'link_preview' => $link_preview,
 			'image_html' => $image_html,
 			'image' => $image_url,
-			'tags' => $tags,
+			'tags' => $this->tags,
 			'date_published' => $date_published,
 			'date_modified' => $date_modified,
 			'timestamp' => $timestamp,

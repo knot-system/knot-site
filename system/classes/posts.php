@@ -67,9 +67,9 @@ class Posts {
 		$posts = array();
 
 		foreach( $this->posts as $post_id => $post ) {
-			if( empty($post->fields['tags']) || ! is_array($post->fields['tags']) || ! count($post->fields['tags']) ) continue;
+			if( empty($post->tags) || ! is_array($post->tags) || ! count($post->tags) ) continue;
 
-			if( ! in_array( $tag, $post->fields['tags']) ) continue;
+			if( ! in_array( $tag, $post->tags) ) continue;
 
 			$posts[$post_id] = $post;
 		}
