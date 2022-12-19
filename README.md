@@ -45,6 +45,7 @@ return [
 	//'image_png_to_jpg' => true,   // automatically convert .png images to .jpg, for faster loading
 	//'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
 	//'feed_limit_posts' => 20, // limit the number of posts that get displayed in the rss or json feed
+	//'cache_lifetime' => 60*60*6, // lifetime of the cache files, in seconds
 ];
 
 ```

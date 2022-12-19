@@ -120,7 +120,7 @@ Class Link {
 			$preview_image_cache = new Cache( 'remote-image', $preview_image_name );
 			$preview_image_cache->get_remote_file( $preview_image );
 
-			$preview_image = get_image_html( $preview_image_cache->hash, 'remote' );
+			$preview_image = get_image_html( $preview_image_cache->cache_file_name, 'remote' );
 		}
 
 		$data = [
