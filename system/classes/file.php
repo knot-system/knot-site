@@ -36,11 +36,10 @@ class File {
 		$id = $filepath_exp[count($filepath_exp)-2];
 		$id_exp = explode('_', $id);
 
-		$sort = false;
-		if( count($id_exp) > 1 ) $sort = $id_exp[0];
-
 		$this->id = end($id_exp);
 
+		$sort = false;
+		if( count($id_exp) > 1 ) $sort = str_replace("_".$this->id, "", $id);
 
 		// fill out ->filename
 		$this->filename = $filename;

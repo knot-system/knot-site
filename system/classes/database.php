@@ -11,8 +11,8 @@ class Database {
 		if( ! count($files) ) return $this;
 
 		$objects = array();
-		foreach( $files as $filename ) {
-			$file = new File( $eigenheim, $filename );
+		foreach( $files as $files_filename ) {
+			$file = new File( $eigenheim, $files_filename );
 			$objects[$file->sort] = $file;
 		}
 
