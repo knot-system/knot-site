@@ -9,13 +9,14 @@
 
 	--color-global-background: #f9ffff;
 
-	--color-box-background: #f4fbff;
 	--color-box-border: #d1e7ff;
+	--color-box-background: rgb(244,251,255);
+	--gradient-box-background: linear-gradient(127deg, rgba(244,251,255,1) 6%, rgba(230,242,249,1) 80%);
 
 	--color-text: #0c1e48;
 
-	--color-link: #0000c6;
-	--color-link-hover: #00f;
+	--color-link: #0000a6;
+	--color-link-hover: #0b48ff;
 
 }
 
@@ -94,6 +95,7 @@ a {
 
 	a:hover {
 		color: var(--color-link-hover);
+
 		-webkit-transition: color 100ms ease-in-out;
 		-o-transition: color 100ms ease-in-out;
 		transition: color 100ms ease-in-out;
@@ -165,6 +167,7 @@ footer {
 	margin-top: 0;
 	text-align: center;
 	background: var(--color-box-background);
+	background: var(--gradient-box-background);
 	border-radius: 8px;
 	border: 1px solid var(--color-box-border);
 	padding: 1em;
@@ -234,6 +237,7 @@ article {
 			article .tags li a {
 				display: inline-block;
 				background: var(--color-box-background);
+				background: var(--gradient-box-background);
 				border: 1px solid var(--color-box-border);
 				border-radius: 3px;
 				box-sizing: border-box;
@@ -241,10 +245,20 @@ article {
 				font-size: 0.8em;
 				color: var(--color-text);
 				text-decoration: none;
+				box-shadow: 2px 1px 20px rgba(255,255,255,0);
+
+				-webkit-transition: box-shadow 300ms ease-in-out;
+				-o-transition: box-shadow 300ms ease-in-out;
+				transition: box-shadow 300ms ease-in-out;
 			}
 
 				article .tags li a:hover {
-					background-color: var(--color-box-border);
+					background: var(--color-box-background);
+					box-shadow: 2px 1px 5px var(--color-box-border);
+
+					-webkit-transition: box-shadow 100ms ease-in-out;
+					-o-transition: box-shadow 100ms ease-in-out;
+					transition: box-shadow 100ms ease-in-out;
 				}
 
 			article .tags li + li {
@@ -264,6 +278,7 @@ article {
 
 	article .link-preview-container {
 		background: var(--color-box-background);
+		background: var(--gradient-box-background);
 		border-radius: 8px;
 		margin: 1em 0 0;
 		border: 1px solid var(--color-box-border);
@@ -377,6 +392,7 @@ article {
 
 section.author {
 	background: var(--color-box-background);
+	background: var(--gradient-box-background);
 	border-radius: 8px;
 	margin-top: 3em;
 	border: 1px solid var(--color-box-border);
@@ -407,6 +423,7 @@ figure.content-image {
 
 	.error-404 section {
 		background: var(--color-box-background);
+		background: var(--gradient-box-background);
 		border-radius: 8px;
 		border: 1px solid var(--color-box-border);
 		padding: 2em;
