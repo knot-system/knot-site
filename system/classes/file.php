@@ -8,6 +8,7 @@ class File {
 	public $raw_content;
 	public $url;
 	public $fields = array();
+	public $sort;
 
 	function __construct( $eigenheim, $filename, $raw_content = false ) {
 
@@ -34,6 +35,9 @@ class File {
 
 		$id = $filepath_exp[count($filepath_exp)-2];
 		$id_exp = explode('_', $id);
+
+		$sort = false;
+		if( count($id_exp) > 1 ) $sort = $id[0];
 
 		$this->id = end($id_exp);
 
@@ -85,6 +89,10 @@ class File {
 		// fill out ->timestamp
 		$this->timestamp = $data['timestamp'];
 
+
+		// fill out ->sort
+		if( ! $sort ) $sort = $data['timestamp']."_".$this->id;
+		$this->sort = $sort;
 
 	}
 

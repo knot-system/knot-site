@@ -13,7 +13,7 @@ class Database {
 		$objects = array();
 		foreach( $files as $filename ) {
 			$file = new File( $eigenheim, $filename );
-			$objects[$file->timestamp] = $file;
+			$objects[$file->sort] = $file;
 		}
 
 		ksort( $objects );
