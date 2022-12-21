@@ -89,6 +89,8 @@ class Cache {
 
 	function get_remote_file( $url ) {
 
+		$url = html_entity_decode($url);
+
 		$ch = curl_init( $url );
 		$fp = fopen( $this->cache_file, 'wb' );
 		curl_setopt( $ch, CURLOPT_FILE, $fp );
