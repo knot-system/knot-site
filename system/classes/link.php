@@ -99,7 +99,7 @@ Class Link {
 		// TODO / CLEANUP: make this better readable
 		// TODO: maybe we want to get information from other meta tags as well. revisit this in the future
 
-		$title = $this->extract_information( $html, '/<title>([^<]+])<\/title>/is', $this->short_url );
+		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->short_url );
 
 		$description = $this->extract_information( $html, '/<meta +name="description" +content="(.*?)" *?\/?>/is' );
 		if( ! $description ) {
