@@ -49,6 +49,9 @@ Class Link {
 
 		$this->short_url = str_replace(array('https://','http://'), '', $this->url);
 		$this->short_url = un_trailing_slash_it($this->short_url);
+
+		$tiny_url = explode("/", $this->short_url);
+		$this->tiny_url = un_trailing_slash_it($tiny_url[0]);
 		
 		return $this;
 	}
@@ -63,7 +66,7 @@ Class Link {
 		$data = json_decode($cache_content, true);
 
 
-		$preview_title = '<span class="link-preview-title">'.$this->short_url.'</span>';
+		$preview_title = '<span class="link-preview-title">'.$this->tiny_url.'</span>';
 		$preview_image = '';
 		$preview_description = '';
 		if( ! empty($data['preview_image']) ) $preview_image = '<span class="link-preview-image">'.$data['preview_image'].'</span>';
@@ -99,7 +102,7 @@ Class Link {
 		// TODO / CLEANUP: make this better readable
 		// TODO: maybe we want to get information from other meta tags as well. revisit this in the future
 
-		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->short_url );
+		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->tiny_url );
 
 		$description = $this->extract_information( $html, '/<meta +name="description" +content="(.*?)" *?\/?>/is' );
 		if( ! $description ) {
