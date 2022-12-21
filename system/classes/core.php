@@ -2,9 +2,9 @@
 
 class Eigenheim {
 
-	private const VERSION = 'alpha.13';
+	private const VERSION = 'alpha.14';
 
-	// TODO: check, if we want those variable to be public:
+	// TODO: check, if we want those variables to be public:
 
 	public $abspath;
 	public $basefolder;

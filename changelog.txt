@@ -1,3 +1,20 @@
+alpha.14
+
+- link preview generation and refreshing now happens only when the post content gets displayed, this makes the whole system faster
+- link preview: show URL below description, better title handling
+- link preview: now works for Mastodon and Instagram links
+- media handling: better error handling when image is invalid
+- bugfix for missing pages in the navigation
+- bugfix for wrong sort order in the navigation
+- README update
+- feed update: removed some unneeded fields and html
+- added link to Eigenheim GitHub page to the page footer (the snippet *footer.php* needs to be updated for this)
+- added 'close' link to tag notice (the snippet *overview.php* needs to be updated for this)
+- cache files, that are older than 30 days, are deleted automatically
+- updated default theme to alpha.14, with small design updates
+- code cleanup
+
+
 alpha.13
 
 - link previews now get refreshed asyncronously, so the loading time is much faster
