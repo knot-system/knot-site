@@ -86,10 +86,17 @@ main {
 
 a {
 	color: var(--color-link);
+
+	-webkit-transition: color 300ms ease-in-out;
+	-o-transition: color 300ms ease-in-out;
+	transition: color 300ms ease-in-out;
 }
 
 	a:hover {
 		color: var(--color-link-hover);
+		-webkit-transition: color 100ms ease-in-out;
+		-o-transition: color 100ms ease-in-out;
+		transition: color 100ms ease-in-out;
 	}
 
 h1, h2, h3, h4, h5, h6 {
@@ -301,10 +308,18 @@ article {
 					display: block;
 					font-weight: var(--font-default-weight-medium);
 					margin-bottom: 10px;
+
+					-webkit-transition: color 300ms ease-in-out;
+					-o-transition: color 300ms ease-in-out;
+					transition: color 300ms ease-in-out;
 				}
 
 					article .link-preview:hover .link-preview-title {
 						color: var(--color-link-hover);
+
+						-webkit-transition: color 100ms ease-in-out;
+						-o-transition: color 100ms ease-in-out;
+						transition: color 100ms ease-in-out;
 					}
 
 					article .link-preview .link-preview-image .content-image {
@@ -321,6 +336,10 @@ article {
 					display: block;
 					opacity: 0.5;
 
+					-webkit-transition: color 300ms ease-in-out, opacity 300ms ease-in-out;
+					-o-transition: color 300ms ease-in-out, opacity 300ms ease-in-out;
+					transition: color 300ms ease-in-out, opacity 300ms ease-in-out;
+
 					overflow-wrap: break-word;
 					word-wrap: break-word;
 
@@ -336,6 +355,10 @@ article {
 					article .link-preview:hover .link-preview-url {
 						color: var(--color-link-hover);
 						opacity: 1;
+
+						-webkit-transition: color 100ms ease-in-out, opacity 100ms ease-in-out;
+						-o-transition: color 100ms ease-in-out, opacity 100ms ease-in-out;
+						transition: color 100ms ease-in-out, opacity 100ms ease-in-out;
 					}
 
 	@media ( max-width: 660px ) {
