@@ -94,16 +94,8 @@ class Eigenheim {
 		$files = read_folder( $folderpath, true );
 
 		foreach( $files as $file ) {
-			$path = explode( '/', $file );
-			$filename = explode( '_', end($path));
-
-			$timestamp = (int) $filename[0];
+			$timestamp = filemtime($file);
 			
-			if( ! $timestamp ) {
-				$this->debug( 'cachefile has no timestamp', $file );
-				exit;
-			}
-
 			$lifetime = $this->config->get( 'cache_lifetime' );
 
 			if( time()-$timestamp > $lifetime ) {

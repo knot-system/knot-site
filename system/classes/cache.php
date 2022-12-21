@@ -17,6 +17,7 @@ class Cache {
 	function __construct( $type, $input, $use_hash = false ) {
 
 		// TODO: add config option to disable cache
+		// TODO: add method to force a cache refresh?
 
 		global $eigenheim;
 
@@ -28,7 +29,7 @@ class Cache {
 			$this->cache_folder .= $type.'/';
 		}
 
-		$this->checkCacheFolder();
+		$this->check_cache_folder();
 
 		$this->type = $type;
 
@@ -44,15 +45,8 @@ class Cache {
 
 		}
 
-		$cache_file = $this->get_hashfile_by_hash( $this->hash );
-
-		if( ! $cache_file ) {
-			// if no cachefile exists for this hash, generate a new hashfile with the current timestamp
-			$cache_file = time().'_'.$this->hash;
-		}
-
-		$this->cache_file = $this->cache_folder.$cache_file;
-		$this->cache_file_name = $cache_file;
+		$this->cache_file = $this->cache_folder.$this->hash;
+		$this->cache_file_name = $this->hash;
 
 	}
 
@@ -70,14 +64,6 @@ class Cache {
 
 	function addData( $data ) {
 		global $eigenheim;
-
-		// remove old cache file (fail silently, if the file vanished or something ..):
-		@unlink( $eigenheim->abspath.$this->cache_file);
-
-		// create a new cachefile, with new timestamp:
-		$new_filename = time().'_'.$this->hash;
-		$this->cache_file = $this->cache_folder.$new_filename;
-		$this->cache_file_name = $new_filename;
 
 		if( ! file_put_contents( $eigenheim->abspath.$this->cache_file, $data ) ) {
 			$eigenheim->debug( 'could not create cache file', $this->cache_file );
@@ -105,38 +91,7 @@ class Cache {
 	}
 
 
-	function get_hashfile_by_hash( $hash ) {
-		global $eigenheim;
-
-		// TODO: maybe use Database class?
-
-		$folderpath = $this->cache_folder;
-
-		if( ! is_dir( $folderpath ) ) {
-			$eigenheim->debug( $folderpath.' is no directory' );
-			return array();
-		}
-
-		$filename = false;
-		if( $handle = opendir($folderpath) ){
-			while( false !== ($file = readdir($handle)) ){
-				if( substr($file,0,1) == '.' ) continue; // skip hidden files, ./ and ../
-
-				if( ! str_ends_with( $file, $hash ) ) continue; // not the file we want
-
-				$filename = $file;
-			}
-			closedir($handle);
-		} else {
-			$eigenheim->debug( 'could not open dir', $folderpath );
-			return array();
-		}
-
-		return $filename;
-	}
-
-
-	private function checkCacheFolder(){
+	private function check_cache_folder(){
 		global $eigenheim;
 
 		if( is_dir($eigenheim->abspath.$this->cache_folder) ) return;
