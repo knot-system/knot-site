@@ -37,7 +37,7 @@ class File {
 		$id_exp = explode('_', $id);
 
 		$sort = false;
-		if( count($id_exp) > 1 ) $sort = $id[0];
+		if( count($id_exp) > 1 ) $sort = $id_exp[0];
 
 		$this->id = end($id_exp);
 
