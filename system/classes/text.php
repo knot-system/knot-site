@@ -86,7 +86,7 @@ class Text {
 
 		$regexp = $this->get_link_regex_pattern();
 
-		$replace = '<a href="$1://$2.$3$4" target="_blank" rel="noopener" title="$1://$2.$3$4">$2.$3$4</a>';
+		$replace = '<a class="inline-link" href="$1://$2.$3$4" target="_blank" rel="noopener" title="$1://$2.$3$4">$2.$3$4</a>';
 
 		$add_footnote_to_links = $eigenheim->config->get('add_footnote_to_links');
 
