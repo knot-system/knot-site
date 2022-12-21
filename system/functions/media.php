@@ -14,7 +14,17 @@ function get_image_html( $image_path, $type = false ) {
 		$local_image_url = $eigenheim->baseurl.'content/'.$image_path;
 	}
 
+	if( ! file_exists( $local_image_path) ) {
+		$eigenheim->debug("local image file does not exist", $local_image_path);
+		return false;
+	}
+
 	$image_meta = getimagesize( $local_image_path );
+	if( ! $image_meta ) {
+		$eigenheim->debug("no image meta", $local_image_path);
+		return false;
+	}
+
 	$src_width = $image_meta[0];
 	$src_height = $image_meta[1];
 
@@ -66,12 +76,20 @@ function get_image_preview_base64( $file_path ) {
 	$jpg_quality = 40;
 
 	$image_meta = getimagesize( $file_path );
-	$filesize = filesize( $file_path );
+	if( ! $image_meta ) {
+		$eigenheim->debug("no image meta", $file_path);
+		return false;
+	}
 
 	$src_width = $image_meta[0];
 	$src_height = $image_meta[1];
 	$image_type = $image_meta[2];
-
+	
+	$filesize = filesize( $file_path );
+	if( ! $filesize ) {
+		$eigenheim->debug("no image filesize", $file_path);
+		return false;
+	}
 
 	$cache_string = $file_path.$filesize;
 
