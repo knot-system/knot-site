@@ -35,7 +35,7 @@ function api_check_request(){
 			exit;
 		}
 
-		$data = $link->getLinkInfo()->getPreview();
+		$data = $link->get_info()->get_preview();
 
 		header('Content-Type: application/json; charset=utf-8');
 		echo json_encode(array(

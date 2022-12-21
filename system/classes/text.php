@@ -142,11 +142,13 @@ foreach( $this->links as $link ) {
 	$link_id = $link->id;
 
 
-	$link_info = $link->getPreview();
+	$link_info = $link->get_preview();
 
 	$classes = array( 'link-preview' );
 
-	if( empty($link_info['last_refresh']) || $link_info['last_refresh'] < time()-60*60*6 ) { // we currently refresh links after 6 hours - TODO: finetune this value
+	$max_age = 60*60*6; // we currently refresh links after 6 hours - TODO: finetune this value
+
+	if( empty($link_info['last_refresh']) || time()-$link_info['last_refresh'] > $max_age ) {
 
 		$classes[] = 'link-preview-needs-refresh';
 
@@ -158,7 +160,7 @@ foreach( $this->links as $link ) {
 			// refreshed with this request, should be done by the time this page refreshes again.
 			// this is just a fallback, if js is not active, or doesn't get executed, or is removed by the theme
 			$eigenheim->is_link_refreshing = true;
-			$link_info = $link->getLinkInfo()->getPreview();
+			$link_info = $link->get_info()->get_preview();
 		}
 		
 	}

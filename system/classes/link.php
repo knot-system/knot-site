@@ -17,7 +17,7 @@ Class Link {
 			$this->id = $id;
 			$this->cache = new Cache( 'link', $id, true );
 
-			$data = $this->cache->getData();
+			$data = $this->cache->get_data();
 
 			if( ! $data ) {
 				throw new Exception( 'no data' );
@@ -35,14 +35,14 @@ Class Link {
 			$this->cache = new Cache( 'link', $url );
 			$this->id = 'link-'.$this->cache->hash;
 
-			$data = $this->cache->getData();
+			$data = $this->cache->get_data();
 			if( ! $data ) {
 				// create cache file with basic info
 				$data = [
 					'id' => $this->id,
 					'url' => $url
 				];
-				$this->updatePreview( $data );
+				$this->update_preview( $data );
 			}
 
 		}
@@ -54,9 +54,9 @@ Class Link {
 	}
 
 
-	function getPreview() {
+	function get_preview() {
 
-		$cache_content = $this->cache->getData();
+		$cache_content = $this->cache->get_data();
 
 		if( ! $cache_content ) return false;
 
@@ -80,17 +80,17 @@ Class Link {
 	}
 
 
-	function updatePreview( $data ) {
+	function update_preview( $data ) {
 
 		$json = json_encode( $data );
 
-		$this->cache->addData($json);
+		$this->cache->add_data($json);
 
 		return $this;
 	}
 
 
-	function getLinkInfo() {
+	function get_info() {
 
 		$url = $this->url;
 
@@ -144,7 +144,7 @@ Class Link {
 			'last_refresh' => time()
 		];
 
-		$this->updatePreview( $data );
+		$this->update_preview( $data );
 
 		return $this;
 	}

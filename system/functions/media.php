@@ -95,7 +95,7 @@ function get_image_preview_base64( $file_path ) {
 
 	$cache = new Cache( 'image-preview', $cache_string );
 
-	$cache_content = $cache->getData();
+	$cache_content = $cache->get_data();
 	if( $cache_content ) {
 		// return cached file, then end
 		return $cache_content;
@@ -149,7 +149,7 @@ function get_image_preview_base64( $file_path ) {
 
 	$base64_data = 'data:image/jpeg;base64,'.base64_encode($image_data);
 
-	$cache->addData( $base64_data );
+	$cache->add_data( $base64_data );
 
 	imagedestroy( $target_image );
 
@@ -192,7 +192,7 @@ function handle_image_display( $file_path ) {
 	$cache_string = $file_path.$filesize.$target_width.$jpg_quality;
 	$cache = new Cache( 'image', $cache_string );
 
-	$cache_content = $cache->getData();
+	$cache_content = $cache->get_data();
 	if( $cache_content ) {
 		// return cached file, then end
 		header("Content-Type: ".$mime_type);
@@ -247,7 +247,7 @@ function handle_image_display( $file_path ) {
 		imagejpeg( $target_image, NULL, $jpg_quality );
 		$data = ob_get_contents();
 		ob_end_clean();
-		$cache->addData( $data );
+		$cache->add_data( $data );
 
 		header( 'Content-Type: image/jpeg' );
 		echo $data;
@@ -257,7 +257,7 @@ function handle_image_display( $file_path ) {
 		ob_start();
 		$data = imagepng( $target_image );
 		ob_end_clean();
-		$cache->addData( $data );
+		$cache->add_data( $data );
 
 		header( 'Content-Type: image/png' );
 		echo $data;

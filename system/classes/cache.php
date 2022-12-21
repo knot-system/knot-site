@@ -51,7 +51,7 @@ class Cache {
 	}
 
 
-	function getData() {
+	function get_data() {
 		if( ! file_exists($this->cache_file) ) return false;
 
 		$this->filesize = filesize($this->cache_file);
@@ -62,7 +62,7 @@ class Cache {
 	}
 
 
-	function addData( $data ) {
+	function add_data( $data ) {
 		global $eigenheim;
 
 		if( ! file_put_contents( $eigenheim->abspath.$this->cache_file, $data ) ) {
