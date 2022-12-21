@@ -96,22 +96,32 @@ Class Link {
 
 		$html = request_get_remote( $url );
 
-		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->short_url );
-
-		$description = $this->extract_information( $html, '/<meta.*?name="description".*?content="(.*?)".*?>/is' );
-		if( ! $description ) {
-			$description = $this->extract_information( $html, '/<meta.*?property="og:description".*?content="(.*?)".*?>/is' );
-		}
-		if( ! $description ) {
-			$description = $this->extract_information( $html, '/<meta.*?property="twitter:description".*?content="(.*?)".*?>/is' );
-		}
-
-		$preview_image = $this->extract_information( $html, '/<meta.*?property="og:image".*?content="(.*?)".*?>/is' );
-		if( ! $preview_image ) {
-			$preview_image = $this->extract_information( $html, '/<meta.*?property="twitter:image".*?content="(.*?)".*?>/is' );
-		}
-
+		// TODO / CLEANUP: make this better readable
 		// TODO: maybe we want to get information from other meta tags as well. revisit this in the future
+
+		$title = $this->extract_information( $html, '/<title>([^<]+])<\/title>/is', $this->short_url );
+
+		$description = $this->extract_information( $html, '/<meta +name="description" +content="(.*?)" *?\/?>/is' );
+		if( ! $description ) {
+			$description = $this->extract_information( $html, '/<meta +content="(.*?)" +name="description" *?\/?>/is' );
+		}
+		if( ! $description ) {
+			$description = $this->extract_information( $html, '/<meta +property="og:description" +content="([^"]+)" *?\/?>/is' );
+		}
+		if( ! $description ) {
+			$description = $this->extract_information( $html, '/<meta +content="([^"]+)" +property="og:description" *?\/?>/is' );
+		}
+		if( ! $description ) {
+			$description = $this->extract_information( $html, '/<meta +property="twitter:description" +content="([^"]+)" *?\/?>/is' );
+		}
+
+		$preview_image = $this->extract_information( $html, '/<meta +property="og:image(?::url)?" +content="([^"]+)" *?\/?>/is' );
+		if( ! $preview_image ) {
+			$preview_image = $this->extract_information( $html, '/<meta +content="([^"]+)" +property="og:image(?::url)?" *?\/?>/is' );
+		}
+		if( ! $preview_image ) {
+			$preview_image = $this->extract_information( $html, '/<meta +property="twitter:image" +content="([^"]+)" *?\/?>/is' );
+		}
 
 		if( $preview_image ) {
 			// cache remote image locally
