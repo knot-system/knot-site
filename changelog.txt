@@ -1,3 +1,21 @@
+alpha.15
+
+**Breaking Change:** the 'theme/{themename}/config.php' got renamed to 'theme/{themename}/theme.php'. If you use a custom theme, you need to rename the file, or else the custom theme will not load.
+The snippets 'header.php' and 'footer.php' were updated to alpha.15
+
+- the default config can now be found at system/site/config.php - don't change anything here, use the config.php in the root directory to overwrite values instead
+- renamed theme/{themename}/config.php to theme/{themename}/theme.php
+- themes can now have their own config.php (the previous config.php in themes is now named theme.php) that overwrites the system/site/config.php (but gets itself overwritten by the local root config.php)
+- new config option 'preview_target_width', to set the image size of preview images independently of content images
+- updated the snippets header.php and footer.php to alpha.15
+- updated the default theme to alpha.15; now with favicon and webfont preloading
+- new config option 'theme-color-scheme'; the default theme currently supports 'blue' (default), 'green', 'red' or 'lilac' as color scheme options
+- new helper functions: add_metatag() & remove_metatag()
+- add_script() now has an additional parameter to include the script in the footer instead of the head
+- links in pages: don't show footnote anchors
+- code cleanup
+
+
 alpha.14
 
 - link preview generation and refreshing now happens only when the post content gets displayed, this makes the whole system faster
