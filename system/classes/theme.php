@@ -9,6 +9,7 @@ class Theme {
 
 	public $stylesheets = array();
 	public $scripts = array();
+	public $metatags = array();
 
 
 	function __construct( $eigenheim ) {
@@ -28,6 +29,32 @@ class Theme {
 
 		$this->add_stylesheet( 'css/eigenheim.css', 'global' );
 		$this->add_script( 'js/eigenheim.js', 'global', 'async' );
+
+
+		$this->add_metatag( 'charset', '<meta charset="utf-8">' );
+		$this->add_metatag( 'viewport', '<meta name="viewport" content="width=device-width,initial-scale=1.0">' );
+		$this->add_metatag( 'title', '<title>'.$eigenheim->config->get('site_title').'</title>' );
+
+		$author = get_author_information();
+		if( ! empty( $author['display_name'] ) ) {
+			$this->add_metatag( 'author', '<meta name="author" content="'.$author['display_name'].'">' );
+		}
+
+		$this->add_metatag( 'generator', '<meta tag="generator" content="Eigenheim v.'.$eigenheim->version().'">' );
+
+		$this->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
+		$this->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
+		$this->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.$eigenheim->config->get('auth_mail').'">' );
+		$this->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'/">' );
+		$microsub_endpoint = $eigenheim->config->get('microsub');
+		if( $microsub_endpoint ) {
+			$this->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
+		}
+
+		$this->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.$eigenheim->config->get('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
+		$this->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.$eigenheim->config->get('site_title').' JSON Feed" href="'.url('feed/json').'">' );
+	
+
 
 
 		// expand eigenheim config options:
@@ -190,6 +217,35 @@ class Theme {
 		?>
 	<script<?= $loading ?> src="<?= $script['url'] ?>?v=<?= $version ?>"></script>
 <?php
+		}
+
+	}
+
+
+	function add_metatag( $name, $string ) {
+
+		if( array_key_exists($name, $this->metatags) ) {
+			global $eigenheim;
+			$eigenheim->debug('a metatag with this name already exists, it gets overwritten', $name, $string);
+		}
+
+		$this->metatags[$name] = $string;
+	}
+
+
+	function remove_metatag( $name ) {
+
+		if( ! array_key_exists($name, $this->metatags) ) return;
+
+		unset($this->metatags[$name]);
+
+	}
+
+
+	function print_metatags() {
+
+		foreach( $this->metatags as $name => $string ) {
+			echo "\n	".$string;
 		}
 
 	}
