@@ -187,6 +187,11 @@ function head_html(){
 
 	global $eigenheim;
 
+	$body_classes = array();
+
+	$color_scheme = $eigenheim->config->get('theme-color-scheme');
+	if( $color_scheme ) $body_classes[] = 'theme-color-scheme-'.$color_scheme;
+
 ?><!DOCTYPE html>
 <!--
 ___________.__                     .__           .__         
@@ -213,7 +218,7 @@ ___________.__                     .__           .__
 	?>
 	
 </head>
-<body><?php
+<body<?= get_class_attribute($body_classes) ?>><?php
 
 }
 

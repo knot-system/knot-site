@@ -10,6 +10,7 @@ return [
 	'debug' => false,
 	'logging' => false,
 	'theme' => 'default',
+	'theme-color-scheme' => 'default', // depends on the theme; the default theme supports 'blue', 'green', 'red', 'lilac'
 	'posts_per_page' => 5,
 	'microsub' => false,
 	'author' => [

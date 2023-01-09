@@ -29,6 +29,7 @@ return [
 	'site_title' => 'My Eigenheim Site',
 	'auth_mail' => 'mail@example.com',
 	'theme' => 'default',
+	'theme-color-scheme' => 'blue', // for the default theme, this can be 'blue' (default), 'green', 'red' or 'lilac'
 	'posts_per_page' => 5,
 	'microsub' => 'https://www.example.com/microsub',
 	'author' => [
