@@ -1,6 +1,6 @@
 <?php
 
-// Version: alpha.14
+// Version: alpha.15
 
 if( ! $eigenheim ) exit;
 
@@ -14,5 +14,5 @@ if( ! $eigenheim ) exit;
 
 </footer>
 
-</body>
-</html>
+<?php
+foot_html();
