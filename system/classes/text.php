@@ -14,8 +14,8 @@ class Text {
 	}
 
 
-	function cleanup() {
-		return $this->remove_html_elements()->auto_a()->auto_p();
+	function cleanup( $hide_anchors = false ) {
+		return $this->remove_html_elements()->auto_a( $hide_anchors )->auto_p();
 	}
 
 
@@ -80,7 +80,7 @@ class Text {
 	}
 
 
-	function auto_a() {
+	function auto_a( $hide_anchors = false ) {
 
 		global $eigenheim;
 
@@ -89,6 +89,8 @@ class Text {
 		$replace = '<a class="inline-link" href="$1://$2.$3$4" target="_blank" rel="noopener" title="$1://$2.$3$4">$2.$3$4</a>';
 
 		$add_footnote_to_links = $eigenheim->config->get('add_footnote_to_links');
+
+		if( $hide_anchors ) $add_footnote_to_links = false;
 
 		if( doing_feed() ) $add_footnote_to_links = false;
 
