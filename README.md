@@ -40,11 +40,12 @@ return [
 		// .. and other h-card properties; for an overview see
 		// https://microformats.org/wiki/h-card#Properties
 	],
-	//'image_target_width' => 1200, // resize bigger images to this width
-	//'image_jpg_quality' => 70,    // when resizing/caching, use this quality for jpg files
-	//'image_png_to_jpg' => true,   // automatically convert .png images to .jpg, for faster loading
+	//'image_target_width' => 1200,  // resize bigger images to this width
+	//'preview_target_width' => 400, // resize bigger preview images to this width
+	//'image_jpg_quality' => 70,     // when resizing/caching, use this quality for jpg files
+	//'image_png_to_jpg' => true,    // automatically convert .png images to .jpg, for faster loading
 	//'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
-	//'feed_limit_posts' => 20, // limit the number of posts that get displayed in the rss or json feed
+	//'feed_limit_posts' => 20,      // limit the number of posts that get displayed in the rss or json feed
 	//'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
 ];
 

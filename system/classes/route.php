@@ -8,6 +8,13 @@ class Route {
 
 		$request = $_SERVER['REQUEST_URI'];
 		$request = preg_replace( '/^'.preg_quote($eigenheim->basefolder, '/').'/', '', $request );
+
+		$query_string = false;
+
+		$request = explode( '?', $request );
+		if( count($request) > 1 ) $query_string = $request[1];
+		$request = $request[0];
+
 		$request = explode( '/', $request );
 
 		$pagination = 0;

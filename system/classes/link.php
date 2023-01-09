@@ -135,7 +135,10 @@ Class Link {
 			$preview_image_cache = new Cache( 'remote-image', $preview_image_name );
 			$preview_image_cache->get_remote_file( $preview_image );
 
-			$preview_image = get_image_html( $preview_image_cache->cache_file_name, 'remote' );
+			global $eigenheim;
+			$target_width = $eigenheim->config->get('preview_target_width' );
+
+			$preview_image = get_image_html( $preview_image_cache->cache_file_name, 'remote', $target_width );
 		}
 
 		$data = [

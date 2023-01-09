@@ -1,17 +1,19 @@
 <?php
 
 
-function get_image_html( $image_path, $type = false ) {
+function get_image_html( $image_path, $type = false, $target_width = false ) {
 	global $eigenheim;
 
-	$target_width = $eigenheim->config->get( 'image_target_width', 1200 );
+	if( ! $target_width ) {
+		$target_width = $eigenheim->config->get( 'image_target_width' );
+	}
 
 	if( $type == 'remote' ) {
 		$local_image_path = $eigenheim->abspath.'cache/remote-image/'.$image_path;
-		$local_image_url = $eigenheim->baseurl.'remote-image/'.$image_path; // TODO: check, how we want to handle this
+		$local_image_url = $eigenheim->baseurl.'remote-image/'.$image_path.'?width='.$target_width; // TODO: check, how we want to handle remote images
 	} else {
 		$local_image_path = $eigenheim->abspath.'content/'.$image_path;
-		$local_image_url = $eigenheim->baseurl.'content/'.$image_path;
+		$local_image_url = $eigenheim->baseurl.'content/'.$image_path.'?width='.$target_width;
 	}
 
 	if( ! file_exists( $local_image_path) ) {
@@ -162,6 +164,10 @@ function handle_image_display( $file_path ) {
 	global $eigenheim;
 
 	$target_width = $eigenheim->config->get( 'image_target_width' );
+
+	if( isset($_GET['width']) ) $target_width = (int) $_GET['width'];
+	if( $target_width < 1 ) $target_width = 10;
+
 	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
 	$png_to_jpg = $eigenheim->config->get( 'image_png_to_jpg' );
 
