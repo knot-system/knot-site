@@ -3,6 +3,10 @@
 return [
 	'theme' => 'default',
 	'posts_per_page' => 5,
+	'microsub' => false,
+	'logging' => false,
+	'debug' => false,
+	'author' => [],
 	'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span', 'img' ],
 	'image_target_width' => 1000,
 	'preview_target_width' => 1000,

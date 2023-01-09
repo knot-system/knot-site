@@ -28,11 +28,9 @@ You may want to edit the `config.php` a bit after the initial setup and add addi
 return [
 	'site_title' => 'My Eigenheim Site',
 	'auth_mail' => 'mail@example.com',
-	//'theme' => 'default',
-	//'posts_per_page' => 5,
-	//'microsub' => 'https://www.example.com/microsub',
-	//'logging' => false,
-	//'debug' => false,
+	'theme' => 'default',
+	'posts_per_page' => 5,
+	'microsub' => 'https://www.example.com/microsub',
 	'author' => [
 		'p-name' => 'My Author Name',
 		'u-email' => 'mail@example.com',
@@ -40,26 +38,26 @@ return [
 		// .. and other h-card properties; for an overview see
 		// https://microformats.org/wiki/h-card#Properties
 	],
-	//'image_target_width' => 1200,  // resize bigger images to this width
-	//'preview_target_width' => 400, // resize bigger preview images to this width
-	//'image_jpg_quality' => 70,     // when resizing/caching, use this quality for jpg files
-	//'image_png_to_jpg' => true,    // automatically convert .png images to .jpg, for faster loading
-	//'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
-	//'feed_limit_posts' => 20,      // limit the number of posts that get displayed in the rss or json feed
-	//'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
+	'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
+	
+	// for more config options, see the file system/site/config.php
+	
 ];
 
 ```
 
 If you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line. You can also add additional author information - use h-card properties here (but not all may be used in the frontend; this will be expanded later). All other options can be uncommented as well, the values displayed here are their default values, you can change them accordingly. The option names *may change* in a later version of this system. This section of the README will be expanded later, when we reach a stable state.
 
+The loading order of the config is as follows:
+1) `system/site/config.php`
+   gets overwritten by:
+2) `theme/{themename}/config.php` (if it exists)
+   gets overwritten by:
+3) `config.php` (in the root folder)
+
 ## Custom Theme
 
 You can duplicate the `theme/default/` folder, rename it and update the theme name and author information in the `theme/{themename}/theme.php`.
-
-You can also create a `theme/{themename}/snippets/` folder and copy files from `system/site/snippets/` into this folder, to overwrite them on a per-theme basis. All the files in the `snippets/` folder have a version number at the start of the file, so you can see if they were updated since you last copied them. The auto-updater will also show you, which of the snippets in your custom theme are out of date and need updating.
-
-The `theme/{themename}/functions.php` contains some functions that get called when the theme gets loaded.
 
 You can define the theme your site uses in the `config.php` file like this:
 ```php
@@ -70,6 +68,12 @@ return [
 ```
 
 If the theme folder does not exist, the system will automatically use the *default* theme.
+
+You can also create a `theme/{themename}/snippets/` folder and copy files from `system/site/snippets/` into this folder, to overwrite them on a per-theme basis. All the files in the `snippets/` folder have a version number at the start of the file, so you can see if they were updated since you last copied them. The auto-updater will also show you, which of the snippets in your custom theme are out of date and need updating.
+
+The `theme/{themename}/functions.php` contains some functions that get called when the theme gets loaded.
+
+The `theme/{themename}/config.php` can overwrite config options from `system/site/config.php` (but gets itself overwritten by the local `config.php` in the root directory), so the custom theme can for example set its own image sizes.
 
 ## Updating
 
