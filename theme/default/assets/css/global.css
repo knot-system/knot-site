@@ -82,7 +82,7 @@ main {
 	max-width: 800px;
 	margin: 0 auto;
 	box-sizing: border-box;
-	min-height: calc(100vh - 230px);
+	min-height: calc(100vh - 270px);
 }
 
 a {
