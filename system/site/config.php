@@ -1,12 +1,21 @@
 <?php
 
+// NOTE: you can overwrite these options:
+// - in your custom theme, via /theme/{themename}/config.php
+// - and/or via the config.php in the root folder
+
 return [
+	'site_title' => 'Eigenheim',
+	'auth_mail' => false,
+	'debug' => false,
+	'logging' => false,
 	'theme' => 'default',
 	'posts_per_page' => 5,
 	'microsub' => false,
-	'logging' => false,
-	'debug' => false,
-	'author' => [],
+	'author' => [
+		'p-name' => false,
+		'u-url' => false
+	],
 	'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span', 'img' ],
 	'image_target_width' => 1000,
 	'preview_target_width' => 1000,

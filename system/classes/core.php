@@ -89,6 +89,8 @@ class Eigenheim {
 		// NOTE: see system/classes/cache.php for general cache handling
 		// this function clears out old cache files.
 
+		$lifetime = $this->config->get( 'cache_lifetime' );
+
 		$folderpath = $this->abspath.'cache/';
 
 		$files = read_folder( $folderpath, true );
@@ -96,10 +98,7 @@ class Eigenheim {
 		foreach( $files as $file ) {
 			$timestamp = filemtime($file);
 			
-			$lifetime = $this->config->get( 'cache_lifetime' );
-
-			if( time()-$timestamp > $lifetime ) {
-				// cachefile too old
+			if( time()-$timestamp > $lifetime ) { // cachefile too old
 				@unlink($file); // delete old cache file; fail silently
 			}
 
