@@ -2,23 +2,25 @@
 
 class Config {
 
-	public $config = array(
-		'posts_per_page' => 5,
-		'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span', 'img' ],
-		'image_target_width' => 1200,
-		'image_jpg_quality' => 70,
-		'image_png_to_jpg' => true,
-		'feed_limit_posts' => 20,
-		'add_footnote_to_links' => true,
-		'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
-	);
+	public $config = array();
 
 	function __construct( $eigenheim ) {
 
-		$config_file = $eigenheim->abspath.'config.php';
+		// load site config / default config
+		$this->load_config_file( $eigenheim->abspath.'system/site/config.php' );
+
+		// overwrite with custom local config
+		$this->load_config_file( $eigenheim->abspath.'config.php' );
+
+	}
+
+
+	function load_config_file( $config_file ) {
+
+		global $eigenheim;
 
 		if( ! file_exists($config_file) ) {
-			echo '<p><strong>no config file found</strong></p>';
+			$eigenheim->debug( 'config file not found', $config_file );
 			exit;
 		}
 
@@ -26,6 +28,7 @@ class Config {
 
 		$this->config = array_merge( $this->config, $config );
 
+		return $this;
 	}
 	
 
@@ -38,8 +41,8 @@ class Config {
 			return $this->config[$option];
 		}
 
+		// TODO: check if we want to allow to return all config options
 		return $this->config;
-
 	}
 
 };
