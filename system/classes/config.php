@@ -9,6 +9,8 @@ class Config {
 		// load site config / default config
 		$this->load_config_file( $eigenheim->abspath.'system/site/config.php' );
 
+		// NOTE: the file theme/{themename}/config.php may be loaded here; but because at this time we don't have the correct themename yet, this happens in system/classes/theme.php; after the theme config.php gets loaded, it gets overwritten by the local config again.
+		
 		// overwrite with custom local config
 		$this->load_config_file( $eigenheim->abspath.'config.php' );
 

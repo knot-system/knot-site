@@ -15,11 +15,11 @@ class Theme {
 
 		$theme_name = $eigenheim->config->get('theme');
 
-		if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/theme.php') ) {
+		if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/theme.php' ) ) {
 			$theme_name = 'default';
 		}
 
-		$file_path = 'theme/'.$theme_name.'/theme.php';
+		$file_path = $eigenheim->abspath.'theme/'.$theme_name.'/theme.php';
 		$this->config = $this->load_theme_config_from_file( $file_path );
 
 		$this->folder_name = $theme_name;
@@ -28,6 +28,15 @@ class Theme {
 
 		$this->add_stylesheet( 'css/eigenheim.css', 'global' );
 		$this->add_script( 'js/eigenheim.js', 'global', 'async' );
+
+
+		// expand eigenheim config options:
+		$config_path = $eigenheim->abspath.'theme/'.$theme_name.'/config.php';
+		if( file_exists( $config_path ) ) {
+			$eigenheim->config->load_config_file( $config_path );
+			// we need to overwrite it with the local user config again:
+			$eigenheim->config->load_config_file( $eigenheim->abspath.'config.php' );
+		}
 
 	}
 
