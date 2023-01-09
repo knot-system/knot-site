@@ -28,7 +28,9 @@ class Theme {
 		$this->url = url('theme/'.$theme_name.'/');
 
 		$this->add_stylesheet( 'css/eigenheim.css', 'global' );
-		$this->add_script( 'js/eigenheim.js', 'global', 'async' );
+
+		$this->add_metatag( 'script_eigenheim', '<script type="text/javascript">const Eigenheim = { API: { url: "'.url(api_get_endpoint()).'" } };</script>', 'footer' );
+		$this->add_script( 'js/eigenheim.js', 'global', 'async', true );
 
 
 		$this->add_metatag( 'charset', '<meta charset="utf-8">' );
@@ -53,7 +55,6 @@ class Theme {
 
 		$this->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.$eigenheim->config->get('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
 		$this->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.$eigenheim->config->get('site_title').' JSON Feed" href="'.url('feed/json').'">' );
-	
 
 
 
@@ -154,7 +155,7 @@ class Theme {
 	}
 
 
-	function add_script( $path, $type = 'theme', $loading = false ) {
+	function add_script( $path, $type = 'theme', $loading = false, $footer = false ) {
 
 		// $loading is meant for 'async' or 'defer' attributes
 
@@ -177,7 +178,8 @@ class Theme {
 			'path' => $path,
 			'url' => $url,
 			'type' => $type,
-			'loading' => $loading
+			'loading' => $loading,
+			'footer' => $footer
 		];
 	}
 
@@ -189,18 +191,15 @@ class Theme {
 	}
 
 
-	function print_scripts() {
+	function print_scripts( $position = false ) {
 
 		global $eigenheim;
 
-		// TODO: move this to somewhere else:
-		?>
-	<script type="text/javascript">
-		const Eigenheim = { API: { url: "<?= url(api_get_endpoint()) ?>" } };
-	</script>
-<?php
-
 		foreach( $this->scripts as $script ) {
+
+			if( $script['footer'] && $position != 'footer' ) continue;
+			elseif( ! $script['footer'] && $position == 'footer' ) continue;
+
 			if( $script['type'] == 'global' ) {
 				$version = $eigenheim->version();
 			} else {
@@ -222,29 +221,37 @@ class Theme {
 	}
 
 
-	function add_metatag( $name, $string ) {
+	function add_metatag( $name, $string, $position = false ) {
+
+		if( ! $position ) $position = 'header';
+
+		if( ! array_key_exists( $position, $this->metatags ) ) $this->metatags[$position] = array();
 
 		if( array_key_exists($name, $this->metatags) ) {
 			global $eigenheim;
 			$eigenheim->debug('a metatag with this name already exists, it gets overwritten', $name, $string);
 		}
 
-		$this->metatags[$name] = $string;
+		$this->metatags[$position][$name] = $string;
 	}
 
 
-	function remove_metatag( $name ) {
+	function remove_metatag( $name, $position ) {
 
-		if( ! array_key_exists($name, $this->metatags) ) return;
+		if( ! empty($this->metatags[$position]) && ! array_key_exists($name, $this->metatags[$position]) ) return;
 
-		unset($this->metatags[$name]);
+		unset($this->metatags[$position][$name]);
 
 	}
 
 
-	function print_metatags() {
+	function print_metatags( $position = false ) {
 
-		foreach( $this->metatags as $name => $string ) {
+		if( ! $position ) $position = 'header';
+
+		if( empty($this->metatags[$position]) ) return;
+
+		foreach( $this->metatags[$position] as $name => $string ) {
 			echo "\n	".$string;
 		}
 

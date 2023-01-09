@@ -44,9 +44,9 @@ function remove_stylesheet( $path, $type = 'theme' ) {
 }
 
 
-function add_script( $path, $type = 'theme', $loading = false ) {
+function add_script( $path, $type = 'theme', $loading = false, $footer = false ) {
 	global $eigenheim;
-	$eigenheim->theme->add_script( $path, $type, $loading );
+	$eigenheim->theme->add_script( $path, $type, $loading, $footer );
 }
 
 function remove_script( $path, $type = 'theme' ) {
@@ -55,14 +55,14 @@ function remove_script( $path, $type = 'theme' ) {
 }
 
 
-function add_metatag( $name, $string ) {
+function add_metatag( $name, $string, $position = false ) {
 	global $eigenheim;
-	$eigenheim->theme->add_metatag( $name, $string );
+	$eigenheim->theme->add_metatag( $name, $string, $position );
 }
 
-function remove_metatag( $name ) {
+function remove_metatag( $name, $position = false ) {
 	global $eigenheim;
-	$eigenheim->theme->remove_metatag( $name );
+	$eigenheim->theme->remove_metatag( $name, $position );
 }
 
 
@@ -199,7 +199,7 @@ ___________.__                     .__           .__
 <html lang="en">
 <head>
 <?php
-	$eigenheim->theme->print_metatags();
+	$eigenheim->theme->print_metatags( 'header' );
 ?>
 
 
@@ -218,7 +218,19 @@ ___________.__                     .__           .__
 }
 
 function foot_html(){
-?></body>
+
+	global $eigenheim;
+
+	$eigenheim->theme->print_metatags( 'footer' );
+?>
+
+<?php
+	$eigenheim->theme->print_scripts( 'footer' );
+
+?>
+
+
+</body>
 </html>
 <?php
 }
