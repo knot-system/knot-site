@@ -55,7 +55,7 @@ If you want to add a microsub endpoint, replace `https://www.example.com/microsu
 
 ## Custom Theme
 
-You can duplicate the `theme/default/` folder, rename it and update the theme name and author information in the `theme/{themename}/config.php`.
+You can duplicate the `theme/default/` folder, rename it and update the theme name and author information in the `theme/{themename}/theme.php`.
 
 You can also create a `theme/{themename}/snippets/` folder and copy files from `system/site/snippets/` into this folder, to overwrite them on a per-theme basis. All the files in the `snippets/` folder have a version number at the start of the file, so you can see if they were updated since you last copied them. The auto-updater will also show you, which of the snippets in your custom theme are out of date and need updating.
 

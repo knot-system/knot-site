@@ -15,11 +15,11 @@ class Theme {
 
 		$theme_name = $eigenheim->config->get('theme');
 
-		if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/config.php') ) {
+		if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/theme.php') ) {
 			$theme_name = 'default';
 		}
 
-		$file_path = 'theme/'.$theme_name.'/config.php';
+		$file_path = 'theme/'.$theme_name.'/theme.php';
 		$this->config = $this->load_theme_config_from_file( $file_path );
 
 		$this->folder_name = $theme_name;
@@ -43,7 +43,7 @@ class Theme {
 		global $eigenheim;
 
 		if( ! file_exists($file_path) ) {
-			$eigenheim->debug( 'no config file found' );
+			$eigenheim->debug( 'no config file found', $file_path );
 			exit;
 		}
 
