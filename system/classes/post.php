@@ -27,8 +27,7 @@ class Post {
 		if( ! is_array($tags) ) $tags = array();
 		$this->tags = $tags;
 
-		if( ! empty($data['slug']) ) $slug = $data['slug'];
-		else $slug = $data['id'];
+		$slug = $file->id;
 
 		$this->slug = $slug;
 
