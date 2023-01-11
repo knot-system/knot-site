@@ -46,6 +46,12 @@ function request_get_remote( $url, $headers = array() ) {
 function get_user_agent(){
 
 	global $eigenheim;
+	if( $eigenheim ) {
+		$version = $eigenheim->version();
+	} else {
+		global $abspath;
+		$version = get_eigenheim_version( $abspath );
+	}
 
-	return 'maxhaesslein/eigenheim/'.$eigenheim->version();
+	return 'maxhaesslein/eigenheim/'.$version;
 }

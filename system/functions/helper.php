@@ -1,6 +1,11 @@
 <?php
 
 
+function get_eigenheim_version( $abspath ){
+	return trim(file_get_contents($abspath.'system/version.txt'));
+}
+
+
 function url( $path = '', $trailing_slash = true ) {
 	global $eigenheim;
 	

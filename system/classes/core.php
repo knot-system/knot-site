@@ -2,9 +2,9 @@
 
 class Eigenheim {
 
-	private const VERSION = 'alpha.15';
-
 	// TODO: check, if we want those variables to be public:
+
+	public $version;
 
 	public $abspath;
 	public $basefolder;
@@ -36,6 +36,10 @@ class Eigenheim {
 		$baseurl .= $_SERVER['HTTP_HOST'];
 		$baseurl .= $basefolder;
 		$this->baseurl = $baseurl;
+
+
+		$this->version = get_eigenheim_version( $abspath );
+
 
 		$this->config = new Config( $this );
 		$this->log = new Log( $this );
@@ -81,7 +85,7 @@ class Eigenheim {
 	}
 
 	function version() {
-		return self::VERSION;
+		return $this->version;
 	}
 
 

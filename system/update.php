@@ -2,18 +2,31 @@
 
 // this file can update the system with the latest release from github. create a empty file called 'update' or 'update.txt' in the root directory, and then add '?update' to the url, to trigger the update
 
-if( ! $eigenheim ) exit;
+$api_url = 'https://api.github.com/repos/maxhaesslein/eigenheim/releases';
 
 $step = false;
 if( ! empty($_GET['step']) ) $step = $_GET['step'];
+
+
+
+$basefolder = str_replace( 'index.php', '', $_SERVER['PHP_SELF']);
+
+if( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ) $baseurl = 'https://';
+else $baseurl = 'http://';
+$baseurl .= $_SERVER['HTTP_HOST'];
+$baseurl .= $basefolder;
+
+
+include_once( 'functions/helper.php' );
+include_once( 'functions/request.php' );
+
 	
+$eigenheim_version = get_eigenheim_version( $abspath );
+
 ?>
 <h1>Eigenheim System Update</h1>
 <?php
 
-$api_url = 'https://api.github.com/repos/maxhaesslein/eigenheim/releases';
-
-$old_version = $eigenheim->version();
 
 if( $step == 'check' ) {
 
@@ -32,14 +45,14 @@ if( $step == 'check' ) {
 
 	?>
 	<p>Latest release: <strong><?= $release_name ?></strong><br>
-	Currently installed: <strong><?= $old_version ?></strong></p>
+	Currently installed: <strong><?= $eigenheim_version ?></strong></p>
 	<?php
 
 	$release_notes = array();
 
 	$new_version_available = false;
-	if( $release_name != $old_version ) {
-		$version_number_old = explode('.', str_replace('alpha.', '0.0.', $old_version));
+	if( $release_name != $eigenheim_version ) {
+		$version_number_old = explode('.', str_replace('alpha.', '0.0.', $eigenheim_version));
 		$version_number_new = explode('.', str_replace('alpha.', '0.0.', $release_name));
 
 		for( $i = 0; $i < count($version_number_new); $i++ ){
@@ -80,7 +93,7 @@ if( $step == 'check' ) {
 	?>
 	<hr>
 
-	<form action="<?= $eigenheim->baseurl ?>" method="GET">
+	<form action="<?= $baseurl ?>" method="GET">
 		<input type="hidden" name="update" value="true">
 		<input type="hidden" name="step" value="install">
 		<button><?php if( $new_version_available ) echo 'update system'; else echo 're-install system'; ?></button> (this may take some time, please be patient)
@@ -114,7 +127,7 @@ if( $step == 'check' ) {
 	echo '<p>Downloading new .zip from GitHub … ';
 	flush();
 
-	$temp_zip_file = $eigenheim->abspath.'cache/_new_release.zip';
+	$temp_zip_file = $abspath.'cache/_new_release.zip';
 	if( file_exists($temp_zip_file) ) unlink($temp_zip_file);
 
 	$file_handle = fopen( $temp_zip_file, 'w+' );
@@ -122,7 +135,7 @@ if( $step == 'check' ) {
 	$ch = curl_init( $zipball );
 	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $ch, CURLOPT_USERAGENT, 'maxhaesslein/eigenheim/'.$eigenheim->version() );
+	curl_setopt( $ch, CURLOPT_USERAGENT, 'maxhaesslein/eigenheim/'.$eigenheim_version );
 	curl_setopt( $ch, CURLOPT_FILE, $file_handle );
 	curl_exec( $ch );
 	curl_close( $ch );
@@ -135,8 +148,6 @@ if( $step == 'check' ) {
 	flush();
 
 	function deleteDirectory( $dirPath ) {
-
-		global $eigenheim;
 
 		if( ! is_dir($dirPath) ) return;
 
@@ -154,7 +165,7 @@ if( $step == 'check' ) {
 	}
 
 
-	$temp_folder = $eigenheim->abspath.'cache/_new_release/';
+	$temp_folder = $abspath.'cache/_new_release/';
 	if( is_dir($temp_folder) ) deleteDirectory($temp_folder);
 	mkdir( $temp_folder );
 
@@ -186,38 +197,38 @@ if( $step == 'check' ) {
 	echo '<p>Deleting old files … ';
 	flush();
 
-	deleteDirectory( $eigenheim->abspath.'theme/default/' );
-	deleteDirectory( $eigenheim->abspath.'system/' );
-	unlink( $eigenheim->abspath.'.htacces' );
-	unlink( $eigenheim->abspath.'index.php' );
-	unlink( $eigenheim->abspath.'README.md');
-	unlink( $eigenheim->abspath.'changelog.txt');
+	deleteDirectory( $abspath.'theme/default/' );
+	deleteDirectory( $abspath.'system/' );
+	unlink( $abspath.'.htacces' );
+	unlink( $abspath.'index.php' );
+	unlink( $abspath.'README.md');
+	unlink( $abspath.'changelog.txt');
 
 	echo 'done.</p>';
 
 	echo '<p>Moving new files to new location … ';
 	flush();
 
-	rename( $subfolder.'theme/default', $eigenheim->abspath.'theme/default' );
-	rename( $subfolder.'system', $eigenheim->abspath.'system' );
-	rename( $subfolder.'index.php', $eigenheim->abspath.'index.php' );
-	rename( $subfolder.'README.md', $eigenheim->abspath.'README.md' );
-	rename( $subfolder.'changelog.txt', $eigenheim->abspath.'changelog.txt' );
+	rename( $subfolder.'theme/default', $abspath.'theme/default' );
+	rename( $subfolder.'system', $abspath.'system' );
+	rename( $subfolder.'index.php', $abspath.'index.php' );
+	rename( $subfolder.'README.md', $abspath.'README.md' );
+	rename( $subfolder.'changelog.txt', $abspath.'changelog.txt' );
 
 	echo 'done.</p>';
 	echo '<p>Cleaning up …';
-	@unlink( $eigenheim->abspath.'update.txt' );
-	@unlink( $eigenheim->abspath.'update' );
+	@unlink( $abspath.'update.txt' );
+	@unlink( $abspath.'update' );
 
-	deleteDirectory( $eigenheim->abspath.'cache/');
-	mkdir( $eigenheim->abspath.'cache/' );
+	deleteDirectory( $abspath.'cache/');
+	mkdir( $abspath.'cache/' );
 
 	echo 'done.</p>';
 
 	echo '<p>Checking snippets in custom themes … ';
 	flush();
 
-	$custom_theme_dir = $eigenheim->abspath.'theme/';
+	$custom_theme_dir = $abspath.'theme/';
 	$custom_themes = [];
 	foreach( scandir( $custom_theme_dir ) as $theme_name ) {
 		if( $theme_name == '.' || $theme_name == '..' ) continue;
@@ -235,7 +246,7 @@ if( $step == 'check' ) {
 
 		foreach( $custom_themes as $custom_theme ) {
 
-			$custom_theme_snippets = $eigenheim->abspath.'theme/'.$custom_theme.'/snippets/';
+			$custom_theme_snippets = $abspath.'theme/'.$custom_theme.'/snippets/';
 			if( ! is_dir($custom_theme_snippets) ) continue;
 
 			foreach( scandir( $custom_theme_snippets ) as $snippet_name ) {
@@ -247,7 +258,7 @@ if( $step == 'check' ) {
 
 					$custom_theme_snippet_version = trim($matches[1]);
 
-					$system_file_contents = file_get_contents( $eigenheim->abspath.'system/site/snippets/'.$snippet_name );
+					$system_file_contents = file_get_contents( $abspath.'system/site/snippets/'.$snippet_name );
 					if( preg_match( '/\/\/ Version: (.*)/i', $system_file_contents, $system_matches ) ) {
 						$system_snippet_version = trim($system_matches[1]);
 
@@ -276,7 +287,7 @@ if( $step == 'check' ) {
 	echo 'done.</p>';
 	flush();
 
-	echo '<p>Please <a href="'.$eigenheim->baseurl.'">refresh this page</a></p>';
+	echo '<p>Please <a href="'.$baseurl.'">refresh this page</a></p>';
 
 } else {
 	?>
@@ -284,9 +295,9 @@ if( $step == 'check' ) {
 	<p><strong>Warning: please backup your <em>content/</em> folder, your <em>config.php</em> file and maybe your <em>theme/custom-theme</em> folder before updating!</strong></p>
 	<p>Also, read the <a href="https://github.com/maxhaesslein/eigenheim/releases/latest/" target="_blank" rel="noopener">latest release notes</a> before continuing.</p>
 
-	<p>Currently installed version: <em><?= $old_version ?></em></p>
+	<p>Currently installed version: <em><?= $eigenheim_version ?></em></p>
 
-	<form action="<?= $eigenheim->baseurl ?>" method="GET">
+	<form action="<?= $baseurl ?>" method="GET">
 		<input type="hidden" name="update" value="true">
 		<input type="hidden" name="step" value="check">
 		<button>check for update</button>
