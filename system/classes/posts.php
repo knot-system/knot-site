@@ -101,7 +101,7 @@ class Posts {
 
 		$categories = array();
 		foreach( $posts as $post ){
-			foreach( $post->fields['tags'] as $tag ) {
+			foreach( $post->tags as $tag ) {
 				$categories[] = $tag;
 			}
 		}
