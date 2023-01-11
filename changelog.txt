@@ -1,3 +1,12 @@
+alpha.16
+
+- now the slug gets used for new post links and foldernames
+- when creating a post, and no slug is provided, we automatically create a slug from the post title, or the content, or fall back to a unique id; if the slug already exists, we append a '-1' (or '-2', '-3', ..) to the slug
+- update can now be called if $eigenheim object does not exist, so that we better update in case of a system failure
+- .htaccess update - don't allow access to system/ and theme/ folder, but allow access to the system/site/assets/ and theme/{themename}/assets/ folders
+- bugfix for the tag/category list for micropub clients
+
+
 alpha.15
 
 **Breaking Change:** the 'theme/{themename}/config.php' got renamed to 'theme/{themename}/theme.php'. If you use a custom theme, you need to rename the file, or else the custom theme will not load.
