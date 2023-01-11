@@ -117,6 +117,21 @@ function micropub_create_post( $data ){
 	if( empty($data['post-status']) ) $data['post-status'] = 'published'; // possible values: 'published' or 'draft'
 	if( $data['post-status'] == 'publish' ) $data['post-status'] = 'published';
 
+	if( empty($data['slug']) ) {
+		$data['slug'] = micropub_create_post_slug( $data );
+	}
+
+	// make sure the slug is unique:
+	$slug = $data['slug'];
+	$suffix = 0;
+	do {
+		if( $suffix > 0 ) {
+			$data['slug'] = $slug.'-'.$suffix;
+		}
+		$suffix++;
+	} while( get_post_id_from_slug( $data['slug'] ) );
+
+
 	$photo = false;
 	if( ! empty($_FILES['photo']) ) $photo = $_FILES['photo'];
 
@@ -130,6 +145,23 @@ function micropub_create_post( $data ){
 	header( "Location: ".$permalink );
 	exit;
 
+}
+
+function micropub_create_post_slug( $data ) {
+
+	$slug = uniqid(); // Fallback
+
+	if( ! empty($data['name']) ) {
+		$slug = sanitize_string_for_url( $data['name'] );
+	} elseif( ! empty($data['content']) ) {
+		$slug = sanitize_string_for_url( strip_tags($data['content']) );
+	}
+
+	global $eigenheim;
+	$slug_max_length = $eigenheim->config->get('slug_max_length');
+	$slug = substr( $slug, 0, $slug_max_length );
+
+	return $slug;
 }
 
 function micropub_check_authorization_bearer() {

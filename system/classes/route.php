@@ -41,7 +41,9 @@ class Route {
 		} elseif( ! empty($request[0]) && $request[0] == 'post' && ! empty($request[1]) ){
 			// single post view
 
-			$post_id = $request[1];
+			$slug = $request[1];
+			$post_id = get_post_id_from_slug($slug);
+
 			$post = $eigenheim->posts->get( $post_id );
 
 			if( $post ) {

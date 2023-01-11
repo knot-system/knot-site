@@ -27,6 +27,11 @@ class Post {
 		if( ! is_array($tags) ) $tags = array();
 		$this->tags = $tags;
 
+		if( ! empty($data['slug']) ) $slug = $data['slug'];
+		else $slug = $data['id'];
+
+		$this->slug = $slug;
+
 		return $this;
 	}
 
@@ -68,7 +73,7 @@ class Post {
 
 		$timestamp = $data['timestamp'];
 
-		$permalink = url('post/'.$this->id.'/');
+		$permalink = url('post/'.$this->slug.'/');
 
 		$date_published = date( 'c', $timestamp );
 

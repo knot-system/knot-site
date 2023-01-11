@@ -18,13 +18,15 @@ function create_post_in_database( $data, $photo = false ) {
 		}
 	}
 
-	$prefix = date('Y-m-d_H-i-s', $data['timestamp']);
-	do {
-		$post_id = uniqid();
-		$foldername = $prefix.'_'.$post_id.'/';
-	} while( is_dir($eigenheim->abspath.'content/'.$target_folder.$foldername) );
 
-	$target_folder .= $foldername;
+	$prefix = date('Y-m-d_H-i-s', $data['timestamp']);
+	$target_folder .= $prefix.'_'.$data['slug'].'/';
+	
+	if( is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
+		header( "HTTP/1.1 500 Internal Server Error" );
+		$eigenheim->debug( 'Folder already exists' );
+		exit;
+	}
 
 	mkdir( $eigenheim->abspath.'content/'.$target_folder, 0777 );
 	if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
@@ -33,7 +35,7 @@ function create_post_in_database( $data, $photo = false ) {
 		exit;
 	}
 
-	$data['id'] = $post_id;
+	$data['id'] = uniqid();
 
 	$filename = 'post.txt';
 	if( $data['post-status'] == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
@@ -108,7 +110,7 @@ function create_post_in_database( $data, $photo = false ) {
 
 	// when we get here, everything should have worked and the post was created.
 
-	$permalink = url('post/'.$post_id); // TODO: this should be retreived from $file
+	$permalink = url('post/'.$data['slug']); // TODO: this should be retreived from $file
 
 	return $permalink;
 }

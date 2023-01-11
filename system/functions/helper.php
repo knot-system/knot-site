@@ -85,6 +85,42 @@ function get_class_attribute( $classes ) {
 }
 
 
+function sanitize_string_for_url( $string ) {
+
+	// Entferne alle nicht druckbaren ASCII-Zeichen
+	$string = preg_replace('/[\x00-\x1F\x7F]/u', '', $string);
+
+	$string = mb_strtolower($string);
+
+	$string = str_replace(array("ä", "ö", "ü", "ß"), array("ae", "oe", "ue", "ss"), $string);
+
+	// Ersetze Sonderzeichen durch '-'
+	$string = preg_replace('/[^\p{L}\p{N}]+/u', '-', $string);
+
+	$string = trim($string, '-');
+	
+	return $string;
+}
+
+
+function get_post_id_from_slug( $slug ) {
+
+	global $eigenheim;
+	$posts = $eigenheim->posts->posts;
+	foreach( $posts as $post_id => $post ) {
+
+		if( ! isset($post->slug) ) continue;
+
+		if( $post->slug == $slug ) {
+			return $post_id;
+		}
+	}
+
+	return false;
+}
+
+
+
 function get_navigation(){
 
 	global $eigenheim;
@@ -199,7 +235,7 @@ ___________.__                     .__           .__
  |    __)_ |  |/ ___\_/ __ \ /    \|  |  \_/ __ \|  |/     \ 
  |        \|  / /_/  >  ___/|   |  \   Y  \  ___/|  |  Y Y  \
 /_______  /|__\___  / \___  >___|  /___|  /\___  >__|__|_|  /
-        \/   /_____/      \/     \/     \/     \/         \/ 
+		\/   /_____/      \/     \/     \/     \/         \/ 
 -->
 <html lang="en">
 <head>

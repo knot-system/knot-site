@@ -23,6 +23,7 @@ return [
 	'image_jpg_quality' => 70,
 	'image_png_to_jpg' => true,
 	'feed_limit_posts' => 20,
+	'slug_max_length' => 80,
 	'add_footnote_to_links' => true,
 	'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
 ];
