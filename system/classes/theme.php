@@ -47,7 +47,7 @@ class Theme {
 		$this->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
 		$this->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
 		$this->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.$eigenheim->config->get('auth_mail').'">' );
-		$this->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'/">' );
+		$this->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
 		$microsub_endpoint = $eigenheim->config->get('microsub');
 		if( $microsub_endpoint ) {
 			$this->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
