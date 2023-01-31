@@ -1,3 +1,13 @@
+alpha.17
+
+**if you are on alpha.16, you need to manually update to alpha.17**
+
+- bugfix for autoupdater
+- images with spaces or special characters in the filename are now displayed correctly
+- automatically rotate images based on exif data
+- micropub endpoint: remove superfluous '/' at the end
+
+
 alpha.16
 
 - now the slug gets used for new post links and foldernames
