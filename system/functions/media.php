@@ -30,7 +30,7 @@ function get_image_html( $image_path, $type = false, $target_width = false ) {
 	$src_width = $image_meta[0];
 	$src_height = $image_meta[1];
 
-	$exif = exif_read_data( $local_image_path );
+	$exif = @exif_read_data( $local_image_path );
 	if( $exif && ! empty($exif['Orientation']) ) {
 		$orientation = $exif['Orientation'];
 		if( $orientation == 6 || $orientation == 8 ) {
@@ -135,7 +135,7 @@ function get_image_preview_base64( $file_path ) {
 
 
 
-	$exif = exif_read_data( $file_path );
+	$exif = @exif_read_data( $file_path );
 	if( $exif && ! empty($exif['Orientation']) ) {
 		$orientation = $exif['Orientation'];
 		list( $src_image, $src_width, $src_height ) = image_rotate( $src_image, $orientation, $src_width, $src_height );
@@ -243,7 +243,7 @@ function handle_image_display( $file_path ) {
 	}
 
 
-	$exif = exif_read_data( $file_path );
+	$exif = @exif_read_data( $file_path );
 	if( $exif && ! empty($exif['Orientation']) ) {
 		$orientation = $exif['Orientation'];
 		list( $src_image, $src_width, $src_height ) = image_rotate( $src_image, $orientation, $src_width, $src_height );
