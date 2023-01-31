@@ -133,7 +133,7 @@ class Route {
 			$filename = strtolower(end($request));
 			$filename = str_replace('.jpeg', '.jpg', $filename);
 			if( str_ends_with($filename, '.jpg') || str_ends_with($filename, '.png') ){
-				handle_image_display( implode('/', $request) );
+				handle_image_display( urldecode(implode('/', $request)) );
 				exit;
 			}
 
