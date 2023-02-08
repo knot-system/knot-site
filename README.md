@@ -12,7 +12,7 @@ Your server needs to run at least PHP 8.0 or later.
 
 Copy all the files into a directory on your webserver, then open the url to this path in a webbrowser. Follow the installation instructions.
 
-This will create a `config.php` in the root folder that will hold the configuration of your system, als well as a `content/` folder where all the content of your websites (posts and pages) live. These two items, the `config.php` and `content/` folder, are unique to your website and very important - keep a backup around, if you want to make sure to not lose anything.
+This will create a `config.php` in the root folder that will hold the configuration of your system, as well as a `content/` folder where all the content of your websites (posts and pages) live. These two items, the `config.php` and `content/` folder, are unique to your website and very important - keep a backup around, if you want to make sure to not lose anything.
 
 The setup also creates some other files that are needed, like a (hidden) `.htaccess` file and a `cache/` folder. When you delete those item, they will be re-created as needed. They will also be automatically deleted and recreated when you make a system update.
 
