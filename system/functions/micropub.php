@@ -102,6 +102,14 @@ function micropub_create_post( $data ){
 
 	// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 
+	if( ! $data['content'] ) {
+		global $eigenheim;
+
+		header( "HTTP/1.1 400 Bad Request" );
+		$eigenheim->debug( 'no content' );
+		exit;
+	}
+
 	$data['timestamp'] = time();
 	$data['date'] = date('c', $data['timestamp']);
 

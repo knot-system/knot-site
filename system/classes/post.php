@@ -46,10 +46,13 @@ class Post {
 
 		$content_text = strip_tags( $content_html ); // TODO: revisit this in the future
 
-		$text = new Text($content_html);
-		$content_html = $text->cleanup()->get();
+		$link_preview = false;
+		if( $content_html ) {
+			$text = new Text($content_html);
+			$content_html = $text->cleanup()->get();
 
-		$link_preview = $text->get_link_preview();
+			$link_preview = $text->get_link_preview();
+		}
 
 
 		$image_html = false;
