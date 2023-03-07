@@ -102,11 +102,15 @@ function micropub_create_post( $data ){
 
 	// TODO: sanitize input. never trust anything we receive here. currently we just dump everything into a text file.
 
-	if( ! $data['content'] ) {
+	$photo = false;
+	if( ! empty($_FILES['photo']) ) $photo = $_FILES['photo'];
+
+	// NOTE: we want to either have a title ('name'), content or a image; if all of them are empty, abort here.
+	if( ! $data['content'] && ! $data['name'] && ! $photo ) {
 		global $eigenheim;
 
 		header( "HTTP/1.1 400 Bad Request" );
-		$eigenheim->debug( 'no content' );
+		$eigenheim->debug( 'we need at least content, or a title, or an image' );
 		exit;
 	}
 
@@ -138,10 +142,6 @@ function micropub_create_post( $data ){
 		}
 		$suffix++;
 	} while( get_post_id_from_slug( $data['slug'] ) );
-
-
-	$photo = false;
-	if( ! empty($_FILES['photo']) ) $photo = $_FILES['photo'];
 
 	$permalink = create_post_in_database( $data, $photo );
 	// if something went wrong, create_post_in_database() will exit
