@@ -184,7 +184,7 @@ $html .= '		</ol>';
 		$exclude_attributes = '(?<!src=[\"\'])';
 		if( $output ) $exclude_attributes .= '(?<!href=[\"\'])'; // ignore href as well, for links that are already valid HTML
 
-		$pattern = '/'.$exclude_attributes.'(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
+		$pattern = '/'.$exclude_attributes.'(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*[^.])*/mix';
 
 		return $pattern;
 	}
