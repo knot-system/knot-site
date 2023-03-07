@@ -44,7 +44,8 @@ class Route {
 			$slug = $request[1];
 			$post_id = get_post_id_from_slug($slug);
 
-			$post = $eigenheim->posts->get( $post_id );
+			$post = false;
+			if( $post_id ) $post = $eigenheim->posts->get( $post_id );
 
 			if( $post ) {
 				$this->route = array(
