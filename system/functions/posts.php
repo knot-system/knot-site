@@ -6,6 +6,40 @@ function create_post_in_database( $data, $photo = false ) {
 
 	global $eigenheim;
 
+	if( $photo ) {
+
+		if( empty($photo['name']) || ! isset($photo['error']) || ! isset($photo['tmp_name']) || ! isset($photo['size']) || ! isset($photo['type']) ) {
+			header( "HTTP/1.1 400 Bad Request" );
+			$eigenheim->debug( "Photo could not be uploaded" );
+			exit;
+		} elseif( $photo['error'] > 0 ) {
+			header( "HTTP/1.1 400 Bad Request" );
+			$eigenheim->debug( 'Photo could not be uploaded (errorcode '.$photo['error'].')' );
+			exit;
+		} elseif( $photo['size'] <= 0 ) {
+			header( "HTTP/1.1 400 Bad Request" );
+			$eigenheim->debug( 'Photo could not be uploaded' );
+			exit;
+		} elseif( $photo['type'] != 'image/jpeg' && $photo['type'] != 'image/png' ) {
+			header( "HTTP/1.1 400 Bad Request" );
+			$eigenheim->debug( 'Photo could not be uploaded (only .jpg or .png is allowed)' );
+			exit;
+		}
+
+	}
+
+
+	// NOTE: we want to either have a title ('name'), content or a image; if all of them are empty, abort here.
+	if( ! $data['content'] && ! $data['name'] && ! $photo ) {
+		global $eigenheim;
+
+		header( "HTTP/1.1 400 Bad Request" );
+		$eigenheim->debug( 'we need at least content, or a title, or an image' );
+		exit;
+	}
+
+
+
 	$year = date('Y', $data['timestamp']);
 	$month = date('m', $data['timestamp']);
 	$target_folder = 'posts/'.$year.'/'.$month.'/';
@@ -41,26 +75,8 @@ function create_post_in_database( $data, $photo = false ) {
 	if( $data['post-status'] == 'draft' ) $filename = '_draft_'.$filename; // for now, we prefix drafts and don't show them in the front-end
 
 
+	$data['photo'] = false;
 	if( $photo ) {
-
-		if( empty($photo['name']) || ! isset($photo['error']) || ! isset($photo['tmp_name']) || ! isset($photo['size']) || ! isset($photo['type']) ) {
-			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( "Photo could not be uploaded" );
-			exit;
-		} elseif( $photo['error'] > 0 ) {
-			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( 'Photo could not be uploaded (errorcode '.$photo['error'].')' );
-			exit;
-		} elseif( $photo['size'] <= 0 ) {
-			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( 'Photo could not be uploaded' );
-			exit;
-		} elseif( $photo['type'] != 'image/jpeg' && $photo['type'] != 'image/png' ) {
-			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( 'Photo could not be uploaded (only .jpg or .png is allowed)' );
-			exit;
-		}
-
 
 		$photo_name = explode('.', $photo['name']);
 		$extension = array_pop($photo_name);
