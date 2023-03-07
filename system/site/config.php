@@ -17,7 +17,7 @@ return [
 		'p-name' => false,
 		'u-url' => false
 	],
-	'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span', 'img' ],
+	'allowed_html_elements' => [ 'del', 'pre', 'blockquote', 'code', 'b', 'strong', 'u', 'i', 'em', 'ul', 'ol', 'li', 'p', 'br', 'span', 'a', 'img', 'video', 'audio' ],
 	'image_target_width' => 1000,
 	'preview_target_width' => 1000,
 	'image_jpg_quality' => 70,
