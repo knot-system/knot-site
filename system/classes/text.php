@@ -180,7 +180,7 @@ $html .= '		</ol>';
 
 	private function get_link_regex_pattern(){
 		// TODO: maybe we also want to support gopher:// or other protocols?
-		return '/(?<!src=[\"\'])(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
+		return '/(?<!src=[\"\'])(?<!href=[\"\'])(http|https)\:\/\/([a-zA-Z0-9\-\.]+)\.([a-zA-Z]+)(\/\S*)*/mix';
 	}
 
 
