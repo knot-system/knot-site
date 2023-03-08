@@ -1,3 +1,16 @@
+alpha.18
+
+Enhancements:
+- added additional HTML tags to allowed_html_elements config option: <u>, <del>, <pre>, <blockquote>, <code>, <video>, <audio>
+- when posting: content is now allowed to be empty, if at least a title or an image is provided
+- detect more ways to upload an image
+- setup now runs silently in the background, if config.php alreeady exists
+
+Fixes:
+- better link detection
+- show 404 error page, if post does not exist
+
+
 alpha.17
 
 **if you are on alpha.16, you need to manually update to alpha.17**
