@@ -1,6 +1,6 @@
 <?php
 
-// Core Version: 0.1.0
+// update: 2023-03-15
 
 // TODO: check, how we want to handle the api, and if it should be public
 
