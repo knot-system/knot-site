@@ -1,18 +1,20 @@
 <?php
 
+// Core Version: 0.1.0
+
 class Database {
 
 	public $objects = array();
 
-	function __construct( $eigenheim, $folderpath_input, $recursive = false, $filename = false ) {
+	function __construct( $core, $folderpath_input, $recursive = false, $filename = false ) {
 
-		$files = $this->read_dir( $eigenheim, $folderpath_input, $recursive, $filename );
+		$files = $this->read_dir( $core, $folderpath_input, $recursive, $filename );
 
 		if( ! count($files) ) return $this;
 
 		$objects = array();
 		foreach( $files as $files_filename ) {
-			$file = new File( $eigenheim, $files_filename );
+			$file = new File( $core, $files_filename );
 			$objects[$file->sort] = $file;
 		}
 
@@ -24,12 +26,12 @@ class Database {
 	}
 
 
-	function read_dir( $eigenheim, $folderpath_input, $recursive = false, $filename = false ) {
+	function read_dir( $core, $folderpath_input, $recursive = false, $filename = false ) {
 
-		$folderpath = $eigenheim->abspath.'content/'.$folderpath_input;
+		$folderpath = $core->abspath.'content/'.$folderpath_input;
 
 		if( ! is_dir( $folderpath ) ) {
-			$eigenheim->debug( $folderpath.' is no directory' );
+			$core->debug( $folderpath.' is no directory' );
 			return array();
 		}
 
@@ -41,7 +43,7 @@ class Database {
 
 				if( is_dir($folderpath.$file) ) {
 					if( $recursive ){
-						$files = array_merge( $files, $this->read_dir( $eigenheim, $folderpath_input.$file.'/', true, $filename ) );
+						$files = array_merge( $files, $this->read_dir( $core, $folderpath_input.$file.'/', true, $filename ) );
 					}
 					continue;
 				}
@@ -52,7 +54,7 @@ class Database {
 			}
 			closedir($handle);
 		} else {
-			$eigenheim->debug( 'could not open dir', $folderpath );
+			$core->debug( 'could not open dir', $folderpath );
 			return array();
 		}
 

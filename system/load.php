@@ -24,18 +24,18 @@ include_once( $abspath.'system/functions.php' );
 include_once( $abspath.'system/classes.php' );
 
 
-$eigenheim = new Eigenheim();
+$core = new Core();
 
 
 // here we gooo
 
-$eigenheim->theme->load();
+$core->theme->load();
 
 
-$template = $eigenheim->route->get('template');
-if( ! file_exists( $eigenheim->abspath.'system/site/'.$template.'.php') ){
-	$eigenheim->debug( 'template not found!', $template );
+$template = $core->route->get('template');
+if( ! file_exists( $core->abspath.'system/site/'.$template.'.php') ){
+	$core->debug( 'template not found!', $template );
 	exit;
 }
 
-$eigenheim->include( 'system/site/'.$template.'.php' );
+$core->include( 'system/site/'.$template.'.php' );

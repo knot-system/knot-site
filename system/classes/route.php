@@ -1,13 +1,15 @@
 <?php
 
+// Core Version: 0.1.0
+
 class Route {
 
 	public $route;
 
-	function __construct( $eigenheim ) {
+	function __construct( $core ) {
 
 		$request = $_SERVER['REQUEST_URI'];
-		$request = preg_replace( '/^'.preg_quote($eigenheim->basefolder, '/').'/', '', $request );
+		$request = preg_replace( '/^'.preg_quote($core->basefolder, '/').'/', '', $request );
 
 		$query_string = false;
 
@@ -45,7 +47,7 @@ class Route {
 			$post_id = get_post_id_from_slug($slug);
 
 			$post = false;
-			if( $post_id ) $post = $eigenheim->posts->get( $post_id );
+			if( $post_id ) $post = $core->posts->get( $post_id );
 
 			if( $post ) {
 				$this->route = array(
@@ -66,7 +68,7 @@ class Route {
 
 			$tag = $request[1];
 
-			$eigenheim->posts->filter_by_tag( $tag );
+			$core->posts->filter_by_tag( $tag );
 
 			$pagination = 0;
 			if( ! empty($request[2]) && $request[2] == 'page' && isset($request[3]) ) {
@@ -74,9 +76,9 @@ class Route {
 			}
 
 			if( $pagination < 1 ) $pagination = 1;
-			$eigenheim->posts->paginate($pagination);
+			$core->posts->paginate($pagination);
 
-			if( count($eigenheim->posts->get()) > 0 ) {
+			if( count($core->posts->get()) > 0 ) {
 				$this->route = array(
 					'template' => 'tag',
 					'args' => array(
@@ -119,7 +121,7 @@ class Route {
 			$pagination = (int) $request[1];
 
 			if( $pagination < 1 ) $pagination = 1;
-			$eigenheim->posts->paginate($pagination);
+			$core->posts->paginate($pagination);
 
 			$this->route = array(
 				'template' => 'index',
@@ -147,8 +149,8 @@ class Route {
 
 			$hash = $request[1];
 
-			if( file_exists($eigenheim->abspath.'cache/remote-image/'.$hash) ) {
-				handle_image_display( $eigenheim->abspath.'cache/remote-image/'.$hash );
+			if( file_exists($core->abspath.'cache/remote-image/'.$hash) ) {
+				handle_image_display( $core->abspath.'cache/remote-image/'.$hash );
 				exit;
 			}
 			
@@ -161,7 +163,7 @@ class Route {
 			// maybe static page
 
 			$page_id = $request[0];
-			$page = $eigenheim->pages->get($page_id);
+			$page = $core->pages->get($page_id);
 			if( $page ) {
 				$this->route = array(
 					'template' => 'page',
@@ -179,7 +181,7 @@ class Route {
 		} else {
 			// default overview (posts pagination 1)
 
-			$eigenheim->posts->paginate(1);
+			$core->posts->paginate(1);
 			$this->route = array(
 				'template' => 'index',
 				'args' => array(

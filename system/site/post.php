@@ -1,8 +1,8 @@
 <?php
 
-if( ! $eigenheim ) exit;
+if( ! $core ) exit;
 
-$args = $eigenheim->route->get('args');
+$args = $core->route->get('args');
 
 snippet( 'header' );
 

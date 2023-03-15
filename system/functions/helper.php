@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 
 function get_eigenheim_version( $abspath ){
 	return trim(file_get_contents($abspath.'system/version.txt'));
@@ -7,9 +9,9 @@ function get_eigenheim_version( $abspath ){
 
 
 function url( $path = '', $trailing_slash = true ) {
-	global $eigenheim;
+	global $core;
 	
-	$path = $eigenheim->baseurl.$path;
+	$path = $core->baseurl.$path;
 
 	if( $trailing_slash ) {
 		$path = trailing_slash_it($path);
@@ -39,41 +41,41 @@ function un_trailing_slash_it( $string ) {
 
 
 function add_stylesheet( $path, $type = 'theme' ) {
-	global $eigenheim;
-	$eigenheim->theme->add_stylesheet( $path, $type );
+	global $core;
+	$core->theme->add_stylesheet( $path, $type );
 }
 
 function remove_stylesheet( $path, $type = 'theme' ) {
-	global $eigenheim;
-	$eigenheim->theme->remove_stylesheet( $path, $type );
+	global $core;
+	$core->theme->remove_stylesheet( $path, $type );
 }
 
 
 function add_script( $path, $type = 'theme', $loading = false, $footer = false ) {
-	global $eigenheim;
-	$eigenheim->theme->add_script( $path, $type, $loading, $footer );
+	global $core;
+	$core->theme->add_script( $path, $type, $loading, $footer );
 }
 
 function remove_script( $path, $type = 'theme' ) {
-	global $eigenheim;
-	$eigenheim->theme->remove_script( $path, $type );
+	global $core;
+	$core->theme->remove_script( $path, $type );
 }
 
 
 function add_metatag( $name, $string, $position = false ) {
-	global $eigenheim;
-	$eigenheim->theme->add_metatag( $name, $string, $position );
+	global $core;
+	$core->theme->add_metatag( $name, $string, $position );
 }
 
 function remove_metatag( $name, $position = false ) {
-	global $eigenheim;
-	$eigenheim->theme->remove_metatag( $name, $position );
+	global $core;
+	$core->theme->remove_metatag( $name, $position );
 }
 
 
 function snippet( $path, $args = array(), $return = false ) {
-	global $eigenheim;
-	return $eigenheim->theme->snippet( $path, $args, $return );
+	global $core;
+	return $core->theme->snippet( $path, $args, $return );
 }
 
 
@@ -110,8 +112,8 @@ function sanitize_string_for_url( $string ) {
 
 function get_post_id_from_slug( $slug ) {
 
-	global $eigenheim;
-	$posts = $eigenheim->posts->posts;
+	global $core;
+	$posts = $core->posts->posts;
 	foreach( $posts as $post_id => $post ) {
 
 		if( ! isset($post->slug) ) continue;
@@ -128,13 +130,13 @@ function get_post_id_from_slug( $slug ) {
 
 function get_navigation(){
 
-	global $eigenheim;
+	global $core;
 
-	$pages = $eigenheim->pages->get();
+	$pages = $core->pages->get();
 
 	if( ! $pages ) return false;
 
-	$route = $eigenheim->route;
+	$route = $core->route;
 	$current_page_id = false;
 	if( $route->get('template') == 'page' && ! empty($route->get('args')['page_id']) ) {
 		$current_page_id = $route->get('args')['page_id'];
@@ -178,22 +180,22 @@ function get_hash( $input ) {
 function doing_feed(){
 	// currently displaying rss or json feed
 	
-	global $eigenheim;
+	global $core;
 
-	if( empty($eigenheim->doing_feed) ) return false;
+	if( empty($core->doing_feed) ) return false;
 
-	return !! $eigenheim->doing_feed;
+	return !! $core->doing_feed;
 }
 
 
 function read_folder( $folderpath, $recursive = false ) {
 
-	global $eigenheim;
+	global $core;
 
 	$files = [];
 
 	if( ! is_dir( $folderpath ) ) {
-		$eigenheim->debug( $folderpath.' is no directory' );
+		$core->debug( $folderpath.' is no directory' );
 		return array();
 	}
 
@@ -216,7 +218,7 @@ function read_folder( $folderpath, $recursive = false ) {
 		}
 		closedir($handle);
 	} else {
-		$eigenheim->debug( 'could not open dir', $folderpath );
+		$core->debug( 'could not open dir', $folderpath );
 		return array();
 	}
 
@@ -226,11 +228,11 @@ function read_folder( $folderpath, $recursive = false ) {
 
 function head_html(){
 
-	global $eigenheim;
+	global $core;
 
 	$body_classes = array();
 
-	$color_scheme = $eigenheim->config->get('theme-color-scheme');
+	$color_scheme = $core->config->get('theme-color-scheme');
 	if( $color_scheme ) $body_classes[] = 'theme-color-scheme-'.$color_scheme;
 
 ?><!DOCTYPE html>
@@ -245,16 +247,16 @@ ___________.__                     .__           .__
 <html lang="en">
 <head>
 <?php
-	$eigenheim->theme->print_metatags( 'header' );
+	$core->theme->print_metatags( 'header' );
 ?>
 
 
 <?php
-	$eigenheim->theme->print_stylesheets();
+	$core->theme->print_stylesheets();
 ?>
 
 <?php
-	$eigenheim->theme->print_scripts();
+	$core->theme->print_scripts();
 
 	?>
 	
@@ -265,13 +267,13 @@ ___________.__                     .__           .__
 
 function foot_html(){
 
-	global $eigenheim;
+	global $core;
 
-	$eigenheim->theme->print_metatags( 'footer' );
+	$core->theme->print_metatags( 'footer' );
 ?>
 
 <?php
-	$eigenheim->theme->print_scripts( 'footer' );
+	$core->theme->print_scripts( 'footer' );
 
 ?>
 

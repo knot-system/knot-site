@@ -1,20 +1,20 @@
 <?php
 
-// Version: alpha.12
+// Version: 0.1.0
 
-if( ! $eigenheim ) exit;
+if( ! $core ) exit;
 
-$posts = $eigenheim->posts;
+$posts = $core->posts;
 
 $tag = $args['tag'];
 
 $show_pagination = true;
 
 $prev_page = false;
-if( $eigenheim->posts->page > 1 ) $prev_page = true;
+if( $core->posts->page > 1 ) $prev_page = true;
 
 $next_page = false;
-if( $eigenheim->posts->page < $eigenheim->posts->maxPage ) {
+if( $core->posts->page < $core->posts->maxPage ) {
 	$next_page = true;
 }
 
@@ -32,7 +32,7 @@ if( $show_pagination ) {
 <?php
 			if( $prev_page ) {
 ?>
-			<li><a href="<?= url($pre_url.'page/'.($eigenheim->posts->page-1)) ?>" rel="prev">&laquo; previous page</a></li>
+			<li><a href="<?= url($pre_url.'page/'.($core->posts->page-1)) ?>" rel="prev">&laquo; previous page</a></li>
 <?php
 			} else {
 ?>
@@ -42,7 +42,7 @@ if( $show_pagination ) {
 			
 			if( $next_page ) {
 ?>
-			<li><a href="<?= url($pre_url.'page/'.($eigenheim->posts->page+1)) ?>" rel="next">next page &raquo;</a></li>
+			<li><a href="<?= url($pre_url.'page/'.($core->posts->page+1)) ?>" rel="next">next page &raquo;</a></li>
 <?php
 			} else {
 ?>

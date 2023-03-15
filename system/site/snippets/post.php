@@ -1,8 +1,8 @@
 <?php
 
-// Version: alpha.12
+// Version: 0.1.0
 
-if( ! $eigenheim ) exit;
+if( ! $core ) exit;
 
 $post = $args['post'];
 

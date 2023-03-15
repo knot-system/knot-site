@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 class Theme {
 
 	public $folder_path;
@@ -12,15 +14,15 @@ class Theme {
 	public $metatags = array();
 
 
-	function __construct( $eigenheim ) {
+	function __construct( $core ) {
 
-		$theme_name = $eigenheim->config->get('theme');
+		$theme_name = $core->config->get('theme');
 
-		if( ! file_exists( $eigenheim->abspath.'theme/'.$theme_name.'/theme.php' ) ) {
+		if( ! file_exists( $core->abspath.'theme/'.$theme_name.'/theme.php' ) ) {
 			$theme_name = 'default';
 		}
 
-		$file_path = $eigenheim->abspath.'theme/'.$theme_name.'/theme.php';
+		$file_path = $core->abspath.'theme/'.$theme_name.'/theme.php';
 		$this->config = $this->load_theme_config_from_file( $file_path );
 
 		$this->folder_name = $theme_name;
@@ -35,52 +37,52 @@ class Theme {
 
 		$this->add_metatag( 'charset', '<meta charset="utf-8">' );
 		$this->add_metatag( 'viewport', '<meta name="viewport" content="width=device-width,initial-scale=1.0">' );
-		$this->add_metatag( 'title', '<title>'.$eigenheim->config->get('site_title').'</title>' );
+		$this->add_metatag( 'title', '<title>'.$core->config->get('site_title').'</title>' );
 
 		$author = get_author_information();
 		if( ! empty( $author['display_name'] ) ) {
 			$this->add_metatag( 'author', '<meta name="author" content="'.$author['display_name'].'">' );
 		}
 
-		$this->add_metatag( 'generator', '<meta tag="generator" content="Eigenheim v.'.$eigenheim->version().'">' );
+		$this->add_metatag( 'generator', '<meta tag="generator" content="Eigenheim v.'.$core->version().'">' );
 
 		$this->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
 		$this->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
-		$this->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.$eigenheim->config->get('auth_mail').'">' );
+		$this->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.$core->config->get('auth_mail').'">' );
 		$this->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
-		$microsub_endpoint = $eigenheim->config->get('microsub');
+		$microsub_endpoint = $core->config->get('microsub');
 		if( $microsub_endpoint ) {
 			$this->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
 		}
 
-		$this->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.$eigenheim->config->get('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
-		$this->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.$eigenheim->config->get('site_title').' JSON Feed" href="'.url('feed/json').'">' );
+		$this->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.$core->config->get('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
+		$this->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.$core->config->get('site_title').' JSON Feed" href="'.url('feed/json').'">' );
 
 
 
 		// expand eigenheim config options:
-		$config_path = $eigenheim->abspath.'theme/'.$theme_name.'/config.php';
+		$config_path = $core->abspath.'theme/'.$theme_name.'/config.php';
 		if( file_exists( $config_path ) ) {
-			$eigenheim->config->load_config_file( $config_path );
+			$core->config->load_config_file( $config_path );
 			// we need to overwrite it with the local user config again:
-			$eigenheim->config->load_config_file( $eigenheim->abspath.'config.php' );
+			$core->config->load_config_file( $core->abspath.'config.php' );
 		}
 
 	}
 
 
 	function load(){
-		global $eigenheim;
-		$eigenheim->include( $this->path.'functions.php' );
+		global $core;
+		$core->include( $this->path.'functions.php' );
 	}
 
 
 	function load_theme_config_from_file( $file_path ) {
 
-		global $eigenheim;
+		global $core;
 
 		if( ! file_exists($file_path) ) {
-			$eigenheim->debug( 'no config file found', $file_path );
+			$core->debug( 'no config file found', $file_path );
 			exit;
 		}
 
@@ -102,10 +104,10 @@ class Theme {
 
 	function add_stylesheet( $path, $type = 'theme' ) {
 
-		global $eigenheim;
+		global $core;
 
-		$global_path = $eigenheim->abspath.'system/site/assets/';
-		$global_url = $eigenheim->baseurl.'/system/site/assets/';
+		$global_path = $core->abspath.'system/site/assets/';
+		$global_url = $core->baseurl.'/system/site/assets/';
 
 		if( $type == 'theme' && file_exists($this->path.$path) ) {
 			$type = 'theme';
@@ -134,16 +136,16 @@ class Theme {
 
 	function print_stylesheets() {
 
-		global $eigenheim;
+		global $core;
 
 		foreach( $this->stylesheets as $stylesheet ) {
 			if( $stylesheet['type'] == 'global' ) {
-				$version = $eigenheim->version();
+				$version = $core->version();
 			} else {
 				$version = $this->get('version');
 			}
 
-			if( $eigenheim->config->get('debug') ) {
+			if( $core->config->get('debug') ) {
 				$version .= '.'.time();
 			}
 
@@ -159,10 +161,10 @@ class Theme {
 
 		// $loading is meant for 'async' or 'defer' attributes
 
-		global $eigenheim;
+		global $core;
 
-		$global_path = $eigenheim->abspath.'system/site/assets/';
-		$global_url = $eigenheim->baseurl.'/system/site/assets/';
+		$global_path = $core->abspath.'system/site/assets/';
+		$global_url = $core->baseurl.'/system/site/assets/';
 
 		if( $type == 'theme' && file_exists($this->path.$path) ) {
 			$type = 'theme';
@@ -193,7 +195,7 @@ class Theme {
 
 	function print_scripts( $position = false ) {
 
-		global $eigenheim;
+		global $core;
 
 		foreach( $this->scripts as $script ) {
 
@@ -201,12 +203,12 @@ class Theme {
 			elseif( ! $script['footer'] && $position == 'footer' ) continue;
 
 			if( $script['type'] == 'global' ) {
-				$version = $eigenheim->version();
+				$version = $core->version();
 			} else {
 				$version = $this->get('version');
 			}
 
-			if( $eigenheim->config->get('debug') ) {
+			if( $core->config->get('debug') ) {
 				$version .= '.'.time();
 			}
 
@@ -228,8 +230,8 @@ class Theme {
 		if( ! array_key_exists( $position, $this->metatags ) ) $this->metatags[$position] = array();
 
 		if( array_key_exists($name, $this->metatags) ) {
-			global $eigenheim;
-			$eigenheim->debug('a metatag with this name already exists, it gets overwritten', $name, $string);
+			global $core;
+			$core->debug('a metatag with this name already exists, it gets overwritten', $name, $string);
 		}
 
 		$this->metatags[$position][$name] = $string;
@@ -260,7 +262,7 @@ class Theme {
 
 	function snippet( $path, $args = array(), $return = false ) {
 		
-		global $eigenheim;
+		global $core;
 
 		$snippet_path = 'snippets/'.$path.'.php';
 
@@ -270,11 +272,11 @@ class Theme {
 			$include_path = 'system/site/'.$snippet_path;
 		}
 
-		if( ! file_exists( $eigenheim->abspath.$include_path) ) return;
+		if( ! file_exists( $core->abspath.$include_path) ) return;
 
 		ob_start();
 
-		$eigenheim->include( $include_path, $args );
+		$core->include( $include_path, $args );
 
 		$snippet = ob_get_contents();
 		ob_end_clean();

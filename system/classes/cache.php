@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 // NOTE: in system/classes/core.php there is also the 'refresh_cache()' function
 // that takes care of deleting old, obsolete cache files
 
@@ -19,7 +21,7 @@ class Cache {
 		// TODO: add config option to disable cache
 		// TODO: add method to force a cache refresh?
 
-		global $eigenheim;
+		global $core;
 
 		if( $type == 'image' || $type == 'image-preview' ) {
 			$this->cache_folder .= 'images/';
@@ -63,10 +65,10 @@ class Cache {
 
 
 	function add_data( $data ) {
-		global $eigenheim;
+		global $core;
 
-		if( ! file_put_contents( $eigenheim->abspath.$this->cache_file, $data ) ) {
-			$eigenheim->debug( 'could not create cache file', $this->cache_file );
+		if( ! file_put_contents( $core->abspath.$this->cache_file, $data ) ) {
+			$core->debug( 'could not create cache file', $this->cache_file );
 		}
 
 		return $this;
@@ -92,12 +94,12 @@ class Cache {
 
 
 	private function check_cache_folder(){
-		global $eigenheim;
+		global $core;
 
-		if( is_dir($eigenheim->abspath.$this->cache_folder) ) return;
+		if( is_dir($core->abspath.$this->cache_folder) ) return;
 
-		if( mkdir( $eigenheim->abspath.$this->cache_folder, 0777, true ) === false ) {
-			$eigenheim->debug( 'could not create cache dir', $this->cache_folder );
+		if( mkdir( $core->abspath.$this->cache_folder, 0777, true ) === false ) {
+			$core->debug( 'could not create cache dir', $this->cache_folder );
 		}
 
 		return $this;

@@ -1,10 +1,12 @@
 <?php
 
+// Core Version: 0.1.0
+
 
 function get_author_information( $raw = false ) {
-	global $eigenheim;
+	global $core;
 
-	$author = $eigenheim->config->get('author');
+	$author = $core->config->get('author');
 
 	// allowed fields; see https://microformats.org/wiki/h-card
 	// TODO: we need to test those fields

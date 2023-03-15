@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 
 // micropub spec: https://www.w3.org/TR/micropub/
 
@@ -36,13 +38,13 @@ function micropub_check_request(){
 
 function micropub_handle_get_request(){
 
-	global $eigenheim;
+	global $core;
 
 	if( empty($_GET['q']) ) return;
 
 	if( $_GET['q'] == 'config' ) {
 
-		$categories = $eigenheim->posts->categories();
+		$categories = $core->posts->categories();
 
 		$config = array(
 			// 'media-endpoint' => '', // TODO: add media endpoint for multiple images
@@ -164,8 +166,8 @@ function micropub_create_post_slug( $data ) {
 		$slug = sanitize_string_for_url( strip_tags($data['content']) );
 	}
 
-	global $eigenheim;
-	$slug_max_length = $eigenheim->config->get('slug_max_length');
+	global $core;
+	$slug_max_length = $core->config->get('slug_max_length');
 	$slug = substr( $slug, 0, $slug_max_length );
 
 	return $slug;
@@ -173,7 +175,7 @@ function micropub_create_post_slug( $data ) {
 
 function micropub_check_authorization_bearer() {
 
-	global $eigenheim;
+	global $core;
 
 	$headers = apache_request_headers();
 
@@ -197,7 +199,7 @@ function micropub_check_authorization_bearer() {
 	$client = $response['client_id'];
 	$scope = $response['scope'];
 	
-	if( trailing_slash_it($me) != trailing_slash_it($eigenheim->baseurl) ){
+	if( trailing_slash_it($me) != trailing_slash_it($core->baseurl) ){
 		header( "HTTP/1.1 403 Forbidden" );
 		exit;
 	}

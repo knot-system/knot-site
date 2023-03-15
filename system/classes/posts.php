@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 class Posts {
 
 	public $posts = array();
@@ -7,11 +9,11 @@ class Posts {
 	public $page;
 	public $maxPage;
 
-	function __construct( $eigenheim ){
+	function __construct( $core ){
 
-		$this->eigenheim = $eigenheim; // TODO: how do we want to handle this?
+		$this->eigenheim = $core; // TODO: how do we want to handle this?
 
-		$database = new Database( $eigenheim, 'posts/', true, 'post.txt' );
+		$database = new Database( $core, 'posts/', true, 'post.txt' );
 		$objects = $database->reverse()->get();
 
 		$posts = array();
@@ -22,7 +24,7 @@ class Posts {
 
 		$this->posts = $posts;
 
-		$posts_per_page = $eigenheim->config->get( 'posts_per_page' );
+		$posts_per_page = $core->config->get( 'posts_per_page' );
 		$maxPage = count($posts) / $posts_per_page;
 
 		$this->page = 1;

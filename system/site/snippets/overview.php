@@ -1,8 +1,8 @@
 <?php
 
-// Version: alpha.14
+// Version: 0.1.0
 
-if( ! $eigenheim ) exit;
+if( ! $core ) exit;
 
 $tag = false;
 if( ! empty($args['tag']) ) $tag = $args['tag'];
@@ -16,7 +16,7 @@ if( $tag ) {
 }
 
 
-foreach( $eigenheim->posts->get() as $post ) snippet( 'post', array( 'post' => $post ) );
+foreach( $core->posts->get() as $post ) snippet( 'post', array( 'post' => $post ) );
 
 snippet( 'pagination', array( 'tag' => $tag ) );
 

@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 class File {
 
 	public $id;
@@ -10,13 +12,13 @@ class File {
 	public $fields = array();
 	public $sort;
 
-	function __construct( $eigenheim, $filename, $raw_content = false ) {
+	function __construct( $core, $filename, $raw_content = false ) {
 
 		// if we provide $raw_content, we need to create the file - TODO: check if we want to handle it like this, or if we need another way to create or read a file
 
-		$this->eigenheim = $eigenheim; // TODO: how do we want to handle this?
+		$this->eigenheim = $core; // TODO: how do we want to handle this?
 
-		$filepath = $eigenheim->abspath.'content/'.$filename;
+		$filepath = $core->abspath.'content/'.$filename;
 
 		if( $raw_content ) {
 			$return = $this->create( $filepath, $raw_content );
@@ -24,7 +26,7 @@ class File {
 		}
 
 		if( ! file_exists( $filepath) ) {
-			$eigenheim->debug( 'file not found', $filepath );
+			$core->debug( 'file not found', $filepath );
 			return false;
 		}
 
@@ -98,10 +100,10 @@ class File {
 
 	function create( $filepath, $raw_content ) {
 
-		global $eigenheim;
+		global $core;
 
 		if( file_exists($filepath) ) {
-			$eigenheim->debug( 'file exists already', $filepath );
+			$core->debug( 'file exists already', $filepath );
 			return false;
 		}
 

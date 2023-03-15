@@ -1,15 +1,15 @@
 <?php
 
-// Version: alpha.15
+// Version: 0.1.0
 
-if( ! $eigenheim ) exit;
+if( ! $core ) exit;
 
 head_html();
 
 ?>
 
 <header>
-	<h1><a href="<?= url() ?>"><?= $eigenheim->config->get('site_title') ?></a></h1>
+	<h1><a href="<?= url() ?>"><?= $core->config->get('site_title') ?></a></h1>
 	<?php
 	$navigation = get_navigation();
 	if( $navigation ) :

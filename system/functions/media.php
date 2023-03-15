@@ -1,29 +1,31 @@
 <?php
 
+// Core Version: 0.1.0
+
 
 function get_image_html( $image_path, $type = false, $target_width = false ) {
-	global $eigenheim;
+	global $core;
 
 	if( ! $target_width ) {
-		$target_width = $eigenheim->config->get( 'image_target_width' );
+		$target_width = $core->config->get( 'image_target_width' );
 	}
 
 	if( $type == 'remote' ) {
-		$local_image_path = $eigenheim->abspath.'cache/remote-image/'.$image_path;
-		$local_image_url = $eigenheim->baseurl.'remote-image/'.$image_path.'?width='.$target_width; // TODO: check, how we want to handle remote images
+		$local_image_path = $core->abspath.'cache/remote-image/'.$image_path;
+		$local_image_url = $core->baseurl.'remote-image/'.$image_path.'?width='.$target_width; // TODO: check, how we want to handle remote images
 	} else {
-		$local_image_path = $eigenheim->abspath.'content/'.$image_path;
-		$local_image_url = $eigenheim->baseurl.'content/'.$image_path.'?width='.$target_width;
+		$local_image_path = $core->abspath.'content/'.$image_path;
+		$local_image_url = $core->baseurl.'content/'.$image_path.'?width='.$target_width;
 	}
 
 	if( ! file_exists( $local_image_path) ) {
-		$eigenheim->debug("local image file does not exist", $local_image_path);
+		$core->debug("local image file does not exist", $local_image_path);
 		return false;
 	}
 
 	$image_meta = getimagesize( $local_image_path );
 	if( ! $image_meta ) {
-		$eigenheim->debug("no image meta", $local_image_path);
+		$core->debug("no image meta", $local_image_path);
 		return false;
 	}
 
@@ -82,14 +84,14 @@ function get_image_dimensions( $target_width, $src_width, $src_height ) {
 
 function get_image_preview_base64( $file_path ) {
 
-	global $eigenheim;
+	global $core;
 	
 	$target_width = 50;
 	$jpg_quality = 40;
 
 	$image_meta = getimagesize( $file_path );
 	if( ! $image_meta ) {
-		$eigenheim->debug("no image meta", $file_path);
+		$core->debug("no image meta", $file_path);
 		return false;
 	}
 
@@ -99,7 +101,7 @@ function get_image_preview_base64( $file_path ) {
 	
 	$filesize = filesize( $file_path );
 	if( ! $filesize ) {
-		$eigenheim->debug("no image filesize", $file_path);
+		$core->debug("no image filesize", $file_path);
 		return false;
 	}
 
@@ -117,19 +119,19 @@ function get_image_preview_base64( $file_path ) {
 	if( $image_type == IMAGETYPE_JPEG ) {
 		$src_image = imagecreatefromjpeg( $file_path );
 		if( ! $src_image ) {
-			$eigenheim->debug( 'could not load jpg image' );
+			$core->debug( 'could not load jpg image' );
 			exit;
 		}
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$src_image = imagecreatefrompng( $file_path );
 		if( ! $src_image ) {
-			$eigenheim->debug( 'could not load png image' );
+			$core->debug( 'could not load png image' );
 			exit;
 		}
 
 	} else {
-		$eigenheim->debug( 'unknown image type '.$image_type);
+		$core->debug( 'unknown image type '.$image_type);
 		exit;	
 	}
 
@@ -149,7 +151,7 @@ function get_image_preview_base64( $file_path ) {
 
 	if( $width <= 0 || $height <= 0 ) {
 		imagedestroy( $src_image );
-		$eigenheim->debug( 'width or height <= 0', $width, $height );
+		$core->debug( 'width or height <= 0', $width, $height );
 		exit;
 	}
 
@@ -179,15 +181,15 @@ function get_image_preview_base64( $file_path ) {
 
 function handle_image_display( $file_path ) {
 
-	global $eigenheim;
+	global $core;
 
-	$target_width = $eigenheim->config->get( 'image_target_width' );
+	$target_width = $core->config->get( 'image_target_width' );
 
 	if( isset($_GET['width']) ) $target_width = (int) $_GET['width'];
 	if( $target_width < 1 ) $target_width = 10;
 
-	$jpg_quality = $eigenheim->config->get( 'image_jpg_quality' );
-	$png_to_jpg = $eigenheim->config->get( 'image_png_to_jpg' );
+	$jpg_quality = $core->config->get( 'image_jpg_quality' );
+	$png_to_jpg = $core->config->get( 'image_png_to_jpg' );
 
 	$image_meta = getimagesize( $file_path );
 	$filesize = filesize( $file_path );
@@ -209,7 +211,7 @@ function handle_image_display( $file_path ) {
 			$mime_type = 'image/jpeg';
 		}
 	} else {
-		$eigenheim->debug( 'unknown image type '.$image_type);
+		$core->debug( 'unknown image type '.$image_type);
 		exit;
 	}
 
@@ -229,14 +231,14 @@ function handle_image_display( $file_path ) {
 	if( $image_type == IMAGETYPE_JPEG ) {
 		$src_image = imagecreatefromjpeg( $file_path );
 		if( ! $src_image ) {
-			$eigenheim->debug( 'could not load jpg image' );
+			$core->debug( 'could not load jpg image' );
 			exit;
 		}
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$src_image = imagecreatefrompng( $file_path );
 		if( ! $src_image ) {
-			$eigenheim->debug( 'could not load png image' );
+			$core->debug( 'could not load png image' );
 			exit;
 		}
 
@@ -259,7 +261,7 @@ function handle_image_display( $file_path ) {
 
 		if( $width <= 0 || $height <= 0 ) {
 			imagedestroy( $src_image );
-			$eigenheim->debug( 'width or height <= 0', $width, $height );
+			$core->debug( 'width or height <= 0', $width, $height );
 			exit;
 		}
 

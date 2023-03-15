@@ -1,14 +1,16 @@
 <?php
 
+// Core Version: 0.1.0
+
 class Log {
 
 	private $log_filepath;
 
-	function __construct( $eigenheim ) {
+	function __construct( $core ) {
 
-		if( ! $eigenheim->config->get('logging') ) return;
+		if( ! $core->config->get('logging') ) return;
 
-		$log_filepath = $eigenheim->abspath.'log/';
+		$log_filepath = $core->abspath.'log/';
 
 		if( ! is_dir( $log_filepath) ) {
 			mkdir( $log_filepath, 0777, true );

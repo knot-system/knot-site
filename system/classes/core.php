@@ -1,6 +1,8 @@
 <?php
 
-class Eigenheim {
+// Core Version: 0.1.0
+
+class Core {
 
 	// TODO: check, if we want those variables to be public:
 
@@ -21,8 +23,8 @@ class Eigenheim {
 	
 	function __construct() {
 
-		global $eigenheim;
-		$eigenheim = $this;
+		global $core;
+		$core = $this;
 
 		$abspath = realpath(dirname(__FILE__)).'/';
 		$abspath = preg_replace( '/system\/classes\/$/', '', $abspath );
@@ -71,7 +73,7 @@ class Eigenheim {
 
 	function include( $file_path, $args = array() ) {
 
-		$eigenheim = $this;
+		$core = $this;
 
 		$full_file_path = $this->abspath.$file_path;
 

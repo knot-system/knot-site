@@ -1,5 +1,7 @@
 <?php
 
+// Core Version: 0.1.0
+
 
 function request_post( $url, $headers = array() ){
 
@@ -45,9 +47,9 @@ function request_get_remote( $url, $headers = array() ) {
 
 function get_user_agent(){
 
-	global $eigenheim;
-	if( $eigenheim ) {
-		$version = $eigenheim->version();
+	global $core;
+	if( $core ) {
+		$version = $core->version();
 	} else {
 		global $abspath;
 		$version = get_eigenheim_version( $abspath );

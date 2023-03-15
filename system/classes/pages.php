@@ -1,12 +1,14 @@
 <?php
 
+// Core Version: 0.1.0
+
 class Pages {
 
 	public $pages;
 
-	function __construct( $eigenheim ) {
+	function __construct( $core ) {
 
-		$database = new Database( $eigenheim, '', true, 'page.txt' );
+		$database = new Database( $core, '', true, 'page.txt' );
 		$objects = $database->get();
 
 		$pages = array();

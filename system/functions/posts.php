@@ -1,28 +1,30 @@
 <?php
 
+// Core Version: 0.1.0
+
 // TODO: move to posts class ?
 
 function create_post_in_database( $data, $photo = false ) {
 
-	global $eigenheim;
+	global $core;
 
 	if( $photo ) {
 
 		if( empty($photo['name']) || ! isset($photo['error']) || ! isset($photo['tmp_name']) || ! isset($photo['size']) || ! isset($photo['type']) ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( "Photo could not be uploaded" );
+			$core->debug( "Photo could not be uploaded" );
 			exit;
 		} elseif( $photo['error'] > 0 ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( 'Photo could not be uploaded (errorcode '.$photo['error'].')' );
+			$core->debug( 'Photo could not be uploaded (errorcode '.$photo['error'].')' );
 			exit;
 		} elseif( $photo['size'] <= 0 ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( 'Photo could not be uploaded' );
+			$core->debug( 'Photo could not be uploaded' );
 			exit;
 		} elseif( $photo['type'] != 'image/jpeg' && $photo['type'] != 'image/png' ) {
 			header( "HTTP/1.1 400 Bad Request" );
-			$eigenheim->debug( 'Photo could not be uploaded (only .jpg or .png is allowed)' );
+			$core->debug( 'Photo could not be uploaded (only .jpg or .png is allowed)' );
 			exit;
 		}
 
@@ -31,10 +33,10 @@ function create_post_in_database( $data, $photo = false ) {
 
 	// NOTE: we want to either have a title ('name'), content or a image; if all of them are empty, abort here.
 	if( ! $data['content'] && ! $data['name'] && ! $photo ) {
-		global $eigenheim;
+		global $core;
 
 		header( "HTTP/1.1 400 Bad Request" );
-		$eigenheim->debug( 'we need at least content, or a title, or an image' );
+		$core->debug( 'we need at least content, or a title, or an image' );
 		exit;
 	}
 
@@ -43,11 +45,11 @@ function create_post_in_database( $data, $photo = false ) {
 	$year = date('Y', $data['timestamp']);
 	$month = date('m', $data['timestamp']);
 	$target_folder = 'posts/'.$year.'/'.$month.'/';
-	if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
-		mkdir( $eigenheim->abspath.'content/'.$target_folder, 0777, true );
-		if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
+	if( ! is_dir($core->abspath.'content/'.$target_folder) ) {
+		mkdir( $core->abspath.'content/'.$target_folder, 0777, true );
+		if( ! is_dir($core->abspath.'content/'.$target_folder) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
-			$eigenheim->debug( 'Folder could not be created' );
+			$core->debug( 'Folder could not be created' );
 			exit;
 		}
 	}
@@ -56,16 +58,16 @@ function create_post_in_database( $data, $photo = false ) {
 	$prefix = date('Y-m-d_H-i-s', $data['timestamp']);
 	$target_folder .= $prefix.'_'.$data['slug'].'/';
 	
-	if( is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
+	if( is_dir($core->abspath.'content/'.$target_folder) ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
-		$eigenheim->debug( 'Folder already exists' );
+		$core->debug( 'Folder already exists' );
 		exit;
 	}
 
-	mkdir( $eigenheim->abspath.'content/'.$target_folder, 0777 );
-	if( ! is_dir($eigenheim->abspath.'content/'.$target_folder) ) {
+	mkdir( $core->abspath.'content/'.$target_folder, 0777 );
+	if( ! is_dir($core->abspath.'content/'.$target_folder) ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
-		$eigenheim->debug( "Folder could not be created" );
+		$core->debug( "Folder could not be created" );
 		exit;
 	}
 
@@ -86,7 +88,7 @@ function create_post_in_database( $data, $photo = false ) {
 			if( $count > 0 ) $count_string = '_'.$count.'_';
 
 			$photo_name_string = implode('.', $photo_name).$count_string.'.'.$extension;
-			$photo_target = $eigenheim->abspath.'content/'.$target_folder.$photo_name_string;
+			$photo_target = $core->abspath.'content/'.$target_folder.$photo_name_string;
 
 			$count++;
 
@@ -95,12 +97,12 @@ function create_post_in_database( $data, $photo = false ) {
 		
 		if( ! rename( $photo['tmp_name'], $photo_target ) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
-			$eigenheim->debug( 'Photo could not be moved to the target location' );
+			$core->debug( 'Photo could not be moved to the target location' );
 			exit;
 		}
 		if( ! chmod( $photo_target, 0644) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
-			$eigenheim->debug( 'Photo was uploaded, but could not be set to readable' );
+			$core->debug( 'Photo was uploaded, but could not be set to readable' );
 			exit;	
 		}
 
@@ -117,10 +119,10 @@ function create_post_in_database( $data, $photo = false ) {
 		$data_string .= $key.': '.$value."\r\n\r\n----\r\n\r\n";
 	}
 
-	$file = new File( $eigenheim, $file_target, $data_string );
+	$file = new File( $core, $file_target, $data_string );
 	if( ! $file ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
-		$eigenheim->debug(  "File could not be written" );
+		$core->debug(  "File could not be written" );
 		exit;
 	}
 
