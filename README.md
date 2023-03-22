@@ -41,7 +41,7 @@ return [
 	],
 	'allowed_html_elements' => [ 'p', 'br', 'i', 'b', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'span' ] // all other HTML-elements get removed from the content
 	
-	// for more config options, see the file system/site/config.php
+	// for more config options, see the file system/config.php
 	
 ];
 
@@ -50,7 +50,7 @@ return [
 If you want to add a microsub endpoint, replace `https://www.example.com/microsub` with the endpoint of your choice and uncomment the line. You can also add additional author information - use h-card properties here (but not all may be used in the frontend; this will be expanded later). All other options can be uncommented as well, the values displayed here are their default values, you can change them accordingly. The option names *may change* in a later version of this system. This section of the README will be expanded later, when we reach a stable state.
 
 The loading order of the config is as follows:
-1) `system/site/config.php`
+1) `system/config.php`
    gets overwritten by:
 2) `theme/{themename}/config.php` (if it exists)
    gets overwritten by:
@@ -74,7 +74,7 @@ You can also create a `theme/{themename}/snippets/` folder and copy files from `
 
 The `theme/{themename}/functions.php` contains some functions that get called when the theme gets loaded.
 
-The `theme/{themename}/config.php` can overwrite config options from `system/site/config.php` (but gets itself overwritten by the local `config.php` in the root directory), so the custom theme can for example set its own image sizes.
+The `theme/{themename}/config.php` can overwrite config options from `system/config.php` (but gets itself overwritten by the local `config.php` in the root directory), so the custom theme can for example set its own image sizes.
 
 ## Updating
 

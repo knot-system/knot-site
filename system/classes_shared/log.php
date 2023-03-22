@@ -1,6 +1,7 @@
 <?php
 
-// update: 2023-03-15
+// update: 2023-03-22
+
 
 class Log {
 
@@ -30,6 +31,7 @@ class Log {
 
 		$log_append = '['.$date."]\r\n";
 		foreach( $messages as $message ) {
+			if( is_array($message) || is_object($message) ) $message = json_encode($message);
 			$log_append .= $message."\r\n";
 		}
 

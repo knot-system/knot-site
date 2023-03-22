@@ -8,7 +8,7 @@ return [
 	'site_title' => 'Eigenheim',
 	'auth_mail' => false,
 	'debug' => false,
-	'logging' => false,
+	'logging' => true,
 	'theme' => 'default',
 	'theme-color-scheme' => 'default', // depends on the theme; the default theme supports 'blue', 'green', 'red', 'lilac'
 	'posts_per_page' => 5,
@@ -26,5 +26,5 @@ return [
 	'slug_max_length' => 80,
 	'add_footnote_to_links' => true,
 	'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
-	'user_agent' => 'maxhaesslein/eigenheim/',
+	'user_agent' => 'maxhaesslein/eigenheim/', // version will be automatically appended
 ];

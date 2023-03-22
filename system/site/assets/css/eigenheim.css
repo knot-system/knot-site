@@ -76,3 +76,35 @@ a.link-preview {
 				opacity: 1;
 			}
 			
+.debugmessage {
+	border: 1px solid red;
+	display: block;
+	margin: 20px 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-size: 12px;
+	border-radius: 5px;
+	overflow: hidden;
+	background: rgba(255,0,0,.1);
+}
+
+	.debugmessage .debugmessage-head {
+		display: block;
+		background: red;
+		color: #fff;
+		padding: 10px;
+	}
+
+	.debugmessage > pre {
+		padding: 10px;
+		margin: 0;
+		overflow: auto;
+		display: block;
+	}
+
+	.debugmessage hr {
+		margin: 1em 0;
+		border: 0;
+		border-top: 1px solid red;
+		height: 0;
+	}
