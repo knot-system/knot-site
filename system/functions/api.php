@@ -1,7 +1,5 @@
 <?php
 
-// update: 2023-03-15
-
 // TODO: check, how we want to handle the api, and if it should be public
 
 function api_get_endpoint( $complete_path = false ){

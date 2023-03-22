@@ -1,7 +1,5 @@
 <?php
 
-// update: 2023-03-15
-
 
 // micropub spec: https://www.w3.org/TR/micropub/
 

@@ -1,7 +1,5 @@
 <?php
 
-// update: 2023-03-15
-
 
 function get_author_information( $raw = false ) {
 	global $core;

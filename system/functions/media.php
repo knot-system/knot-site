@@ -1,7 +1,5 @@
 <?php
 
-// update: 2023-03-15
-
 
 function get_image_html( $image_path, $type = false, $target_width = false ) {
 	global $core;
