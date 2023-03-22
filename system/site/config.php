@@ -26,4 +26,5 @@ return [
 	'slug_max_length' => 80,
 	'add_footnote_to_links' => true,
 	'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
+	'user_agent' => 'maxhaesslein/eigenheim/',
 ];

@@ -55,5 +55,7 @@ function get_user_agent(){
 		$version = get_eigenheim_version( $abspath );
 	}
 
-	return 'maxhaesslein/eigenheim/'.$version;
+	$user_agent = $core->config->get('user_agent');
+
+	return $user_agent.$version;
 }
