@@ -1,6 +1,6 @@
 <?php
 
-// update: 2023-03-15
+// update: 2023-03-22
 
 
 function get_system_version( $abspath ){
@@ -40,45 +40,6 @@ function un_trailing_slash_it( $string ) {
 }
 
 
-function add_stylesheet( $path, $type = 'theme' ) {
-	global $core;
-	$core->theme->add_stylesheet( $path, $type );
-}
-
-function remove_stylesheet( $path, $type = 'theme' ) {
-	global $core;
-	$core->theme->remove_stylesheet( $path, $type );
-}
-
-
-function add_script( $path, $type = 'theme', $loading = false, $footer = false ) {
-	global $core;
-	$core->theme->add_script( $path, $type, $loading, $footer );
-}
-
-function remove_script( $path, $type = 'theme' ) {
-	global $core;
-	$core->theme->remove_script( $path, $type );
-}
-
-
-function add_metatag( $name, $string, $position = false ) {
-	global $core;
-	$core->theme->add_metatag( $name, $string, $position );
-}
-
-function remove_metatag( $name, $position = false ) {
-	global $core;
-	$core->theme->remove_metatag( $name, $position );
-}
-
-
-function snippet( $path, $args = array(), $return = false ) {
-	global $core;
-	return $core->theme->snippet( $path, $args, $return );
-}
-
-
 function get_class_attribute( $classes ) {
 
 	if( ! is_array( $classes ) ) $classes = explode( ' ', $classes );
@@ -94,14 +55,14 @@ function get_class_attribute( $classes ) {
 
 function sanitize_string_for_url( $string ) {
 
-	// Entferne alle nicht druckbaren ASCII-Zeichen
+	// remove non-printable ASCII
 	$string = preg_replace('/[\x00-\x1F\x7F]/u', '', $string);
 
 	$string = mb_strtolower($string);
 
 	$string = str_replace(array("ä", "ö", "ü", "ß"), array("ae", "oe", "ue", "ss"), $string);
 
-	// Ersetze Sonderzeichen durch '-'
+	// replace special characters with '-'
 	$string = preg_replace('/[^\p{L}\p{N}]+/u', '-', $string);
 
 	$string = trim($string, '-');
@@ -110,58 +71,12 @@ function sanitize_string_for_url( $string ) {
 }
 
 
-function get_post_id_from_slug( $slug ) {
+function sanitize_folder_name( $string ) {
 
-	global $core;
-	$posts = $core->posts->posts;
-	foreach( $posts as $post_id => $post ) {
+	$string = mb_ereg_replace("([^\w\s\d\-_~,;\[\]\(\).])", '-', $string);
+	$string = mb_ereg_replace("([\.]{1,})", '-', $string);
 
-		if( ! isset($post->slug) ) continue;
-
-		if( $post->slug == $slug ) {
-			return $post_id;
-		}
-	}
-
-	return false;
-}
-
-
-
-function get_navigation(){
-
-	global $core;
-
-	$pages = $core->pages->get();
-
-	if( ! $pages ) return false;
-
-	$route = $core->route;
-	$current_page_id = false;
-	if( $route->get('template') == 'page' && ! empty($route->get('args')['page_id']) ) {
-		$current_page_id = $route->get('args')['page_id'];
-	}
-
-	$navigation = false;
-
-	foreach( $pages as $page ) {
-
-		$is_current_page = false;
-		if( $current_page_id && $page->id == $current_page_id ) {
-			$is_current_page = true;
-		}
-
-		$navigation[] = array(
-			'title' => $page->fields['title'],
-			'permalink' => $page->fields['permalink'],
-			'is_current_page' => $is_current_page
-		);
-		
-	}
-
-	if( ! count($navigation) ) return false;
-
-	return $navigation;
+	return $string;
 }
 
 
@@ -177,18 +92,7 @@ function get_hash( $input ) {
 }
 
 
-function doing_feed(){
-	// currently displaying rss or json feed
-	
-	global $core;
-
-	if( empty($core->doing_feed) ) return false;
-
-	return !! $core->doing_feed;
-}
-
-
-function read_folder( $folderpath, $recursive = false ) {
+function read_folder( $folderpath, $recursive = false, $return_folderpath = true ) {
 
 	global $core;
 
@@ -207,13 +111,14 @@ function read_folder( $folderpath, $recursive = false ) {
 			if( is_dir($folderpath.$file) ) {
 
 				if( $recursive ) {
-					$files = array_merge( $files, read_folder($folderpath.$file.'/', $recursive));
+					$files = array_merge( $files, read_folder($folderpath.$file.'/', $recursive, $return_folderpath));
 				}
 
 				continue;
 			}
 
-			$files[] = $folderpath.$file;
+			if( $return_folderpath ) $files[] = $folderpath.$file;
+			else $files[] = $file;
 
 		}
 		closedir($handle);
@@ -223,62 +128,4 @@ function read_folder( $folderpath, $recursive = false ) {
 	}
 
 	return $files;
-}
-
-
-function head_html(){
-
-	global $core;
-
-	$body_classes = array();
-
-	$color_scheme = $core->config->get('theme-color-scheme');
-	if( $color_scheme ) $body_classes[] = 'theme-color-scheme-'.$color_scheme;
-
-?><!DOCTYPE html>
-<!--
-___________.__                     .__           .__         
-\_   _____/|__| ____   ____   ____ |  |__   ____ |__| _____  
- |    __)_ |  |/ ___\_/ __ \ /    \|  |  \_/ __ \|  |/     \ 
- |        \|  / /_/  >  ___/|   |  \   Y  \  ___/|  |  Y Y  \
-/_______  /|__\___  / \___  >___|  /___|  /\___  >__|__|_|  /
-		\/   /_____/      \/     \/     \/     \/         \/ 
--->
-<html lang="en">
-<head>
-<?php
-	$core->theme->print_metatags( 'header' );
-?>
-
-
-<?php
-	$core->theme->print_stylesheets();
-?>
-
-<?php
-	$core->theme->print_scripts();
-
-	?>
-	
-</head>
-<body<?= get_class_attribute($body_classes) ?>><?php
-
-}
-
-function foot_html(){
-
-	global $core;
-
-	$core->theme->print_metatags( 'footer' );
-?>
-
-<?php
-	$core->theme->print_scripts( 'footer' );
-
-?>
-
-
-</body>
-</html>
-<?php
 }
