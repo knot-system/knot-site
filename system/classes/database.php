@@ -9,14 +9,35 @@ class Database {
 
 		global $core;
 
-		$files = $this->read_dir( $folderpath_input, $recursive, $filename );
+		$folderpath = $core->abspath.'content/'.$folderpath_input;
+
+		$folder = new Folder( $folderpath );
+		$files = $folder->get_content( $recursive, 'file' );
 
 		if( ! count($files) ) return $this;
 
-		$objects = array();
-		foreach( $files as $files_filename ) {
-			$file = new File( $files_filename );
-			$objects[$file->sort] = $file;
+		$objects = [];
+		foreach( $files as $file_path ) {
+
+			$file = new Database_Entry( $folderpath_input.$file_path );
+
+			if( $filename ) {
+				if( strtolower($filename) != strtolower($file->filename) ) continue;
+			}
+
+
+			$org_filepath_exp = explode( '/', $file->org_filepath );
+			$id = $org_filepath_exp[count($org_filepath_exp)-2];
+			$id_exp = explode('_', $id);
+			if( count($id_exp) > 1 ) {
+				$sort = str_replace("_".$file->slug, "", $id);
+			} else {
+				$timestamp = filemtime($file->filepath);
+				$sort = $timestamp."_".$file->slug;
+			}
+
+			$objects[$sort] = $file;
+
 		}
 
 		ksort( $objects );
@@ -24,46 +45,6 @@ class Database {
 		$this->objects = $objects;
 
 		return $this;
-	}
-
-
-	function read_dir( $folderpath_input, $recursive = false, $filename = false ) {
-
-		global $core;
-
-		$folderpath = $core->abspath.'content/'.$folderpath_input;
-
-		if( ! is_dir( $folderpath ) ) {
-			$core->debug( $folderpath.' is no directory' );
-			return array();
-		}
-
-		$files = array();
-
-		if( $handle = opendir($folderpath) ){
-			while( false !== ($file = readdir($handle)) ){
-				if( substr($file,0,1) == '.' ) continue; // skip hidden files, ./ and ../
-
-				if( is_dir($folderpath.$file) ) {
-					if( $recursive ){
-						$files = array_merge( $files, $this->read_dir( $folderpath_input.$file.'/', true, $filename ) );
-					}
-					continue;
-				}
-
-				if( $filename && strtolower($file) != strtolower($filename) ) continue;
-
-				$files[] = $folderpath_input.$file;
-			}
-			closedir($handle);
-		} else {
-			$core->debug( 'could not open dir', $folderpath );
-			return array();
-		}
-
-		asort($files);
-
-		return $files;
 	}
 
 

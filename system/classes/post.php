@@ -26,8 +26,7 @@ class Post {
 		if( ! is_array($tags) ) $tags = array();
 		$this->tags = $tags;
 
-		$slug = $file->id;
-
+		$slug = $file->slug;
 		$this->slug = $slug;
 
 		return $this;
@@ -57,8 +56,11 @@ class Post {
 		$image_html = false;
 		$image_url = false;
 
+
 		if( ! empty( $data['photo']) ) {
-			$post_folder = trailing_slash_it(pathinfo( $this->raw_file->filename, PATHINFO_DIRNAME ));
+
+
+			$post_folder = trailing_slash_it(pathinfo( $this->raw_file->org_filepath, PATHINFO_DIRNAME ));
 
 			global $core;
 			if( file_exists($core->abspath.'content/'.$post_folder.$data['photo']) ) {

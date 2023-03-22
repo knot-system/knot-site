@@ -113,13 +113,9 @@ function create_post_in_database( $data, $photo = false ) {
 	$file_target = $target_folder.$filename;
 
 
-	$data_string = '';
-	foreach( $data as $key => $value ){
-		$data_string .= $key.': '.$value."\r\n\r\n----\r\n\r\n";
-	}
-
-	$file = new File( $file_target, $data_string );
-	if( ! $file ) {
+	$filepath = $core->abspath.'content/'.$file_target;
+	$file = new File( $filepath );
+	if( ! $file->create( $data ) ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
 		$core->debug(  "File could not be written" );
 		exit;
@@ -127,7 +123,7 @@ function create_post_in_database( $data, $photo = false ) {
 
 	// when we get here, everything should have worked and the post was created.
 
-	$permalink = url('post/'.$data['slug']); // TODO: this should be retreived from $file
+	$permalink = url('post/'.$data['slug']);
 
 	return $permalink;
 }

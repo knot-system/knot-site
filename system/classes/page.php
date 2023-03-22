@@ -25,10 +25,12 @@ class Page {
 		$text = new Text($content_html);
 		$content_html = $text->cleanup( true )->get();
 
-		$title = ucwords($id);
+		$slug = $file->slug;
+
+		$title = ucwords($slug);
 		if( ! empty($data['title']) ) $title = $data['title'];
 
-		$url = $file->url;
+		$url = url($slug);
 		$this->url = $url;
 
 		$this->fields = array(
