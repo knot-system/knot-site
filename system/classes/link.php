@@ -1,7 +1,7 @@
 <?php
 
 
-Class Link {
+class Link {
 
 	public $id;
 	public $url;

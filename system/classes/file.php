@@ -11,12 +11,11 @@ class File {
 	public $fields = array();
 	public $sort;
 
-	function __construct( $core, $filename, $raw_content = false ) {
+	function __construct( $filename, $raw_content = false ) {
 
 		// if we provide $raw_content, we need to create the file - TODO: check if we want to handle it like this, or if we need another way to create or read a file
 
-		$this->eigenheim = $core; // TODO: how do we want to handle this?
-
+		global $core;
 		$filepath = $core->abspath.'content/'.$filename;
 
 		if( $raw_content ) {

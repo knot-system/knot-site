@@ -42,11 +42,11 @@ class Core {
 		$this->version = get_system_version( $abspath );
 
 
-		$this->config = new Config( $this );
-		$this->log = new Log( $this );
+		$this->config = new Config();
+		$this->log = new Log();
 
 
-		$this->theme = new Theme( $this );
+		$this->theme = new Theme();
 
 		$this->theme->add_stylesheet( 'css/eigenheim.css', 'global' );
 
@@ -78,10 +78,10 @@ class Core {
 		$this->theme->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.$core->config->get('site_title').' JSON Feed" href="'.url('feed/json').'">' );
 
 
-		$this->pages = new Pages( $this );
-		$this->posts = new Posts( $this );
+		$this->pages = new Pages();
+		$this->posts = new Posts();
 
-		$this->route = new Route( $this );
+		$this->route = new Route();
 
 		$this->refresh_cache();
 

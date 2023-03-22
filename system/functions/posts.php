@@ -118,7 +118,7 @@ function create_post_in_database( $data, $photo = false ) {
 		$data_string .= $key.': '.$value."\r\n\r\n----\r\n\r\n";
 	}
 
-	$file = new File( $core, $file_target, $data_string );
+	$file = new File( $file_target, $data_string );
 	if( ! $file ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
 		$core->debug(  "File could not be written" );

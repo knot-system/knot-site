@@ -15,8 +15,6 @@ class Post {
 
 		if( ! isset($data['content']) ) return false;
 
-		$this->eigenheim = $file->eigenheim; // TODO: how do we want to handle this?
-
 		$this->raw_data = $data;
 		$this->raw_file = $file;
 
@@ -62,7 +60,8 @@ class Post {
 		if( ! empty( $data['photo']) ) {
 			$post_folder = trailing_slash_it(pathinfo( $this->raw_file->filename, PATHINFO_DIRNAME ));
 
-			if( file_exists($this->eigenheim->abspath.'content/'.$post_folder.$data['photo']) ) {
+			global $core;
+			if( file_exists($core->abspath.'content/'.$post_folder.$data['photo']) ) {
 				$image_path = $post_folder.$data['photo'];
 				$image_html = get_image_html( $image_path );
 				$image_url = url('content/'.$image_path, false);

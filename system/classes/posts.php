@@ -8,11 +8,11 @@ class Posts {
 	public $page;
 	public $maxPage;
 
-	function __construct( $core ){
+	function __construct(){
 
-		$this->eigenheim = $core; // TODO: how do we want to handle this?
+		global $core;
 
-		$database = new Database( $core, 'posts/', true, 'post.txt' );
+		$database = new Database( 'posts/', true, 'post.txt' );
 		$objects = $database->reverse()->get();
 
 		$posts = array();
@@ -49,7 +49,9 @@ class Posts {
 
 	function paginate( $page ) {
 
-		$posts_per_page = $this->eigenheim->config->get( 'posts_per_page' );
+		global $core;
+
+		$posts_per_page = $core->config->get( 'posts_per_page' );
 
 		$offset = ($page-1)*$posts_per_page;
 
@@ -79,7 +81,9 @@ class Posts {
 
 		$this->posts = $posts;
 
-		$posts_per_page = $this->eigenheim->config->get( 'posts_per_page' );
+		global $core;
+
+		$posts_per_page = $core->config->get( 'posts_per_page' );
 		$this->maxPage = count($posts) / $posts_per_page;
 
 		return $this;

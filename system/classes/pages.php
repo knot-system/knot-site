@@ -5,9 +5,11 @@ class Pages {
 
 	public $pages;
 
-	function __construct( $core ) {
+	function __construct() {
 
-		$database = new Database( $core, '', true, 'page.txt' );
+		global $core;
+
+		$database = new Database( '', true, 'page.txt' );
 		$objects = $database->get();
 
 		$pages = array();
