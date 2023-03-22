@@ -52,7 +52,7 @@ function get_user_agent(){
 		$version = $core->version();
 	} else {
 		global $abspath;
-		$version = get_eigenheim_version( $abspath );
+		$version = get_system_version( $abspath );
 	}
 
 	$user_agent = $core->config->get('user_agent');

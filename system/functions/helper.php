@@ -3,7 +3,7 @@
 // update: 2023-03-15
 
 
-function get_eigenheim_version( $abspath ){
+function get_system_version( $abspath ){
 	return trim(file_get_contents($abspath.'system/version.txt'));
 }
 

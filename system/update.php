@@ -21,7 +21,7 @@ include_once( 'functions/helper.php' );
 include_once( 'functions/request.php' );
 
 	
-$core_version = get_eigenheim_version( $abspath );
+$core_version = get_system_version( $abspath );
 
 ?>
 <h1>Eigenheim System Update</h1>
