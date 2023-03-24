@@ -412,7 +412,7 @@ if( $output ) {
 	}
 
 	if( $config ) {
-		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'debug' => true,\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],\r\n];\r\n"; // CLEANUP: remove the debug option, when the system is stable enough
+		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],\r\n];\r\n"; // CLEANUP: remove the debug option, when the system is stable enough
 		if( file_put_contents( $abspath.'config.php', $content ) === false ) {
 
 			if( $debug_output ) {
