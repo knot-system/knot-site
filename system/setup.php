@@ -413,7 +413,7 @@ if( $output ) {
 
 	if( $config ) {
 
-		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n";
+		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n],\r\n";
 
 		if( ! empty($_REQUEST['baseurl_overwrite']) ) {
 			$content .= "\r\n	'baseurl_overwrite' => '".$_REQUEST['baseurl_overwrite']."',";
@@ -427,7 +427,7 @@ if( $output ) {
 			$content .= "\r\n	'microsub' => '".$_REQUEST['microsub']."',";
 		}
 
-		$content .= "],\r\n];\r\n";
+		$content .= "];\r\n";
 
 		if( file_put_contents( $abspath.'config.php', $content ) === false ) {
 
