@@ -1,10 +1,8 @@
 # Eigenheim
 
-A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This will be part of a larger system. More details will be added later.
+A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This is part of a larger system called [Homestead](https://github.com/maxhaesslein/homestead). You can install it as a standalone website, or use the Homestead installer, which also installs other modules alongside it.
 
-This is currently in a early alpha stage. **You should not use this for now. THINGS WILL BREAK!**
-
-Here be dragons:
+This is currently in beta stage. **Things may break, and are likely to change in the future!**
 
 ## Initial Setup
 
@@ -78,9 +76,9 @@ The `theme/{themename}/config.php` can overwrite config options from `system/con
 
 ## transparent Subfolder
 
-You can install eigenheim in a subfolder, but still use it as if it was installed in the root directory. This is a very special use-case, and you probably won't need it. If you do, use it like this:
+You can install Eigenheim in a subfolder, but still use it as if it was installed in the root directory. This is a very special use-case, and you probably won't need it. If you do, use it like this:
 
-We assume you have installed eigenheim inside `https://www.example.com/eigenheim/`, but want to run it as if it was installed at `https://www.example.com`.
+We assume you have installed Eigenheim inside `https://www.example.com/eigenheim/`, but want to run it as if it was installed at `https://www.example.com`.
 
 Add the following option inside the `eigenheim/config.php`:
 ```php
@@ -104,7 +102,7 @@ RewriteRule ^$ eigenheim/ [L,QSA]
 </IfModule>
 ```
 
-You can now access your eigenheim installation at `https://www.example.com/` instead of `https://www.example.com/eigenheim/`.
+You can now access your Eigenheim installation at `https://www.example.com/` instead of `https://www.example.com/eigenheim/`.
 
 
 ## Updating
