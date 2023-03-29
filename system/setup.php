@@ -78,7 +78,7 @@ $config = true;
 if( file_exists($abspath.'config.php') ) $config = false;
 
 if( $config && 
-	( empty($_POST['auth_mail']) || empty($_POST['author_name']) || empty($_POST['site_title']) ) 
+	( empty($_REQUEST['auth_mail']) || empty($_REQUEST['author_name']) || empty($_REQUEST['site_title']) ) 
 	) {
 	?>
 	<hr>
@@ -97,10 +97,10 @@ if( $config &&
 
 $testcontent = false;
 if( $config ) {
-	$site_title = $_POST['site_title'];
-	$auth_mail = $_POST['auth_mail'];
-	$author_name = $_POST['author_name'];
-	if( ! empty($_POST['testcontent']) ) $testcontent = true;
+	$site_title = $_REQUEST['site_title'];
+	$auth_mail = $_REQUEST['auth_mail'];
+	$author_name = $_REQUEST['author_name'];
+	if( ! empty($_REQUEST['testcontent']) ) $testcontent = true;
 }
 
 
