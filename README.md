@@ -76,6 +76,37 @@ The `theme/{themename}/functions.php` contains some functions that get called wh
 
 The `theme/{themename}/config.php` can overwrite config options from `system/config.php` (but gets itself overwritten by the local `config.php` in the root directory), so the custom theme can for example set its own image sizes.
 
+## transparent Subfolder
+
+You can install eigenheim in a subfolder, but still use it as if it was installed in the root directory. This is a very special use-case, and you probably won't need it. If you do, use it like this:
+
+We assume you have installed eigenheim inside `https://www.example.com/eigenheim/`, but want to run it as if it was installed at `https://www.example.com`.
+
+Add the following option inside the `eigenheim/config.php`:
+```php
+return [
+	// site_title and other fields ...
+	'baseurl_overwrite' => 'https://www.example.com/',
+	'basefolder_overwrite' => '/',
+];
+```
+
+Then, add a `.htaccess` file in the root directory (at `https://www.example.com/.htaccess`) with this content:
+```htaccess
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.*) eigenheim/$1 [L,QSA]
+RewriteRule ^$ eigenheim/ [L,QSA]
+</IfModule>
+```
+
+You can now access your eigenheim installation at `https://www.example.com/` instead of `https://www.example.com/eigenheim/`.
+
+
 ## Updating
 
 **Important:** Before updating, backup your `content/` folder and your `config.php` (and your custom theme inside the `theme/` folder, if you have any). Better be safe than sorry.

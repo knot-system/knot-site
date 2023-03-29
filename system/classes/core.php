@@ -43,6 +43,19 @@ class Core {
 
 
 		$this->config = new Config();
+
+		// overwrite the baseurl and/or the basefolder, because we are running in a 'transparent' subfolder; see #transparent-subfolder in the README.md for details
+		if( $this->config->get('baseurl_overwrite') ) {
+			$baseurl = $this->config->get('baseurl_overwrite');
+			$this->baseurl = $baseurl;
+		}
+		if( $this->config->get('basefolder_overwrite') ) {
+			$basefolder = $this->config->get('basefolder_overwrite');
+			$this->basefolder = $basefolder;
+		}
+
+
+
 		$this->log = new Log();
 
 

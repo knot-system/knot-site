@@ -27,4 +27,6 @@ return [
 	'add_footnote_to_links' => true,
 	'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
 	'user_agent' => 'maxhaesslein/eigenheim/', // version will be automatically appended
+	'baseurl_overwrite' => false, // overwrite the baseurl; see #transparent-subfolder in the README.md
+	'basefolder_overwrite' => false, // overwrite the basefolder; see #transparent-subfolder in the README.md
 ];
