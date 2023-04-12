@@ -33,9 +33,11 @@ function get_navigation(){
 		$current_page_id = $route->get('args')['page_id'];
 	}
 
-	$navigation = false;
+	$navigation = [];
 
 	foreach( $pages as $page ) {
+
+		if( empty($page->fields) ) continue;
 
 		$is_current_page = false;
 		if( $current_page_id && $page->id == $current_page_id ) {
