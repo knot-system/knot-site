@@ -197,7 +197,12 @@ function micropub_check_authorization_bearer() {
 	$client = $response['client_id'];
 	$scope = $response['scope'];
 	
-	if( trailing_slash_it($me) != trailing_slash_it($core->baseurl) ){
+	// NOTE: for our purposes, https://wwww.example.com/, https://www.example.com and http://www.example.com are the same user
+	$cleaned_me = un_trailing_slash_it($me);
+	$cleaned_baseurl = un_trailing_slash_it($core->baseurl);
+	$cleaned_me = str_replace( array('https://', 'http://'), '', $cleaned_me );
+	$cleaned_baseurl = str_replace( array('https://', 'http://'), '', $cleaned_baseurl );
+	if( $cleaned_me != $cleaned_baseurl ){
 		header( "HTTP/1.1 403 Forbidden" );
 		exit;
 	}
