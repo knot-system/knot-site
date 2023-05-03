@@ -100,34 +100,32 @@ class Link {
 
 		$html = request_get_remote( $url );
 
-		// TODO / CLEANUP: make this better readable
 		// TODO: maybe we want to get information from other meta tags as well. revisit this in the future
 
-		$title = $this->extract_information( $html, '/<title>(.*?)<\/title>/is', $this->tiny_url );
+		$dom = new Dom( $html );
 
-		$description = $this->extract_information( $html, '/<meta +name="description" +content="(.*?)" *?\/?>/is' );
-		if( ! $description ) {
-			$description = $this->extract_information( $html, '/<meta +content="(.*?)" +name="description" *?\/?>/is' );
-		}
-		if( ! $description ) {
-			$description = $this->extract_information( $html, '/<meta +property="og:description" +content="([^"]+)" *?\/?>/is' );
-		}
-		if( ! $description ) {
-			$description = $this->extract_information( $html, '/<meta +content="([^"]+)" +property="og:description" *?\/?>/is' );
-		}
-		if( ! $description ) {
-			$description = $this->extract_information( $html, '/<meta +property="twitter:description" +content="([^"]+)" *?\/?>/is' );
-		}
+		$titles = $dom->find_elements('title')->return_elements();
 
-		$preview_image = $this->extract_information( $html, '/<meta +property="og:image(?::url)?" +content="([^"]+)" *?\/?>/is' );
-		if( ! $preview_image ) {
-			$preview_image = $this->extract_information( $html, '/<meta +content="([^"]+)" +property="og:image(?::url)?" *?\/?>/is' );
-		}
-		if( ! $preview_image ) {
-			$preview_image = $this->extract_information( $html, '/<meta +property="twitter:image" +content="([^"]+)" *?\/?>/is' );
-		}
+		$title = false;
+		if( count($titles) ) $title = $titles[0];
+		
 
-		if( $preview_image ) {
+		$descriptions = $dom->find_elements('meta')->filter_elements('name', 'description')->return_elements('content');
+		$descriptions = array_merge( $descriptions, $dom->find_elements('meta')->filter_elements('property', 'og:description')->return_elements('content') );
+		$descriptions = array_merge( $descriptions, $dom->find_elements('meta')->filter_elements('property', 'twitter:description')->return_elements('content') );
+
+		$description = false;
+		if( count($descriptions) ) $description = $descriptions[0];
+
+
+		$preview_image = false;
+		$preview_images = $dom->find_elements('meta')->filter_elements('property', 'og:image')->return_elements('content');
+		$preview_images = array_merge( $preview_images, $dom->find_elements('meta')->filter_elements('property', 'og:description:url')->return_elements('content') );
+		$preview_images = array_merge( $preview_images, $dom->find_elements('meta')->filter_elements('property', 'twitter:image')->return_elements('content') );
+
+		if( count($preview_images) ) {
+			$preview_image = $preview_images[0];
+
 			// cache remote image locally
 			$preview_image_name = explode('/', $preview_image);
 			$preview_image_name = end($preview_image_name);
@@ -155,16 +153,5 @@ class Link {
 
 		return $this;
 	}
-
-
-	function extract_information( $html, $pattern, $return = false ) {
-
-		if( preg_match( $pattern, $html, $matches ) ) {
-			$return = $matches[1];
-		}
-
-		return $return;
-	}
-
 
 };
