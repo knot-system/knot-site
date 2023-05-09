@@ -287,7 +287,8 @@ function handle_image_display( $file_path ) {
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 
 		ob_start();
-		$data = imagepng( $target_image );
+		imagepng( $target_image );
+		$data = ob_get_contents();
 		ob_end_clean();
 		$cache->add_data( $data );
 
