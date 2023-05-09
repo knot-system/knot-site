@@ -87,7 +87,7 @@ function get_image_preview_base64( $file_path ) {
 	$png_to_jpg = $core->config->get( 'image_png_to_jpg' );
 
 	if( ! $png_to_jpg ) {
-		// NOTE: when we use png files directly, they could contain transparency. if they do, we cannot add a blurry preview base64 encoded image beneath it, so we just return an empty image here:
+		// NOTE: when we use png files directly (and don't convert them to jpg), they could contain transparency. if they do, we cannot add a blurry preview base64 encoded image beneath it, because it would still be visible when the actual image (with transparency) is loaded, so we just return an empty preview image here (this is a 1x1 transparent pixel, base64 encoded):
 		$transparent_pixel_base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
 		return $transparent_pixel_base64;
 	}

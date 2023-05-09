@@ -1,5 +1,7 @@
 v.0.1.3
 
+- transparent png files are handled correctly, when the 'image_jpg_to_png' option is set to false (if it is set to true, which is the default, png images get converted to jpg and loose their transparency)
+- you can set a background color for transparent images, when the 'image_jpg_to_png' option is set to true (which is the default); defaults to white background color
 - https://www.example.com and http://www.example.com are now seen as the same user
 - setup: add comments to .htaccess, at beginning and end of our block
 - bugfixes & enhancements
