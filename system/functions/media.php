@@ -131,10 +131,24 @@ function get_image_preview_base64( $file_path ) {
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$src_image = imagecreatefrompng( $file_path );
+
 		if( ! $src_image ) {
 			$core->debug( 'could not load png image' );
 			exit;
 		}
+
+		// handle transparency loading:
+		imageAlphaBlending( $src_image, false );
+		imageSaveAlpha( $src_image, true );
+
+		// set transparent background to specific color:
+		$transparent_color = $core->config->get( 'image_background_color' );
+		$background_image = imagecreatetruecolor( $src_width, $src_height );
+		$background_color = imagecolorallocate( $background_image, $transparent_color[0], $transparent_color[1], $transparent_color[2] );
+		imagefill( $background_image, 0, 0, $background_color );
+		imagecopy( $background_image, $src_image, 0, 0, 0, 0, $src_width, $src_height );
+		$src_image = $background_image;
+		imagedestroy( $background_image );
 
 	} else {
 		$core->debug( 'unknown image type '.$image_type);
@@ -169,6 +183,7 @@ function get_image_preview_base64( $file_path ) {
 	}
 
 	imagedestroy($src_image);
+
 
 	ob_start();
 	imagejpeg( $target_image, NULL, $jpg_quality );
@@ -244,13 +259,24 @@ function handle_image_display( $file_path ) {
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$src_image = imagecreatefrompng( $file_path );
 
+		if( ! $src_image ) {
+			$core->debug( 'could not load png image' );
+			exit;
+		}
+
 		// handle transparency loading:
 		imageAlphaBlending( $src_image, false );
 		imageSaveAlpha( $src_image, true );
 
-		if( ! $src_image ) {
-			$core->debug( 'could not load png image' );
-			exit;
+		if( $png_to_jpg ) {
+			// set transparent background to specific color, when converting to jpg:
+			$transparent_color = $core->config->get( 'image_background_color' );
+			$background_image = imagecreatetruecolor( $src_width, $src_height );
+			$background_color = imagecolorallocate( $background_image, $transparent_color[0], $transparent_color[1], $transparent_color[2] );
+			imagefill( $background_image, 0, 0, $background_color );
+			imagecopy( $background_image, $src_image, 0, 0, 0, 0, $src_width, $src_height );
+			$src_image = $background_image;
+			imagedestroy( $background_image );
 		}
 
 	}
@@ -278,7 +304,7 @@ function handle_image_display( $file_path ) {
 
 		$target_image = imagecreatetruecolor($width, $height);
 
-		if( $image_type == IMAGETYPE_PNG ) {
+		if( ! $png_to_jpg && $image_type == IMAGETYPE_PNG ) {
 			// handle alpha channel
 			imageAlphaBlending( $target_image, false );
 			imageSaveAlpha( $target_image, true );
@@ -286,11 +312,16 @@ function handle_image_display( $file_path ) {
 
 		imagecopyresized($target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height);
 
-		imagedestroy($src_image);
-
 	} else {
+
+		$width = $src_width;
+		$height = $src_height;
+
 		$target_image = $src_image;
 	}
+
+	imagedestroy($src_image);
+
 
 	if( $image_type == IMAGETYPE_JPEG
 	 || ($png_to_jpg && $image_type == IMAGETYPE_PNG) ) {
