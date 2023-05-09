@@ -84,6 +84,14 @@ function get_image_preview_base64( $file_path ) {
 
 	global $core;
 	
+	$png_to_jpg = $core->config->get( 'image_png_to_jpg' );
+
+	if( ! $png_to_jpg ) {
+		// NOTE: when we use png files directly, they could contain transparency. if they do, we cannot add a blurry preview base64 encoded image beneath it, so we just return an empty image here:
+		$transparent_pixel_base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+		return $transparent_pixel_base64;
+	}
+
 	$target_width = 50;
 	$jpg_quality = 40;
 
@@ -235,6 +243,11 @@ function handle_image_display( $file_path ) {
 
 	} elseif( $image_type == IMAGETYPE_PNG ) {
 		$src_image = imagecreatefrompng( $file_path );
+
+		// handle transparency loading:
+		imageAlphaBlending( $src_image, false );
+		imageSaveAlpha( $src_image, true );
+
 		if( ! $src_image ) {
 			$core->debug( 'could not load png image' );
 			exit;
@@ -264,6 +277,13 @@ function handle_image_display( $file_path ) {
 		}
 
 		$target_image = imagecreatetruecolor($width, $height);
+
+		if( $image_type == IMAGETYPE_PNG ) {
+			// handle alpha channel
+			imageAlphaBlending( $target_image, false );
+			imageSaveAlpha( $target_image, true );
+		}
+
 		imagecopyresized($target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height);
 
 		imagedestroy($src_image);
