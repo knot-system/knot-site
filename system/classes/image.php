@@ -8,7 +8,10 @@ class Image {
 	private $type;
 	private $local_file_path;
 	private $image_url;
-	private $orientation = 9; // NOTE: EXIF orientation; 1 = 0°, 8 = 90°, 3 = 180°, 6 = 270°; 2, 7, 4, 5 is the same, but mirrored horizontally before rotating; 9 means undefined
+	private $orientation = 9; // NOTE: EXIF orientation, see https://exiftool.org/TagNames/EXIF.html -- 1 = 0°, 8 = 90°, 3 = 180°, 6 = 270°/-90°; 2, 7, 4, 5 is the same, but mirrored horizontally before rotating; 9 means undefined
+	private $image_type;
+	private $src_width;
+	private $src_height;
 
 	function __construct( $image_path, $type = false ) {
 
@@ -35,6 +38,16 @@ class Image {
 			$this->orientation = $exif['Orientation'];
 		}
 
+		$image_meta = getimagesize( $this->local_file_path );
+		if( ! $image_meta ) {
+			$core->debug("no image meta", $this->local_file_path);
+			return false;
+		}
+
+		$this->src_width = $image_meta[0];
+		$this->src_height = $image_meta[1];
+		$this->image_type = $image_meta[2];
+
 	}
 
 
@@ -49,20 +62,13 @@ class Image {
 		$image_url = $this->image_url;
 		$image_url .= '?width='.$target_width;
 
-		$image_meta = getimagesize( $this->local_file_path );
-		if( ! $image_meta ) {
-			$core->debug("no image meta", $this->local_file_path);
-			return false;
-		}
-
-		$src_width = $image_meta[0];
-		$src_height = $image_meta[1];
+		$src_width = $this->src_width;
+		$src_height = $this->src_height;
 
 		if( $this->orientation == 6 || $this->orientation == 8 || $this->orientation == 5 || $this->orientation == 7 ) {
 			$src_width = $image_meta[1];
 			$src_height = $image_meta[0];
 		}
-
 
 		$target_dimensions = $this->get_image_dimensions( $target_width, $src_width, $src_height );
 
@@ -106,15 +112,11 @@ class Image {
 		$image_meta = getimagesize( $this->local_file_path );
 		$filesize = filesize( $this->local_file_path );
 
-		$src_width = $image_meta[0];
-		$src_height = $image_meta[1];
-		$image_type = $image_meta[2];
-
 		$file_extension = '';
-		if( $image_type == IMAGETYPE_JPEG ) {
+		if( $this->image_type == IMAGETYPE_JPEG ) {
 			$file_extension = 'jpg';
 			$mime_type = 'image/jpeg';
-		} elseif( $image_type == IMAGETYPE_PNG ) {
+		} elseif( $this->image_type == IMAGETYPE_PNG ) {
 			$file_extension = 'png';
 			$mime_type = 'image/png';
 
@@ -123,7 +125,7 @@ class Image {
 				$mime_type = 'image/jpeg';
 			}
 		} else {
-			$core->debug( 'unknown image type '.$image_type);
+			$core->debug( 'unknown image type '.$this->image_type);
 			exit;
 		}
 
@@ -140,14 +142,14 @@ class Image {
 		}
 
 
-		if( $image_type == IMAGETYPE_JPEG ) {
+		if( $this->image_type == IMAGETYPE_JPEG ) {
 			$src_image = imagecreatefromjpeg( $this->local_file_path );
 			if( ! $src_image ) {
 				$core->debug( 'could not load jpg image' );
 				exit;
 			}
 
-		} elseif( $image_type == IMAGETYPE_PNG ) {
+		} elseif( $this->image_type == IMAGETYPE_PNG ) {
 			$src_image = imagecreatefrompng( $this->local_file_path );
 
 			if( ! $src_image ) {
@@ -162,10 +164,10 @@ class Image {
 			if( $png_to_jpg ) {
 				// set transparent background to specific color, when converting to jpg:
 				$transparent_color = $core->config->get( 'image_background_color' );
-				$background_image = imagecreatetruecolor( $src_width, $src_height );
+				$background_image = imagecreatetruecolor( $this->src_width, $this->src_height );
 				$background_color = imagecolorallocate( $background_image, $transparent_color[0], $transparent_color[1], $transparent_color[2] );
 				imagefill( $background_image, 0, 0, $background_color );
-				imagecopy( $background_image, $src_image, 0, 0, 0, 0, $src_width, $src_height );
+				imagecopy( $background_image, $src_image, 0, 0, 0, 0, $this->src_width, $this->src_height );
 				$src_image = $background_image;
 				imagedestroy( $background_image );
 			}
@@ -173,12 +175,15 @@ class Image {
 		}
 
 
+		$src_width = $this->src_width;
+		$src_height = $this->src_height;
+
 		list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $src_width, $src_height );
 
 		
 		if( $src_width > $target_width ) {
 			
-			$target_dimensions = $this->get_image_dimensions( $target_width, $src_width, $src_height);
+			$target_dimensions = $this->get_image_dimensions( $target_width );
 
 			$width = $target_dimensions[0];
 			$height = $target_dimensions[1];
@@ -191,7 +196,7 @@ class Image {
 
 			$target_image = imagecreatetruecolor($width, $height);
 
-			if( ! $png_to_jpg && $image_type == IMAGETYPE_PNG ) {
+			if( ! $png_to_jpg && $this->image_type == IMAGETYPE_PNG ) {
 				// handle alpha channel
 				imageAlphaBlending( $target_image, false );
 				imageSaveAlpha( $target_image, true );
@@ -210,8 +215,8 @@ class Image {
 		imagedestroy($src_image);
 
 
-		if( $image_type == IMAGETYPE_JPEG
-		 || ($png_to_jpg && $image_type == IMAGETYPE_PNG) ) {
+		if( $this->image_type == IMAGETYPE_JPEG
+		 || ($png_to_jpg && $this->image_type == IMAGETYPE_PNG) ) {
 
 			ob_start();
 			imagejpeg( $target_image, NULL, $jpg_quality );
@@ -222,7 +227,7 @@ class Image {
 			header( 'Content-Type: image/jpeg' );
 			echo $data;
 
-		} elseif( $image_type == IMAGETYPE_PNG ) {
+		} elseif( $this->image_type == IMAGETYPE_PNG ) {
 
 			ob_start();
 			imagepng( $target_image );
@@ -261,10 +266,6 @@ class Image {
 			$core->debug("no image meta", $this->local_file_path);
 			return false;
 		}
-
-		$src_width = $image_meta[0];
-		$src_height = $image_meta[1];
-		$image_type = $image_meta[2];
 		
 		$filesize = filesize( $this->local_file_path );
 		if( ! $filesize ) {
@@ -283,14 +284,14 @@ class Image {
 		}
 
 
-		if( $image_type == IMAGETYPE_JPEG ) {
+		if( $this->image_type == IMAGETYPE_JPEG ) {
 			$src_image = imagecreatefromjpeg( $this->local_file_path );
 			if( ! $src_image ) {
 				$core->debug( 'could not load jpg image' );
 				exit;
 			}
 
-		} elseif( $image_type == IMAGETYPE_PNG ) {
+		} elseif( $this->image_type == IMAGETYPE_PNG ) {
 			$src_image = imagecreatefrompng( $this->local_file_path );
 
 			if( ! $src_image ) {
@@ -304,24 +305,26 @@ class Image {
 
 			// set transparent background to specific color:
 			$transparent_color = $core->config->get( 'image_background_color' );
-			$background_image = imagecreatetruecolor( $src_width, $src_height );
+			$background_image = imagecreatetruecolor( $this->src_width, $this->src_height );
 			$background_color = imagecolorallocate( $background_image, $transparent_color[0], $transparent_color[1], $transparent_color[2] );
 			imagefill( $background_image, 0, 0, $background_color );
-			imagecopy( $background_image, $src_image, 0, 0, 0, 0, $src_width, $src_height );
+			imagecopy( $background_image, $src_image, 0, 0, 0, 0, $this->src_width, $this->src_height );
 			$src_image = $background_image;
 			imagedestroy( $background_image );
 
 		} else {
-			$core->debug( 'unknown image type '.$image_type);
+			$core->debug( 'unknown image type '.$this->image_type);
 			exit;	
 		}
 
 
+		$src_width = $this->src_width;
+		$src_height = $this->src_height;
 
 		list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $src_width, $src_height );
 
 
-		$target_dimensions = $this->get_image_dimensions( $target_width, $src_width, $src_height);
+		$target_dimensions = $this->get_image_dimensions( $target_width );
 
 		$width = $target_dimensions[0];
 		$height = $target_dimensions[1];
@@ -359,7 +362,10 @@ class Image {
 
 
 
-	function get_image_dimensions( $target_width, $src_width, $src_height ) {
+	function get_image_dimensions( $target_width, $src_width = false, $src_height = false ) {
+
+		if( ! $src_width ) $src_width = $this->src_width;
+		if( ! $src_height ) $src_height = $this->src_height;
 
 		if( $src_width <= $target_width ) {
 			return array( $src_width, $src_height );
