@@ -171,6 +171,7 @@ if( ! is_dir( $abspath.'content/') ) {
 		<?php
 	}
 
+	$oldumask = umask(0); // we need this for permissions of mkdir to be set correctly
 	if( mkdir( $abspath.'content/', 0777, true ) === false ) {
 
 		if( $debug_output ) {
@@ -189,6 +190,8 @@ if( ! is_dir( $abspath.'content/') ) {
 		}
 
 	}
+	umask($oldumask); // we need this after changing permissions with mkdir
+
 } else {
 
 	if( $message_output ) {
@@ -301,6 +304,7 @@ if( $testcontent ) {
 					<?php
 				}
 
+				$oldumask = umask(0); // we need this for permissions of mkdir to be set correctly
 				if( mkdir( $root.$foldername, 0777, true ) === false ) {
 
 					if( $debug_output ) {
@@ -311,6 +315,8 @@ if( $testcontent ) {
 
 					exit;
 				}
+				umask($oldumask); // we need this after changing permissions with mkdir
+
 			} else {
 
 				if( $message_output ) {
