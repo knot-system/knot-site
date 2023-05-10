@@ -153,8 +153,7 @@ class Route {
 			$hash = $request[1];
 
 			if( file_exists($core->abspath.'cache/remote-image/'.$hash) ) {
-				$image_path = $core->abspath.'cache/remote-image/'.$hash;
-				$image = new Image( $image_path );
+				$image = new Image( $hash, 'remote' );
 				$image->display();
 				exit;
 			}

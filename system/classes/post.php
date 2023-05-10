@@ -64,12 +64,12 @@ class Post {
 
 			global $core;
 			if( file_exists($core->abspath.'content/'.$post_folder.$data['photo']) ) {
-				$image_path = $post_folder.$data['photo'];
+				$image_path = 'content/'.$post_folder.$data['photo'];
 
 				$image = new Image( $image_path );
 				$image_html = $image->get_html_embed();
 
-				$image_url = url('content/'.$image_path, false);
+				$image_url = url($image_path, false);
 			}
 
 		}
