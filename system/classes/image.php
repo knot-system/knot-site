@@ -88,7 +88,9 @@ class Image {
 		$preview_base64 = $this->get_image_preview_base64();
 
 		$image_embed_html = '<figure class="'.implode(' ', $classes).'" style="aspect-ratio: '.$width/$height.'">
-				<span class="content-image-inner" style="background-image: url('.$preview_base64.');">
+				<span class="content-image-inner"';
+				if( $preview_base64 ) $image_embed_html .= ' style="background-image: url('.$preview_base64.');"';
+				$image_embed_html .= '>
 					<img src="'.$image_url.'" width="'.$width.'" height="'.$height.'" loading="lazy" style="background: transparent; display: block;">
 				</span>
 			</figure>';
@@ -253,9 +255,8 @@ class Image {
 		$png_to_jpg = $core->config->get( 'image_png_to_jpg' );
 
 		if( ! $png_to_jpg ) {
-			// NOTE: when we use png files directly (and don't convert them to jpg), they could contain transparency. if they do, we cannot add a blurry preview base64 encoded image beneath it, because it would still be visible when the actual image (with transparency) is loaded, so we just return an empty preview image here (this is a 1x1 transparent pixel, base64 encoded):
-			$transparent_pixel_base64 = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
-			return $transparent_pixel_base64;
+			// NOTE: when we use png files directly (and don't convert them to jpg), they could contain transparency. if they do, we cannot add a blurry preview base64 encoded image beneath it, because it would still be visible when the actual image (with transparency) is loaded.
+			return false;
 		}
 
 		$target_width = 50;
