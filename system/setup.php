@@ -3,10 +3,10 @@
 // this file creates some basic files and folderstructure and gets called, if important files are missing (like the config.php or .htaccess)
 
 
-$output = false;
+$message_output = false;
 $debug_output = true;
 
-if( isset($_REQUEST['debug']) ) $output = true;
+if( isset($_REQUEST['debug']) ) $message_output = true;
 
 $basefolder = str_replace( 'index.php', '', $_SERVER['PHP_SELF']);
 
@@ -18,7 +18,7 @@ $baseurl .= $basefolder;
 
 if( file_exists($abspath.'config.php') && file_exists($abspath.'.htaccess') ) {
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<p>Setup already finished. Please delete <em>config.php</em> or <em>.htaccess</em> from the root directory to re-run the setup.</p>
 		<?php
@@ -26,7 +26,7 @@ if( file_exists($abspath.'config.php') && file_exists($abspath.'.htaccess') ) {
 	return;
 }
 
-if( $output ) {
+if( $message_output ) {
 	?>
 	<p>Hi. This is the first-time setup of Eigenheim.</p>
 	<p>We create some files and folders to get everything up and running.</p>
@@ -104,7 +104,7 @@ if( $config ) {
 }
 
 
-if( $output ) {
+if( $message_output ) {
 	?>
 
 	<hr>
@@ -119,7 +119,7 @@ if( ! file_exists( $abspath.'.htaccess' ) ) {
 	$rewrite_base = $basefolder;
 	if( $rewrite_base == '' ) $rewrite_base = '/';
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<li>file <em>.htaccess</em> does not exist, creating it with rewrite base <em><?= $rewrite_base ?></em></li>
 		<?php
@@ -128,7 +128,7 @@ if( ! file_exists( $abspath.'.htaccess' ) ) {
 	$content = "# BEGIN eigenheim\r\n<IfModule mod_rewrite.c>\r\nRewriteEngine on\r\nRewriteBase ".$rewrite_base."\r\n\r\nRewriteRule ^theme/[^/]+/assets/(.*)$ - [L]\r\nRewriteRule ^system/site/assets/(.*)$ - [L]\r\nRewriteRule (^|/)\.(?!well-known\/) index.php [L]\r\nRewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]\r\nRewriteRule ^content/(.*)\.(jpg|jpeg|png)$ index.php [L]\r\nRewriteRule ^theme/(.*) index.php [L]\r\nRewriteRule ^system/(.*) index.php [L]\r\nRewriteRule ^log/(.*) index.php [L]\r\nRewriteRule ^cache/(.*) index.php [L]\r\n\r\nRewriteCond %{REQUEST_FILENAME} !-d\r\nRewriteCond %{REQUEST_FILENAME} !-f\r\nRewriteRule . index.php [L]\r\n</IfModule>\r\n# END eigenheim\r\n";
 	if( file_put_contents( $abspath.'.htaccess', $content ) === false ) {
 
-		if( $output ) {
+		if( $message_output ) {
 			?>
 			<li><strong>ERROR:</strong> file <em>.htaccess</em> could not be created. Please check the permissions of the root folder and make sure we are allowed to write to it. we abort the setup here.</li>
 			<?php
@@ -137,7 +137,7 @@ if( ! file_exists( $abspath.'.htaccess' ) ) {
 		exit;
 	} else {
 
-		if( $output ) {
+		if( $message_output ) {
 			?>
 			<li>file <em>.htaccess</em> was successfully created</li>
 			<?php
@@ -146,7 +146,7 @@ if( ! file_exists( $abspath.'.htaccess' ) ) {
 	}
 } else {
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<li>file <em>.htaccess</em> exists; if you need to recreate it, delete it and rerun this setup.</li>
 		<?php
@@ -154,7 +154,7 @@ if( ! file_exists( $abspath.'.htaccess' ) ) {
 
 }
 
-if( $output ) {
+if( $message_output ) {
 	?>
 	</ul>
 
@@ -165,7 +165,7 @@ if( $output ) {
 
 if( ! is_dir( $abspath.'content/') ) {
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<li>folder <em>content/</em> does not exist, trying to create it</li>
 		<?php
@@ -182,7 +182,7 @@ if( ! is_dir( $abspath.'content/') ) {
 		exit;
 	} else {
 
-		if( $output ) {
+		if( $message_output ) {
 			?>
 			<li>folder <em>content/</em> was created successfully</li>
 			<?php
@@ -191,13 +191,13 @@ if( ! is_dir( $abspath.'content/') ) {
 	}
 } else {
 
-	if( $output ) {
+	if( $message_output ) {
 		?><li>folder <em>content/</em> already exists, we do not need to create it</li><?php
 	}
 
 }
 
-if( $output ) {
+if( $message_output ) {
 	?>
 	</ul>
 
@@ -209,7 +209,7 @@ if( $output ) {
 
 if( ! is_dir( $abspath.'cache/') ) {
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<li>folder <em>cache/</em> does not exist, trying to create it</li>
 		<?php
@@ -226,7 +226,7 @@ if( ! is_dir( $abspath.'cache/') ) {
 		exit;
 	} else {
 
-		if( $output ) {
+		if( $message_output ) {
 			?>
 			<li>folder <em>cache/</em> was created successfully</li>
 			<?php
@@ -235,13 +235,13 @@ if( ! is_dir( $abspath.'cache/') ) {
 	}
 } else {
 
-	if( $output ) {
+	if( $message_output ) {
 		?><li>folder <em>cache/</em> already exists, we do not need to create it</li><?php
 	}
 
 }
 
-if( $output ) {
+if( $message_output ) {
 	?>
 	</ul>
 	<?php
@@ -250,7 +250,7 @@ if( $output ) {
 
 if( $testcontent ) {
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<h3>creating some test content:</h3>
 		<ul>
@@ -258,12 +258,15 @@ if( $testcontent ) {
 	}
 
 	function setup_create_testcontent( $root, $file_structure ) {
+
+		global $message_output;
+		
 		if( $file_structure['type'] == 'file' ) {
 			$filename = $file_structure['name'];
 			$data = $file_structure['content'];
 			if( ! file_exists( $root.$filename ) ){
 
-				if( $output ) {
+				if( $message_output ) {
 					?>
 					<li>file <em><?= $root.$filename ?></em> does not exist, we need to create it</li>
 					<?php
@@ -271,7 +274,7 @@ if( $testcontent ) {
 
 				if( file_put_contents( $root.$filename, $data ) === false ) {
 
-					if( $output ) {
+					if( $message_output ) {
 						?>
 						<li><strong>ERROR:</strong> could not create the file <em><?= $root.$filename ?></em>. we abort the setup here.</li>
 						<?php
@@ -281,7 +284,7 @@ if( $testcontent ) {
 				}
 			} else {
 
-				if( $output ) {
+				if( $message_output ) {
 					?>
 					<li>file <em><?= $root.$filename ?></em> already exists, we do not need to create it</li>
 					<?php
@@ -292,7 +295,7 @@ if( $testcontent ) {
 			$foldername = $file_structure['name'];
 			if( ! is_dir( $root.$foldername) ) {
 
-				if( $output ) {
+				if( $message_output ) {
 					?>
 					<li>folder <em><?= $root.$foldername ?></em> does not exist, we need to create it</li>
 					<?php
@@ -310,7 +313,7 @@ if( $testcontent ) {
 				}
 			} else {
 
-				if( $output ) {
+				if( $message_output ) {
 					?>
 					<li>folder <em><?= $root.$foldername ?></em> already exist, we do not need to create it</li>
 					<?php
@@ -394,7 +397,7 @@ if( $testcontent ) {
 	);
 	setup_create_testcontent( $abspath, $file_structure );
 
-	if( $output ) {
+	if( $message_output ) {
 		?>
 		<li>test folder structure created successfully</li>
 		</ul>
@@ -404,7 +407,7 @@ if( $testcontent ) {
 }
 
 
-if( $output ) {
+if( $message_output ) {
 	?>
 	<h3>creating the <em>config.php</em> file:</h3>
 	<ul>
@@ -440,7 +443,7 @@ if( $output ) {
 
 		} else {
 
-			if( $output ) {
+			if( $message_output ) {
 				?>
 				<li>file <em>config.php</em> created successfully</li>
 				<?php
@@ -449,7 +452,7 @@ if( $output ) {
 		}
 	} else {
 
-		if( $output ) {
+		if( $message_output ) {
 			?>
 			<li>file <em>config.php</em> exists; if you need to recreate it, delete it and rerun this setup.</li>
 			<?php
@@ -457,7 +460,7 @@ if( $output ) {
 
 	}
 
-if( $output ) {
+if( $message_output ) {
 	?>
 	</ul>
 
