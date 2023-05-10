@@ -171,7 +171,7 @@ if( ! is_dir( $abspath.'content/') ) {
 		<?php
 	}
 
-	if( mkdir( $abspath.'content/', 0774, true ) === false ) {
+	if( mkdir( $abspath.'content/', 0777, true ) === false ) {
 
 		if( $debug_output ) {
 			?>
@@ -298,7 +298,7 @@ if( $testcontent ) {
 					<?php
 				}
 
-				if( mkdir( $root.$foldername, 0774, true ) === false ) {
+				if( mkdir( $root.$foldername, 0777, true ) === false ) {
 
 					if( $debug_output ) {
 						?>
