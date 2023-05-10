@@ -8,6 +8,7 @@ class Image {
 	private $type;
 	private $local_file_path;
 	private $image_url;
+	private $orientation = 9; // NOTE: EXIF orientation; 1 = 0°, 8 = 90°, 3 = 180°, 6 = 270°; 2, 7, 4, 5 is the same, but mirrored horizontally before rotating; 9 means undefined
 
 	function __construct( $image_path, $type = false ) {
 
@@ -27,6 +28,11 @@ class Image {
 			var_dump('not exists');
 			$core->debug("local image file does not exist", $this->local_file_path);
 			return false;
+		}
+
+		$exif = @exif_read_data( $this->local_file_path );
+		if( $exif && ! empty($exif['Orientation']) ) {
+			$this->orientation = $exif['Orientation'];
 		}
 
 	}
@@ -52,13 +58,9 @@ class Image {
 		$src_width = $image_meta[0];
 		$src_height = $image_meta[1];
 
-		$exif = @exif_read_data( $this->local_file_path );
-		if( $exif && ! empty($exif['Orientation']) ) {
-			$orientation = $exif['Orientation'];
-			if( $orientation == 6 || $orientation == 8 ) {
-				$src_width = $image_meta[1];
-				$src_height = $image_meta[0];
-			}
+		if( $this->orientation == 6 || $this->orientation == 8 || $this->orientation == 5 || $this->orientation == 7 ) {
+			$src_width = $image_meta[1];
+			$src_height = $image_meta[0];
 		}
 
 
@@ -171,11 +173,7 @@ class Image {
 		}
 
 
-		$exif = @exif_read_data( $this->local_file_path );
-		if( $exif && ! empty($exif['Orientation']) ) {
-			$orientation = $exif['Orientation'];
-			list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $orientation, $src_width, $src_height );
-		}
+		list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $src_width, $src_height );
 
 		
 		if( $src_width > $target_width ) {
@@ -320,11 +318,7 @@ class Image {
 
 
 
-		$exif = @exif_read_data( $this->local_file_path );
-		if( $exif && ! empty($exif['Orientation']) ) {
-			$orientation = $exif['Orientation'];
-			list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $orientation, $src_width, $src_height );
-		}
+		list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $src_width, $src_height );
 
 
 		$target_dimensions = $this->get_image_dimensions( $target_width, $src_width, $src_height);
@@ -378,19 +372,20 @@ class Image {
 	}
 
 	
-	function image_rotate( $image, $orientation, $src_width, $src_height ) {
+	function image_rotate( $image, $src_width, $src_height ) {
 
 		$width = $src_width;
 		$height = $src_height;
 
 		$degrees = false;
-		if( $orientation == 3 ) {
+		// NOTE: we ignore mirrored images (4, 5, 7) for now, and just rotate them like they would be non-mirrored (3, 6, 8)
+		if( $this->orientation == 3 || $this->orientation == 4 ) {
 			$degrees = 180;
-		} elseif( $orientation == 6 ) {
+		} elseif( $this->orientation == 6 || $this->orientation == 5 ) {
 			$degrees = 270;
 			$width = $src_height;
 			$height = $src_width;
-		} elseif( $orientation == 8 ) {
+		} elseif( $this->orientation == 8 || $this->orientation == 7 ) {
 			$degrees = 90;
 			$width = $src_height;
 			$height = $src_width;
