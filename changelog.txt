@@ -1,5 +1,6 @@
 v.0.1.3
 
+- permission bugfix for the content folder and new posts on some hosts
 - transparent png files are handled correctly, when the 'image_jpg_to_png' option is set to false (if it is set to true, which is the default, png images get converted to jpg and loose their transparency)
 - you can set a background color for transparent images, when the 'image_jpg_to_png' option is set to true (which is the default); defaults to white background color
 - https://www.example.com and http://www.example.com are now seen as the same user

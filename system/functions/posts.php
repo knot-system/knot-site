@@ -45,7 +45,9 @@ function create_post_in_database( $data, $photo = false ) {
 	$month = date('m', $data['timestamp']);
 	$target_folder = 'posts/'.$year.'/'.$month.'/';
 	if( ! is_dir($core->abspath.'content/'.$target_folder) ) {
-		mkdir( $core->abspath.'content/'.$target_folder, 0774, true );
+		$oldumask = umask(0); // we need this for permissions of mkdir to be set correctly
+		mkdir( $core->abspath.'content/'.$target_folder, 0777, true );
+		umask($oldumask); // we need this after changing permissions with mkdir
 		if( ! is_dir($core->abspath.'content/'.$target_folder) ) {
 			header( "HTTP/1.1 500 Internal Server Error" );
 			$core->debug( 'Folder could not be created' );
@@ -63,7 +65,9 @@ function create_post_in_database( $data, $photo = false ) {
 		exit;
 	}
 
-	mkdir( $core->abspath.'content/'.$target_folder, 0774 );
+	$oldumask = umask(0); // we need this for permissions of mkdir to be set correctly
+	mkdir( $core->abspath.'content/'.$target_folder, 0777 );
+	umask($oldumask); // we need this after changing permissions with mkdir
 	if( ! is_dir($core->abspath.'content/'.$target_folder) ) {
 		header( "HTTP/1.1 500 Internal Server Error" );
 		$core->debug( "Folder could not be created" );
