@@ -137,7 +137,9 @@ class Route {
 			$filename = strtolower(end($request));
 			$filename = str_replace('.jpeg', '.jpg', $filename);
 			if( str_ends_with($filename, '.jpg') || str_ends_with($filename, '.png') ){
-				handle_image_display( urldecode(implode('/', $request)) );
+				$image_path = urldecode(implode('/', $request));
+				$image = new Image( $image_path );
+				$image->display();
 				exit;
 			}
 
@@ -151,7 +153,9 @@ class Route {
 			$hash = $request[1];
 
 			if( file_exists($core->abspath.'cache/remote-image/'.$hash) ) {
-				handle_image_display( $core->abspath.'cache/remote-image/'.$hash );
+				$image_path = $core->abspath.'cache/remote-image/'.$hash;
+				$image = new Image( $image_path );
+				$image->display();
 				exit;
 			}
 			

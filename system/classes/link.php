@@ -137,7 +137,9 @@ class Link {
 			global $core;
 			$target_width = $core->config->get('preview_target_width' );
 
-			$preview_image = get_image_html( $preview_image_cache->cache_file_name, 'remote', $target_width );
+			$image = new Image( $preview_image_cache->cache_file_name );
+			$preview_image = $image->get_html_embed( 'remote', $target_width );
+
 		}
 
 		$data = [
