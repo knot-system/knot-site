@@ -126,18 +126,12 @@ class Link {
 		if( count($preview_images) ) {
 			$preview_image = $preview_images[0];
 
-			// cache remote image locally
-			$preview_image_name = explode('/', $preview_image);
-			$preview_image_name = end($preview_image_name);
-			$preview_image_name = explode("?", $preview_image_name);
-			$preview_image_name = $preview_image_name[0];
-			$preview_image_cache = new Cache( 'remote-image', $preview_image_name );
-			$preview_image_cache->get_remote_file( $preview_image );
+			$cache_file_name = $this->get_remote_image( $preview_image );
 
 			global $core;
 			$target_width = $core->config->get('preview_target_width' );
 
-			$image = new Image( $preview_image_cache->cache_file_name, 'remote' );
+			$image = new Image( $cache_file_name, 'remote' );
 			$preview_image = $image->get_html_embed( $target_width );
 
 		}
@@ -154,6 +148,19 @@ class Link {
 		$this->update_preview( $data );
 
 		return $this;
+	}
+
+	function get_remote_image( $preview_image ) {
+
+		$preview_image_name = explode('/', $preview_image);
+		$preview_image_name = end($preview_image_name);
+		$preview_image_name = explode("?", $preview_image_name);
+		$preview_image_name = $preview_image_name[0];
+
+		$preview_image_cache = new Cache( 'remote-image', $preview_image_name );
+		$preview_image_cache->get_remote_file( $preview_image );
+
+		return $preview_image_cache->cache_file_name;
 	}
 
 };

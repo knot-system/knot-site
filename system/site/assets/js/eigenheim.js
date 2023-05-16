@@ -18,11 +18,11 @@ var LinkPreview = {
 
 		if( ! linkPreviews || ! linkPreviews.length ) return;
 
-		var timeout = 1000;
+		var timeout = 700;
 		for( var linkPreview of linkPreviews ) {
 			var id = linkPreview.id.replace('link-','');
 			setTimeout( LinkPreview.refresh, timeout, id);
-			timeout += 700;
+			timeout += 300;
 		}
 
 	},
