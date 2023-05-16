@@ -1,3 +1,8 @@
+v.0.1.4
+
+- bugfixes & enhancements
+
+
 v.0.1.3
 
 - permission bugfix for the content folder and new posts on some hosts
