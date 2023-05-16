@@ -12,6 +12,7 @@ class Image {
 	private $image_type;
 	private $src_width;
 	private $src_height;
+	private $format;
 
 	function __construct( $image_path, $type = false ) {
 
@@ -48,6 +49,14 @@ class Image {
 		$this->src_height = $image_meta[1];
 		$this->image_type = $image_meta[2];
 
+		if( $this->src_width > $this->src_height ) {
+			$this->format = 'landscape';
+		} elseif( $this->src_width < $this->src_height ) {
+			$this->format = 'portrait';
+		} else {
+			$this->format = 'square';
+		}
+
 	}
 
 
@@ -66,24 +75,15 @@ class Image {
 		$src_height = $this->src_height;
 
 		if( $this->orientation == 6 || $this->orientation == 8 || $this->orientation == 5 || $this->orientation == 7 ) {
-			$src_width = $image_meta[1];
-			$src_height = $image_meta[0];
+			// image is rotated 90°
+			$tmp_width = $src_width;
+			$src_width = $src_height;
+			$src_height = $tmp_width;
 		}
 
-		$target_dimensions = $this->get_image_dimensions( $target_width, $src_width, $src_height );
+		list( $width, $height ) = $this->get_image_dimensions( $target_width, $src_width, $src_height );
 
-		$width = $target_dimensions[0];
-		$height = $target_dimensions[1];
-
-		if( $width > $height ) {
-			$format = 'landscape';
-		} elseif( $width < $height ) {
-			$format = 'portrait';
-		} else {
-			$format = 'square';
-		}
-
-		$classes = array( 'content-image', 'content-image-format-'.$format );
+		$classes = array( 'content-image', 'content-image-format-'.$this->format );
 
 		$preview_base64 = $this->get_image_preview_base64();
 
@@ -133,7 +133,6 @@ class Image {
 
 		$cache_string = $this->local_file_path.$filesize.$target_width.$jpg_quality;
 		$cache = new Cache( 'image', $cache_string );
-
 		$cache_content = $cache->get_data();
 		if( $cache_content ) {
 			// return cached file, then end
@@ -181,14 +180,10 @@ class Image {
 		$src_height = $this->src_height;
 
 		list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $src_width, $src_height );
-
 		
 		if( $src_width > $target_width ) {
 			
-			$target_dimensions = $this->get_image_dimensions( $target_width );
-
-			$width = $target_dimensions[0];
-			$height = $target_dimensions[1];
+			list( $width, $height ) = $this->get_image_dimensions( $target_width );
 
 			if( $width <= 0 || $height <= 0 ) {
 				imagedestroy( $src_image );
@@ -196,7 +191,14 @@ class Image {
 				exit;
 			}
 
-			$target_image = imagecreatetruecolor($width, $height);
+			if( $this->orientation == 6 || $this->orientation == 8 || $this->orientation == 5 || $this->orientation == 7 ) {
+			// image is rotated 90°
+				$tmp_width = $width;
+				$width = $height;
+				$height = $tmp_width;
+			}
+
+			$target_image = imagecreatetruecolor( $width, $height );
 
 			if( ! $png_to_jpg && $this->image_type == IMAGETYPE_PNG ) {
 				// handle alpha channel
@@ -204,7 +206,7 @@ class Image {
 				imageSaveAlpha( $target_image, true );
 			}
 
-			imagecopyresized($target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height);
+			imagecopyresized( $target_image, $src_image, 0, 0, 0, 0, $width, $height, $src_width, $src_height );
 
 		} else {
 
@@ -325,15 +327,19 @@ class Image {
 		list( $src_image, $src_width, $src_height ) = $this->image_rotate( $src_image, $src_width, $src_height );
 
 
-		$target_dimensions = $this->get_image_dimensions( $target_width );
-
-		$width = $target_dimensions[0];
-		$height = $target_dimensions[1];
+		list( $width, $height ) = $this->get_image_dimensions( $target_width );
 
 		if( $width <= 0 || $height <= 0 ) {
 			imagedestroy( $src_image );
 			$core->debug( 'width or height <= 0', $width, $height );
 			exit;
+		}
+
+		if( $this->orientation == 6 || $this->orientation == 8 || $this->orientation == 5 || $this->orientation == 7 ) {
+			// image is rotated 90°
+			$tmp_width = $width;
+			$width = $height;
+			$height = $tmp_width;
 		}
 
 		$target_image = imagecreatetruecolor($width, $height);
