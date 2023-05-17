@@ -1,6 +1,7 @@
 v.0.1.4
 
 - better handling of querying multiple link-previews
+- webp support for link-preview images
 - bugfixes & enhancements
 
 
