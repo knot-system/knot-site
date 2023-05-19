@@ -3,6 +3,7 @@ v.0.1.4
 - better handling of querying multiple link-previews
 - webp support for link-preview images
 - better link detection
+- link preview refreshing without js is now disabled by default
 - bugfixes & enhancements
 
 
