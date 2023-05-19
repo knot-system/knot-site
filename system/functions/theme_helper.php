@@ -76,7 +76,7 @@ function head_html(){
 
 	$body_classes = array();
 
-	$color_scheme = $core->config->get('theme-color-scheme');
+	$color_scheme = get_config('theme-color-scheme');
 	if( $color_scheme ) $body_classes[] = 'theme-color-scheme-'.$color_scheme;
 
 ?><!DOCTYPE html>

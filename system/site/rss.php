@@ -6,14 +6,14 @@ $core->doing_feed = true;
 
 header('Content-Type: application/rss+xml; charset=utf-8');
 
-$limit_count = $core->config->get('feed_limit_posts');
+$limit_count = get_config('feed_limit_posts');
 $posts = $core->posts->limit($limit_count)->get();
 
 ?><?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
 
 	<channel>
-		<title><?= $core->config->get( 'site_title' ) ?></title>
+		<title><?= get_config( 'site_title' ) ?></title>
 		<link><?= url() ?></link>
 		<description></description>
 <?php /*

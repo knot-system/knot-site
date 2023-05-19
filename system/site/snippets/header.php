@@ -1,6 +1,6 @@
 <?php
 
-// Version: 0.1.0
+// Version: 0.1.4
 
 if( ! $core ) exit;
 
@@ -9,7 +9,7 @@ head_html();
 ?>
 
 <header>
-	<h1><a href="<?= url() ?>"><?= $core->config->get('site_title') ?></a></h1>
+	<h1><a href="<?= url() ?>"><?= get_config('site_title') ?></a></h1>
 	<?php
 	$navigation = get_navigation();
 	if( $navigation ) :

@@ -165,7 +165,7 @@ function micropub_create_post_slug( $data ) {
 	}
 
 	global $core;
-	$slug_max_length = $core->config->get('slug_max_length');
+	$slug_max_length = get_config('slug_max_length');
 	$slug = substr( $slug, 0, $slug_max_length );
 
 	return $slug;

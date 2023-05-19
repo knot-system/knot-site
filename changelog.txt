@@ -5,6 +5,7 @@ v.0.1.4
 - better link detection
 - link preview refreshing without js is now disabled by default
 - link preview: insert refreshed link info automatically, if link preview is below viewport
+- get_config() helper function
 - bugfixes & enhancements
 
 

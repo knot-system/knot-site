@@ -4,7 +4,7 @@
 function get_author_information( $raw = false ) {
 	global $core;
 
-	$author = $core->config->get('author');
+	$author = get_config('author');
 
 	// allowed fields; see https://microformats.org/wiki/h-card
 	// TODO: we need to test those fields

@@ -74,7 +74,7 @@ class Core {
 
 		$this->theme->add_metatag( 'charset', '<meta charset="utf-8">' );
 		$this->theme->add_metatag( 'viewport', '<meta name="viewport" content="width=device-width,initial-scale=1.0">' );
-		$this->theme->add_metatag( 'title', '<title>'.$core->config->get('site_title').'</title>' );
+		$this->theme->add_metatag( 'title', '<title>'.get_config('site_title').'</title>' );
 
 		$author = get_author_information();
 		if( ! empty( $author['display_name'] ) ) {
@@ -85,15 +85,15 @@ class Core {
 
 		$this->theme->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
 		$this->theme->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
-		$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.$core->config->get('auth_mail').'">' );
+		$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
 		$this->theme->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
-		$microsub_endpoint = $core->config->get('microsub');
+		$microsub_endpoint = get_config('microsub');
 		if( $microsub_endpoint ) {
 			$this->theme->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
 		}
 
-		$this->theme->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.$core->config->get('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
-		$this->theme->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.$core->config->get('site_title').' JSON Feed" href="'.url('feed/json').'">' );
+		$this->theme->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.get_config('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
+		$this->theme->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.get_config('site_title').' JSON Feed" href="'.url('feed/json').'">' );
 
 
 		$this->pages = new Pages();

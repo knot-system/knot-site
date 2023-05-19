@@ -23,7 +23,7 @@ class Posts {
 
 		$this->posts = $posts;
 
-		$posts_per_page = $core->config->get( 'posts_per_page' );
+		$posts_per_page = get_config( 'posts_per_page' );
 		$maxPage = count($posts) / $posts_per_page;
 
 		$this->page = 1;
@@ -51,7 +51,7 @@ class Posts {
 
 		global $core;
 
-		$posts_per_page = $core->config->get( 'posts_per_page' );
+		$posts_per_page = get_config( 'posts_per_page' );
 
 		$offset = ($page-1)*$posts_per_page;
 
@@ -83,7 +83,7 @@ class Posts {
 
 		global $core;
 
-		$posts_per_page = $core->config->get( 'posts_per_page' );
+		$posts_per_page = get_config( 'posts_per_page' );
 		$this->maxPage = count($posts) / $posts_per_page;
 
 		return $this;
