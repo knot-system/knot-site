@@ -4,6 +4,7 @@ v.0.1.4
 - webp support for link-preview images
 - better link detection
 - link preview refreshing without js is now disabled by default
+- link preview: insert refreshed link info automatically, if link preview is below viewport
 - bugfixes & enhancements
 
 
