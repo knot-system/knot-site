@@ -6,17 +6,19 @@
 
 return [
 	'site_title' => 'Eigenheim',
-	'auth_mail' => false,
 	'debug' => false,
 	'logging' => true,
 	'theme' => 'default',
 	'theme-color-scheme' => 'default', // depends on the theme; the default theme supports 'blue', 'green', 'red', 'lilac'
 	'posts_per_page' => 5,
-	'indieauth-metadata' => false, // IndieAuth metadata tag, for IndieAuth discovery - TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
-	'endpoint-discovery-via-header' => false, // TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
-	'authorization_endpoint' => 'https://tokens.indieauth.com/token', // NOTE: this will change soon
-	'token_endpoint' => 'https://tokens.indieauth.com/auth', // NOTE: this will change soon
-	'microsub' => false,
+	'indieauth-metadata' => false, // IndieAuth metadata tag, for IndieAuth discovery; if set to false, it gets omitted; if set to true, it defaults to the internal indieauth-metadata endpoint; if set to a url, the url will be included - TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
+	'endpoint-discovery-via-header' => false, // if set to true, the discovery endpoints will be included via the http 'Link' header; if set to false, the discovery endpoints will be included via <link rel=".." href=".."> meta tags; TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
+	'authorization_endpoint' => 'https://tokens.indieauth.com/token', // NOTE: this will change soon; TODO: set to false, and set own auth module while installing in the user config
+	'token_endpoint' => 'https://tokens.indieauth.com/auth', // NOTE: this will change soon; TODO: set to false, and set own auth module while installing in the user config
+	'code_challenge_methods_supported' => ['S256'], // array; could be 'plain' or 'S256', depends on authorization and token endpoint; TODO: set to false, and set to ['S256'] while installing in the user config
+	'me_authn' => true, // NOTE: this will change soon; TODO: set to false in one of the next releases; can be set to a specific value if needed
+	'auth_mail' => false, // NOTE: gets set via user config.php, because we ask for it at install time; TODO: remove (also remove from install & homestead-installer) in one of the next releases
+	'microsub' => false, // set to a URL to include a microsub endpoint
 	'author' => [
 		'p-name' => false,
 		'u-url' => false

@@ -34,7 +34,7 @@ function api_check_request( $request ){
 			//'response_types_supported' => [], // TODO
 			//'grant_types_supported' => [], // TODO
 			//'service_documentation' => '', // TODO
-			'code_challenge_methods_supported' => ['S256'], // could be 'plain' or 'S256'; for now, we don't allow 'plain' - TODO: check if we want to support 'plain'
+			'code_challenge_methods_supported' => $core->config->get('code_challenge_methods_supported'),
 			//'authorization_response_iss_parameter_supported' => false, // TODO
 			//'userinfo_endpoint' => '' // TODO
 		);

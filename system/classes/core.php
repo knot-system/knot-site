@@ -98,14 +98,28 @@ class Core {
 
 		} else {
 			// old behaviour, fallback
+			// TODO: remove this old behavior someday, and default to $indieauth_metadata
 
 			$this->add_endpoint( 'authorization_endpoint' );
 			$this->add_endpoint( 'token_endpoint' );
 
 		}
 
-		// TODO: check, if these should be moved into the indieauth-metadata endpoint?
-		$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
+		$me_authn = $this->config->get( 'me_authn' );
+		if( $me_authn ) {
+			
+			// TODO: remove default behavior someday, but allow 'me_authn' config option
+			if( $me_authn === true ) {
+				// default behavior: auth via email
+				$auth_email = $this->config->get( 'auth_mail' );
+				if( $auth_email ) {
+					$me_authn = 'mailto:'.$auth_email;
+				}
+			}
+		
+			$this->theme->add_metatag( 'me_authn', '<link rel="me authn" href="'.$me_authn.'">' );
+		}
+		
 
 		// micropub endpoint
 		$this->add_endpoint( 'micropub', micropub_get_endpoint( true ) );
