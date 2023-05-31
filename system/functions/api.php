@@ -26,7 +26,7 @@ function api_check_request( $request ){
 			'issuer' => url(),
 			'authorization_endpoint' => $core->config->get('authorization_endpoint'),
 			'token_endpoint' => $core->config->get('token_endpoint'),
-			'introspection_endpoint' => '', // TODO
+			//'introspection_endpoint' => '', // TODO
 			//'introspection_endpoint_auth_methods_supported' => [], // TODO
 			//'revocation_endpoint' => '', // TODO
 			//'revocation_endpoint_auth_methods_supported' => [], // TODO
@@ -34,7 +34,7 @@ function api_check_request( $request ){
 			//'response_types_supported' => [], // TODO
 			//'grant_types_supported' => [], // TODO
 			//'service_documentation' => '', // TODO
-			'code_challenge_methods_supported' => [], // TODO
+			'code_challenge_methods_supported' => ['S256'], // could be 'plain' or 'S256'; for now, we don't allow 'plain' - TODO: check if we want to support 'plain'
 			//'authorization_response_iss_parameter_supported' => false, // TODO
 			//'userinfo_endpoint' => '' // TODO
 		);
@@ -49,7 +49,7 @@ function api_check_request( $request ){
 
 		$id = $_GET['link_preview'];
 
-		// we expect to be a cachefile for this link, because it should have been created already
+		// we expect there to be a cachefile for this link, because it should have been created already
 		try {
 			$link = new Link( $id, true );
 		} catch( Exception $e ) {

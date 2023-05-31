@@ -85,6 +85,7 @@ class Core {
 
 
 		// IndieAuth
+
 		$indieauth_metadata = $core->config->get( 'indieauth-metadata' );
 		if( $indieauth_metadata ) {
 
@@ -93,29 +94,24 @@ class Core {
 				$indieauth_metadata = api_get_endpoint( true ).'indieauth-metadata'; // TODO: check endpoint, maybe move to own class
 			}
 
-			// TODO: $indieauth_metadata needs to encode all char codes greater than 255, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link#encoding_urls
-
-			if( $core->config->get('indieauth-metadata_use-header') ) {
-				$this->theme->add_header( 'indieauth-metadata', 'Link: <'.$indieauth_metadata.'>; rel="indieauth-metadata"');
-			} else {
-				$this->theme->add_metatag( 'indieauth-metadata', '<link rel="indieauth-metadata" href="'.$indieauth_metadata.'">' );
-			}
+			$this->add_endpoint( 'indieauth-metadata', $indieauth_metadata );
 
 		} else {
 			// old behaviour, fallback
 
-			$this->theme->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="'.$core->config->get('authorization_endpoint').'">' );
-			$this->theme->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="'.$core->config->get('token_endpoint').'">' );
+			$this->add_endpoint( 'authorization_endpoint' );
+			$this->add_endpoint( 'token_endpoint' );
 
 		}
 
 		// TODO: check, if these should be moved into the indieauth-metadata endpoint?
 		$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
-		$this->theme->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
-		$microsub_endpoint = get_config('microsub');
-		if( $microsub_endpoint ) {
-			$this->theme->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
-		}
+
+		// micropub endpoint
+		$this->add_endpoint( 'micropub', micropub_get_endpoint( true ) );
+
+		// microsub endpoint
+		$this->add_endpoint( 'microsub' );
 
 
 		// RSS / JSON feed
@@ -169,6 +165,31 @@ class Core {
 
 	function version() {
 		return $this->version;
+	}
+
+	function add_endpoint( $rel, $url = false ){
+
+		if( ! $url ) {
+			$url = $this->config->get( $rel );
+		}
+
+		if( ! $url ) {
+			return $this;
+		}
+
+		// TODO: $url needs to encode all char codes greater than 255, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link#encoding_urls
+
+		if( $this->config->get('endpoint-discovery-via-header') ) {
+
+			$this->theme->add_header( $rel, 'Link: <'.$url.'>; rel="'.$rel.'"');
+
+		} else {
+
+			$this->theme->add_metatag( $rel, '<link rel="'.$rel.'" href="'.$url.'">' );
+
+		}
+
+		return $this;
 	}
 
 

@@ -13,7 +13,7 @@ return [
 	'theme-color-scheme' => 'default', // depends on the theme; the default theme supports 'blue', 'green', 'red', 'lilac'
 	'posts_per_page' => 5,
 	'indieauth-metadata' => false, // IndieAuth metadata tag, for IndieAuth discovery - TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
-	'indieauth-metadata_use-header' => true,
+	'endpoint-discovery-via-header' => false, // TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
 	'authorization_endpoint' => 'https://tokens.indieauth.com/token', // NOTE: this will change soon
 	'token_endpoint' => 'https://tokens.indieauth.com/auth', // NOTE: this will change soon
 	'microsub' => false,

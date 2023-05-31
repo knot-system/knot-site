@@ -1,5 +1,7 @@
 v.0.1.5
 
+- added support for endpoint discovery via http header; set the config option 'endpoint-discovery-via-header' to 'true'; this will become the default behavior in one of the following releases
+- added support for indieauth endpoint discovery via 'indieauth-metadata'; set the config option 'indieauth-metadata' to 'true'; this will become the default behavior in one of the following releases
 - add_header() & remove_header() functions, to set http headers
 
 
