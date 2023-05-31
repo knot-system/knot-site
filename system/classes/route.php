@@ -108,7 +108,7 @@ class Route {
 			// api
 			// NOTE: this is subject to change!
 
-			if( api_check_request() ) {
+			if( api_check_request( $request ) ) {
 				exit;
 			}
 

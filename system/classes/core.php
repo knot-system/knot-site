@@ -83,15 +83,41 @@ class Core {
 
 		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Eigenheim v.'.$core->version().'">' );
 
-		$this->theme->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
-		$this->theme->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
-		$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
-		$this->theme->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
-		$microsub_endpoint = get_config('microsub');
-		if( $microsub_endpoint ) {
-			$this->theme->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
+
+		// IndieAuth
+		$indieauth_metadata = $core->config->get( 'indieauth-metadata' );
+		if( $indieauth_metadata ) {
+
+			if( $indieauth_metadata === true ) {
+				// use internal link
+				$indieauth_metadata = api_get_endpoint( true ).'indieauth-metadata'; // TODO: check endpoint, maybe move to own class
+			}
+
+			// TODO: $indieauth_metadata needs to encode all char codes greater than 255, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link#encoding_urls
+
+			if( $core->config->get('indieauth-metadata_use-header') ) {
+				$this->theme->add_header( 'indieauth-metadata', 'Link: <'.$indieauth_metadata.'>; rel="indieauth-metadata"');
+			} else {
+				$this->theme->add_metatag( 'indieauth-metadata', '<link rel="indieauth-metadata" href="'.$indieauth_metadata.'">' );
+			}
+
+		} else {
+			// old behaviour, fallback
+
+			$this->theme->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
+			$this->theme->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
+
+			$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
+			$this->theme->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
+			$microsub_endpoint = get_config('microsub');
+			if( $microsub_endpoint ) {
+				$this->theme->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
+			}
+
 		}
 
+
+		// RSS / JSON feed
 		$this->theme->add_metatag( 'feed_rss', '<link rel="alternate" type="application/rss+xml" title="'.get_config('site_title').' RSS Feed" href="'.url('feed/rss').'">' );
 		$this->theme->add_metatag( 'feed_json', '<link rel="alternate" type="application/json" title="'.get_config('site_title').' JSON Feed" href="'.url('feed/json').'">' );
 
