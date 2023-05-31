@@ -24,8 +24,8 @@ function api_check_request( $request ){
 		// see https://indieauth.spec.indieweb.org/#indieauth-server-metadata
 		$indieauth_metadata = array(
 			'issuer' => url(),
-			'authorization_endpoint' => '', // TODO
-			'token_endpoint' => '', // TODO
+			'authorization_endpoint' => $core->config->get('authorization_endpoint'),
+			'token_endpoint' => $core->config->get('token_endpoint'),
 			'introspection_endpoint' => '', // TODO
 			//'introspection_endpoint_auth_methods_supported' => [], // TODO
 			//'revocation_endpoint' => '', // TODO

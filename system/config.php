@@ -14,6 +14,8 @@ return [
 	'posts_per_page' => 5,
 	'indieauth-metadata' => false, // IndieAuth metadata tag, for IndieAuth discovery - TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
 	'indieauth-metadata_use-header' => true,
+	'authorization_endpoint' => 'https://tokens.indieauth.com/token', // NOTE: this will change soon
+	'token_endpoint' => 'https://tokens.indieauth.com/auth', // NOTE: this will change soon
 	'microsub' => false,
 	'author' => [
 		'p-name' => false,

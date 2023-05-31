@@ -104,16 +104,17 @@ class Core {
 		} else {
 			// old behaviour, fallback
 
-			$this->theme->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="https://indieauth.com/auth">' );
-			$this->theme->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="https://tokens.indieauth.com/token">' );
+			$this->theme->add_metatag( 'auth_endpoint', '<link rel="authorization_endpoint" href="'.$core->config->get('authorization_endpoint').'">' );
+			$this->theme->add_metatag( 'token_endpoint', '<link rel="token_endpoint" href="'.$core->config->get('token_endpoint').'">' );
 
-			$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
-			$this->theme->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
-			$microsub_endpoint = get_config('microsub');
-			if( $microsub_endpoint ) {
-				$this->theme->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
-			}
+		}
 
+		// TODO: check, if these should be moved into the indieauth-metadata endpoint?
+		$this->theme->add_metatag( 'auth_mail', '<link rel="me authn" href="mailto:'.get_config('auth_mail').'">' );
+		$this->theme->add_metatag( 'micropub', '<link rel="micropub" href="'.micropub_get_endpoint( true ).'">' );
+		$microsub_endpoint = get_config('microsub');
+		if( $microsub_endpoint ) {
+			$this->theme->add_metatag( 'microsub', '<link rel="microsub" href="'.$microsub_endpoint.'">' );
 		}
 
 
