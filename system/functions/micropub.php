@@ -58,7 +58,15 @@ function micropub_handle_get_request(){
 
 function micropub_handle_json_request( $json ) {
 
-	micropub_check_authorization_bearer(); // this will exit with a error message if authorization is not allowed
+	$me = false;
+	if( ! empty($json['me']) ) $me = $json['me'];
+
+	if( ! $me ) {
+		header( "HTTP/1.1 401 Unauthorized" );
+		exit;
+	}
+
+	micropub_check_authorization_bearer( $json ); // this will exit with a error message if authorization is not allowed
 
 	$data = array();
 
@@ -83,10 +91,18 @@ function micropub_handle_json_request( $json ) {
 }
 
 function micropub_handle_post_request() {
-
-	micropub_check_authorization_bearer(); // this will exit with a error message if authorization is not allowed
-
+	
 	$data = $_POST;
+
+	$me = false;
+	if( ! empty($data['me']) ) $me = $data['me'];
+
+	if( ! $me ) {
+		header( "HTTP/1.1 401 Unauthorized" );
+		exit;
+	}
+
+	micropub_check_authorization_bearer( $me ); // this will exit with a error message if authorization is not allowed
 
 	micropub_create_post( $data );
 
@@ -171,7 +187,7 @@ function micropub_create_post_slug( $data ) {
 	return $slug;
 }
 
-function micropub_check_authorization_bearer() {
+function micropub_check_authorization_bearer( $me ) {
 
 	global $core;
 
@@ -183,19 +199,45 @@ function micropub_check_authorization_bearer() {
 		"Content-Type: application/x-www-form-urlencoded",
 		"Authorization: $token"
 	);
-	$response = request_post( 'https://tokens.indieauth.com/token', $headers );
+
+	$indieauth = new IndieAuth();
+	$token_endpoint = $indieauth->discover_endpoint( 'token_endpoint', $me );
+
+	if( ! $token_endpoint ) {
+		exit;header( "HTTP/1.1 401 Unauthorized" );
+		exit;
+	}
+
+
+	$request = new Request( $token_endpoint );
+	$request->set_headers( $headers );
+	$request->curl_request();
+	$response = $request->get_body();
 
 	if( empty($response) ){
 		header( "HTTP/1.1 401 Unauthorized" );
 		exit;
 	}
 
-	// Check for scope=post or scope=create
-	// Check for me=basedomain
-	$me = $response['me'];
-	$iss = $response['issued_by'];
-	$client = $response['client_id'];
-	$scope = $response['scope'];
+	$response = json_decode( $response, true );
+
+
+	$me = false;
+	if( ! empty($response['me']) ) $me = $response['me'];
+
+	$iss = false;
+	if( ! empty($response['issued_by']) ) $iss = $response['issued_by'];
+
+	$client = false;
+	if( ! empty($response['client_id']) ) $client = $response['client_id'];
+
+	$scope = false;
+	if( ! empty($response['scope']) ) $scope = $response['scope'];
+
+
+	// TODO: check $iss
+	// TODO: check $client
+
 	
 	// NOTE: for our purposes, https://wwww.example.com/, https://www.example.com and http://www.example.com are the same user
 	$cleaned_me = un_trailing_slash_it($me);
