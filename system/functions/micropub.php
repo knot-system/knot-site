@@ -191,14 +191,8 @@ function micropub_check_authorization_bearer( $me ) {
 
 	global $core;
 
-	$headers = apache_request_headers();
-
-	$token = $headers['Authorization'];
-
-	$headers = array(
-		"Content-Type: application/x-www-form-urlencoded",
-		"Authorization: $token"
-	);
+	$own_headers = apache_request_headers();
+	$authorization = $own_headers['Authorization'];
 
 	$indieauth = new IndieAuth();
 	$token_endpoint = $indieauth->discover_endpoint( 'token_endpoint', $me );
@@ -208,31 +202,50 @@ function micropub_check_authorization_bearer( $me ) {
 		exit;
 	}
 
+	$token_endpoint_request = new Request( $token_endpoint );
+	$token_endpoint_request->set_headers([
+		'Content-Type: application/json',
+		'Authorization: '.$authorization
+	]);
+	$token_endpoint_request->curl_request();
 
-	$request = new Request( $token_endpoint );
-	$request->set_headers( $headers );
-	$request->curl_request();
-	$response = $request->get_body();
+	$status_code = $token_endpoint_request->get_status_code();
+	$headers = $token_endpoint_request->get_headers();
+	$token_response = $token_endpoint_request->get_body();
 
-	if( empty($response) ){
+	if( ! empty($headers['content-type']) && $headers['content-type'] == 'application/json' ) {
+		$token_response = json_decode( $token_response, true );
+	} else {
+		// fallback to x-www-form-urlencoded
+		$token_response = decode_formurlencoded( $token_response );
+	}
+
+
+/*
+	// TODO: check this. does not seem to work with IndieAuth?
+	if( isset($token_response['active']) && ! $token_response['active'] ) {
+		header( "HTTP/1.1 401 Unauthorized" );
+		exit;
+	}
+*/
+
+	if( ! isset($token_response['me']) || ! isset($token_response['scope']) ) {
 		header( "HTTP/1.1 401 Unauthorized" );
 		exit;
 	}
 
-	$response = json_decode( $response, true );
-
 
 	$me = false;
-	if( ! empty($response['me']) ) $me = $response['me'];
+	if( ! empty($token_response['me']) ) $me = $token_response['me'];
 
 	$iss = false;
-	if( ! empty($response['issued_by']) ) $iss = $response['issued_by'];
+	if( ! empty($token_response['issued_by']) ) $iss = $token_response['issued_by'];
 
 	$client = false;
-	if( ! empty($response['client_id']) ) $client = $response['client_id'];
+	if( ! empty($token_response['client_id']) ) $client = $token_response['client_id'];
 
 	$scope = false;
-	if( ! empty($response['scope']) ) $scope = $response['scope'];
+	if( ! empty($token_response['scope']) ) $scope = $token_response['scope'];
 
 
 	// TODO: check $iss
