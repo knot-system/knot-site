@@ -81,6 +81,9 @@ function head_html(){
 	$color_scheme = get_config('theme-color-scheme');
 	if( $color_scheme ) $body_classes[] = 'theme-color-scheme-'.$color_scheme;
 
+	$template = $core->route->get( 'template' );
+	if( $template ) $body_classes[] = 'template-'.$template;
+
 ?><!DOCTYPE html>
 <!--
 ___________.__                     .__           .__         
