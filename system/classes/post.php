@@ -48,12 +48,16 @@ class Post {
 
 		$link_preview = false;
 
-		if( $content_html ) {
+		$use_link_detection = $core->config->get('link_detection');
+		$show_link_preview = $core->config->get('link_preview');
+		if( $use_link_detection === false ) $show_link_preview = false;
+
+		if( $use_link_detection && $content_html ) {
 			$text = new Text($content_html);
 			$content_html = $text->cleanup()->get();
 		}
 
-		if( $core->config->get('link_preview') && $content_html ) {
+		if( $show_link_preview && $content_html ) {
 			$link_preview = $text->get_link_preview();
 		}
 

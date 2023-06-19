@@ -3,6 +3,7 @@ v.0.1.5
 added better compatibility for newer implementations of IndieAuth; for now, we default back to the old behavior, but you can switch to the new implementation by setting the config options 'endpoint-discovery-via-header' and 'indieauth-metadata' to true. This will automatically become the new default in a future release.
 
 - new config option to hide link previews (to hide link previews, use 'link_preview' => false)
+- new config option to disable auto-link-detection in post conten (to disable auto-link-detection, use 'link_detection' => false; this will also disable link previews)
 - added support for endpoint discovery via http header; set the config option 'endpoint-discovery-via-header' to 'true'; this will become the default behavior in one of the following releases
 - added support for indieauth endpoint discovery via 'indieauth-metadata'; set the config option 'indieauth-metadata' to 'true'; this will become the default behavior in one of the following releases
 - added template name to body-class ('body.template-index' for overview, 'body.template-post' for detail view ..)
