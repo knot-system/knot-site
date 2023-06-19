@@ -48,17 +48,26 @@ class Post {
 
 		$link_preview = false;
 
+		if( $content_html ) {
+			$text = new Text($content_html);
+			$text->remove_html_elements()->fix_html();
+		}
+
 		$use_link_detection = $core->config->get('link_detection');
 		$show_link_preview = $core->config->get('link_preview');
 		if( $use_link_detection === false ) $show_link_preview = false;
 
 		if( $use_link_detection && $content_html ) {
-			$text = new Text($content_html);
-			$content_html = $text->cleanup()->get();
+			$text->auto_a();
+
+			if( $show_link_preview ) {
+				$link_preview = $text->get_link_preview();
+			}
 		}
 
-		if( $show_link_preview && $content_html ) {
-			$link_preview = $text->get_link_preview();
+		if( $content_html ) {
+			$text->auto_p();
+			$content_html = $text->get();
 		}
 
 
