@@ -36,6 +36,7 @@ return [
 	'user_agent' => 'maxhaesslein/eigenheim/', // version will be automatically appended
 	'baseurl_overwrite' => false, // overwrite the baseurl; see #transparent-subfolder in the README.md
 	'basefolder_overwrite' => false, // overwrite the basefolder; see #transparent-subfolder in the README.md
+	'link_preview' => true, // show link previews
 	'link_preview_max_age' => 60*60*6, // refresh link previews after x seconds
 	'link_preview_nojs_refresh' => false, // refresh link previews via PHP; this makes pageloading with preview links slower, but does not rely on JavaScript to fetch link previews in the background
 ];
