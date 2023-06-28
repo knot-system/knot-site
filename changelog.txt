@@ -6,6 +6,11 @@ added better compatibility for newer implementations of IndieAuth; for now, we d
 - new config option to disable auto-link-detection in post conten (to disable auto-link-detection, use 'link_detection' => false; this will also disable link previews)
 - added support for endpoint discovery via http header; set the config option 'endpoint-discovery-via-header' to 'true'; this will become the default behavior in one of the following releases
 - added support for indieauth endpoint discovery via 'indieauth-metadata'; set the config option 'indieauth-metadata' to 'true'; this will become the default behavior in one of the following releases
+- the 'auth_mail' config option is now deprecated and will be removed in a future release. use the following config option instead: 'rel-me' => 'mailto:mail@example.com'
+- if you want to use the indieauth.com login in a future release, you need to set the following config options:
+	'authorization_endpoint' => 'https://indieauth.com/auth',
+	'token_endpoint' => 'https://tokens.indieauth.com/token',
+	'rel-me' => 'mailto:mail@example.com',
 - added template name to body-class ('body.template-index' for overview, 'body.template-post' for detail view ..)
 - better general compatibility with IndieAuth
 - add_header() & remove_header() functions, to set http headers
