@@ -1,3 +1,6 @@
+v.0.1.6
+
+
 v.0.1.5
 
 added better compatibility for newer implementations of IndieAuth; for now, we default back to the old behavior, but you can switch to the new implementation by setting the config options 'endpoint-discovery-via-header' and 'indieauth-metadata' to true. This will automatically become the new default in a future release.
