@@ -78,15 +78,16 @@ $config = true;
 if( file_exists($abspath.'config.php') ) $config = false;
 
 if( $config && 
-	( empty($_REQUEST['auth_mail']) || empty($_REQUEST['author_name']) || empty($_REQUEST['site_title']) ) 
+	( empty($_REQUEST['author_name']) || empty($_REQUEST['site_title']) ) 
 	) {
 	?>
 	<hr>
 	<p>Please fill out these fields:</p>
 	<form action="<?= $baseurl ?>" method="POST">
 		<p><label><strong>Site Title</strong><br><input type="text" name="site_title" required></label></p>
-		<p><label><strong>Authorization Mail</strong><br><small>(this is were we send the login token to, when you log into a micropub client. It is not displayed publicly, but is added to the HTML source code)</small><br><input type="email" name="auth_mail" required></label></p>
 		<p><label><strong>Author Name</strong><br><input type="text" name="author_name" required></label></p>
+		<p><label><strong>Authorization Endpoint</strong><br><input type="url" name="authorization_endpoint" required></label></p>
+		<p><label><strong>Token Endpoint</strong><br><input type="url" name="token_endpoint" required></label></p>
 		<p><small>(all fields above are required)</small></p>
 		<p><label><input type="checkbox" name="testcontent" value="true" checked>create test content</label>
 		<p><button>start installation</button></p>
@@ -98,7 +99,6 @@ if( $config &&
 $testcontent = false;
 if( $config ) {
 	$site_title = $_REQUEST['site_title'];
-	$auth_mail = $_REQUEST['auth_mail'];
 	$author_name = $_REQUEST['author_name'];
 	if( ! empty($_REQUEST['testcontent']) ) $testcontent = true;
 }
@@ -422,7 +422,7 @@ if( $message_output ) {
 
 	if( $config ) {
 
-		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'auth_mail' => '".$auth_mail."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],";
+		$content = "<?php\r\n\r\nreturn [\r\n	'site_title' => '".$site_title."',\r\n	'author' => [\r\n		'p-name' => '".$author_name."',\r\n	],";
 
 		if( ! empty($_REQUEST['baseurl_overwrite']) ) {
 			$content .= "\r\n	'baseurl_overwrite' => '".$_REQUEST['baseurl_overwrite']."',";
@@ -434,6 +434,14 @@ if( $message_output ) {
 
 		if( ! empty($_REQUEST['microsub']) ) {
 			$content .= "\r\n	'microsub' => '".$_REQUEST['microsub']."',";
+		}
+
+		if( ! empty($_REQUEST['authorization_endpoint']) ) {
+			$content .= "\r\n	'authorization_endpoint' => '".$_REQUEST['authorization_endpoint']."',";
+		}
+
+		if( ! empty($_REQUEST['token_endpoint']) ) {
+			$content .= "\r\n	'token_endpoint' => '".$_REQUEST['token_endpoint']."',";
 		}
 
 		$content .= "\r\n];\r\n";

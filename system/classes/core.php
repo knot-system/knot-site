@@ -105,19 +105,18 @@ class Core {
 
 		}
 
-		$me_authn = $this->config->get( 'me_authn' );
-		if( $me_authn ) {
-			
-			// TODO: remove default behavior someday, but allow 'me_authn' config option
-			if( $me_authn === true ) {
-				// default behavior: auth via email
+		$rel_me = $this->config->get( 'rel-me' );
+		if( $rel_me ) {
+
+			// TODO: remove default behavior someday, but still allow 'rel-me' config option
+			if( $rel_me === true ) {
+				// old default behavior: auth via email
 				$auth_email = $this->config->get( 'auth_mail' );
 				if( $auth_email ) {
-					$me_authn = 'mailto:'.$auth_email;
+					$rel_me = 'mailto:'.$auth_email;
 				}
 			}
-		
-			$this->theme->add_metatag( 'me_authn', '<link rel="me authn" href="'.$me_authn.'">' );
+			$this->theme->add_metatag( 'rel-me', '<link rel="me authn" href="'.$rel_me.'">' );
 		}
 		
 
