@@ -11,12 +11,12 @@ return [
 	'theme' => 'default',
 	'theme-color-scheme' => 'default', // depends on the theme; the default theme supports 'blue', 'green', 'red', 'lilac'
 	'posts_per_page' => 5,
-	'indieauth-metadata' => false, // IndieAuth metadata tag, for IndieAuth discovery; if set to false, it gets omitted; if set to true, it defaults to the internal indieauth-metadata endpoint; if set to a url, the url will be included - TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
-	'endpoint-discovery-via-header' => false, // if set to true, the discovery endpoints will be included via the http 'Link' header; if set to false, the discovery endpoints will be included via <link rel=".." href=".."> meta tags; TODO: this should be set to 'true' in one of the next releases, so we default to this behavior
-	'authorization_endpoint' => 'https://indieauth.com/auth', // TODO: set to false in a future release
-	'token_endpoint' => 'https://tokens.indieauth.com/token', // TODO: set to false in a future relase
-	'code_challenge_methods_supported' => ['S256'], // array; could be 'plain' or 'S256', depends on authorization and token endpoint; TODO: set to false, and set to ['S256'] while installing in the user config
-	'rel-me' => true, // the 'rel="me authn"' href value, if needed; can be "mailto:mail@example.com" if you want to use a mail address; TODO: set to false in the future, when we remove support for auth_mail
+	'indieauth-metadata' => true, // IndieAuth metadata tag, for IndieAuth discovery; if set to false, it gets omitted; if set to true, it defaults to the internal indieauth-metadata endpoint; if set to a url, the url will be included
+	'endpoint-discovery-via-header' => true, // if set to true, the discovery endpoints will be included via the http 'Link' header; if set to false, the discovery endpoints will be included via <link rel=".." href=".."> meta tags
+	'authorization_endpoint' => false,
+	'token_endpoint' => false,
+	'code_challenge_methods_supported' => ['S256'], // array; could be 'plain' or 'S256', depends on authorization and token endpoint
+	'rel-me' => false, // the 'rel="me authn"' href value, if needed; can be "mailto:mail@example.com" if you want to use a mail address
 	'microsub' => false, // set to a URL to include a microsub endpoint
 	'author' => [
 		'p-name' => false,
@@ -39,9 +39,4 @@ return [
 	'link_preview' => true, // show link previews
 	'link_preview_max_age' => 60*60*6, // refresh link previews after x seconds
 	'link_preview_nojs_refresh' => false, // refresh link previews via PHP; this makes pageloading with preview links slower, but does not rely on JavaScript to fetch link previews in the background
-
-
-
-
-	'auth_mail' => NULL, // NOTE: deprecated, this config option will be removed in a future release; use this config option instead: 'rel-me' => 'mailto:mail@example.com'
 ];
