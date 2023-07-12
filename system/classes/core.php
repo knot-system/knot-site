@@ -157,7 +157,7 @@ class Core {
 		return $this->version;
 	}
 
-	function add_endpoint( $rel ){
+	function add_endpoint( $rel, $url ){
 
 		if( ! $url ) {
 			return $this;
