@@ -84,47 +84,24 @@ class Core {
 		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Eigenheim v.'.$core->version().'">' );
 
 
-		// IndieAuth
-
+		// IndieAuth Metadata endpoint
 		$indieauth_metadata = $core->config->get( 'indieauth-metadata' );
 		if( $indieauth_metadata ) {
-
-			if( $indieauth_metadata === true ) {
-				// use internal link
-				$indieauth_metadata = api_get_endpoint( true ).'indieauth-metadata'; // TODO: check endpoint, maybe move to own class
-			}
-
 			$this->add_endpoint( 'indieauth-metadata', $indieauth_metadata );
-
-		} else {
-			// old behaviour, fallback
-			// TODO: remove this old behavior someday, and default to $indieauth_metadata
-
-			$this->add_endpoint( 'authorization_endpoint' );
-			$this->add_endpoint( 'token_endpoint' );
-
 		}
-
-		$rel_me = $this->config->get( 'rel-me' );
-		if( $rel_me ) {
-
-			// TODO: remove default behavior someday, but still allow 'rel-me' config option
-			if( $rel_me === true ) {
-				// old default behavior: auth via email
-				$auth_email = $this->config->get( 'auth_mail' );
-				if( $auth_email ) {
-					$rel_me = 'mailto:'.$auth_email;
-				}
-			}
-			$this->theme->add_metatag( 'rel-me', '<link rel="me authn" href="'.$rel_me.'">' );
-		}
-		
 
 		// micropub endpoint
-		$this->add_endpoint( 'micropub', micropub_get_endpoint( true ) );
+		$micropub = micropub_get_endpoint( true );
+		if( $micropub ) {
+			$this->add_endpoint( 'micropub', $micropub );
+		}
 
 		// microsub endpoint
-		$this->add_endpoint( 'microsub' );
+		$microsub = $core->config->get( 'microsub' );
+		if( $microsub ) {
+			$this->add_endpoint( 'microsub', $microsub );
+		}
+
 
 
 		// RSS / JSON feed
@@ -180,11 +157,7 @@ class Core {
 		return $this->version;
 	}
 
-	function add_endpoint( $rel, $url = false ){
-
-		if( ! $url ) {
-			$url = $this->config->get( $rel );
-		}
+	function add_endpoint( $rel ){
 
 		if( ! $url ) {
 			return $this;
@@ -192,15 +165,7 @@ class Core {
 
 		// TODO: $url needs to encode all char codes greater than 255, see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Link#encoding_urls
 
-		if( $this->config->get('endpoint-discovery-via-header') ) {
-
-			$this->theme->add_header( $rel, 'Link: <'.$url.'>; rel="'.$rel.'"');
-
-		} else {
-
-			$this->theme->add_metatag( $rel, '<link rel="'.$rel.'" href="'.$url.'">' );
-
-		}
+		$this->theme->add_header( $rel, 'Link: <'.$url.'>; rel="'.$rel.'"');
 
 		return $this;
 	}

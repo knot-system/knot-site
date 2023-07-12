@@ -78,7 +78,7 @@ $config = true;
 if( file_exists($abspath.'config.php') ) $config = false;
 
 if( $config && 
-	( empty($_REQUEST['author_name']) || empty($_REQUEST['site_title']) ) 
+	( empty($_REQUEST['author_name']) || empty($_REQUEST['site_title']) || empty($_REQUEST['indieauth-metadata']) ) 
 	) {
 	?>
 	<hr>
@@ -86,8 +86,7 @@ if( $config &&
 	<form action="<?= $baseurl ?>" method="POST">
 		<p><label><strong>Site Title</strong><br><input type="text" name="site_title" required></label></p>
 		<p><label><strong>Author Name</strong><br><input type="text" name="author_name" required></label></p>
-		<p><label><strong>Authorization Endpoint</strong><br><input type="url" name="authorization_endpoint" required></label></p>
-		<p><label><strong>Token Endpoint</strong><br><input type="url" name="token_endpoint" required></label></p>
+		<p><label><strong>IndieAuth Metadata Discovery Endpoint</strong><br><input type="url" name="indieauth-metadata" required></label></p>
 		<p><small>(all fields above are required)</small></p>
 		<p><label><input type="checkbox" name="testcontent" value="true" checked>create test content</label>
 		<p><button>start installation</button></p>
@@ -436,13 +435,10 @@ if( $message_output ) {
 			$content .= "\r\n	'microsub' => '".$_REQUEST['microsub']."',";
 		}
 
-		if( ! empty($_REQUEST['authorization_endpoint']) ) {
-			$content .= "\r\n	'authorization_endpoint' => '".$_REQUEST['authorization_endpoint']."',";
+		if( ! empty($_REQUEST['indieauth-metadata']) ) {
+			$content .= "\r\n	'indieauth-metadata' => '".$_REQUEST['indieauth-metadata']."',";
 		}
 
-		if( ! empty($_REQUEST['token_endpoint']) ) {
-			$content .= "\r\n	'token_endpoint' => '".$_REQUEST['token_endpoint']."',";
-		}
 
 		$content .= "\r\n];\r\n";
 

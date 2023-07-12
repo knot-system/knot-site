@@ -1,5 +1,10 @@
 v.0.1.6
 
+some config options were removed. you need to add a url via the 'indieauth-metadata' config option that points to the metadata discovery endpoint of your indieauth server - if you use einwohnermeldeamt, the endpoint is 'https://www.example.com/einwohnermeldeamt/metadata'
+
+- removed the following config options: 'auth_mail', 'endpoint-discovery-via-header', 'authorization_endpoint', 'token_endpoint', 'code_challenge_methods_supported', 'rel-me'
+- always default to endpoint discovery via header
+- removed internal indieath-metadata endpoint. this should be provided by the indieauth server; set the config option 'indieauth-metadata' to the metadata discovery endpoint of your IndieAuth server
 
 v.0.1.5
 

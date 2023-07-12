@@ -10,14 +10,9 @@ return [
 	'logging' => true,
 	'theme' => 'default',
 	'theme-color-scheme' => 'default', // depends on the theme; the default theme supports 'blue', 'green', 'red', 'lilac'
-	'posts_per_page' => 5,
-	'indieauth-metadata' => true, // IndieAuth metadata tag, for IndieAuth discovery; if set to false, it gets omitted; if set to true, it defaults to the internal indieauth-metadata endpoint; if set to a url, the url will be included
-	'endpoint-discovery-via-header' => true, // if set to true, the discovery endpoints will be included via the http 'Link' header; if set to false, the discovery endpoints will be included via <link rel=".." href=".."> meta tags
-	'authorization_endpoint' => false,
-	'token_endpoint' => false,
-	'code_challenge_methods_supported' => ['S256'], // array; could be 'plain' or 'S256', depends on authorization and token endpoint
-	'rel-me' => false, // the 'rel="me authn"' href value, if needed; can be "mailto:mail@example.com" if you want to use a mail address
 	'microsub' => false, // set to a URL to include a microsub endpoint
+	'indieauth-metadata' => false, // set to a URL for the IndieAuth server metadata discovery
+	'posts_per_page' => 5,
 	'author' => [
 		'p-name' => false,
 		'u-url' => false

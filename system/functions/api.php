@@ -17,33 +17,7 @@ function api_check_request( $request ){
 
 	array_shift($request); // remove first element, which is 'api' at the moment; TODO: check this, also check api_get_endpoint()
 
-	if( $request[0] == 'indieauth-metadata' ) {
-
-		global $core;
-
-		// see https://indieauth.spec.indieweb.org/#indieauth-server-metadata
-		$indieauth_metadata = array(
-			'issuer' => url(),
-			'authorization_endpoint' => $core->config->get('authorization_endpoint'),
-			'token_endpoint' => $core->config->get('token_endpoint'),
-			//'introspection_endpoint' => '', // TODO
-			//'introspection_endpoint_auth_methods_supported' => [], // TODO
-			//'revocation_endpoint' => '', // TODO
-			//'revocation_endpoint_auth_methods_supported' => [], // TODO
-			//'scopes_supported' => [], // TODO
-			//'response_types_supported' => [], // TODO
-			//'grant_types_supported' => [], // TODO
-			//'service_documentation' => '', // TODO
-			'code_challenge_methods_supported' => $core->config->get('code_challenge_methods_supported'),
-			//'authorization_response_iss_parameter_supported' => false, // TODO
-			//'userinfo_endpoint' => '' // TODO
-		);
-
-		header('Content-Type: application/json; charset=utf-8');
-		echo json_encode($indieauth_metadata);
-		exit;
-
-	} elseif( ! empty($_GET['link_preview']) ) {
+	if( ! empty($_GET['link_preview']) ) {
 
 		// TODO: add a nonce we can check
 
