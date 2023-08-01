@@ -1,6 +1,6 @@
 <?php
 
-// update: 2023-05-19
+// update: 2023-08-01
 
 
 class Link {
@@ -104,13 +104,15 @@ class Link {
 
 		// TODO: maybe we want to get information from other meta tags as well. revisit this in the future
 
+		$html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");  // force convert to UTF-8, this helps with YouTube Links
+
 		$dom = new Dom( $html );
 
 		$titles = $dom->find_elements('title')->return_elements();
 
 		$title = false;
 		if( count($titles) ) $title = $titles[0];
-		
+
 
 		$descriptions = $dom->find_elements('meta')->filter_elements('name', 'description')->return_elements('content');
 		$descriptions = array_merge( $descriptions, $dom->find_elements('meta')->filter_elements('property', 'og:description')->return_elements('content') );
@@ -154,12 +156,7 @@ class Link {
 
 	function get_remote_image( $preview_image ) {
 
-		$preview_image_name = explode('/', $preview_image);
-		$preview_image_name = end($preview_image_name);
-		$preview_image_name = explode("?", $preview_image_name);
-		$preview_image_name = $preview_image_name[0];
-
-		$preview_image_cache = new Cache( 'remote-image', $preview_image_name );
+		$preview_image_cache = new Cache( 'remote-image', $preview_image );
 		$preview_image_cache->get_remote_file( $preview_image );
 
 		return $preview_image_cache->cache_file_name;

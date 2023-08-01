@@ -6,6 +6,7 @@ some config options were removed. you need to add a url via the 'indieauth-metad
 - always default to endpoint discovery via header
 - removed internal indieath-metadata endpoint. this should be provided by the indieauth server; set the config option 'indieauth-metadata' to the metadata discovery endpoint of your IndieAuth server
 - use 'imagecopyresampled' instead of 'imagecopyresized' for better image quality
+- handle link previews with UTF-8 correctly (this fixes YouTube Link Previews)
 
 v.0.1.5
 
