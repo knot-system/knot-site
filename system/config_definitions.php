@@ -5,7 +5,7 @@
 return [
 	'site_title' => [
 		'type' => 'string',
-		'description' => '',
+		'description' => 'the title of your website',
 	],
 	'theme' => [
 		'type' => 'theme',
@@ -18,22 +18,22 @@ return [
 	],
 	'microsub' => [
 		'type' => 'url',
-		'description' => '',
+		'description' => 'URL to a microsub endpoint',
 	],
 	'indieauth-metadata' => [
 		'type' => 'url',
-		'description' => '',
+		'description' => 'URL to an IndieAuth Metadata endpoint',
 	],
 	'posts_per_page' => [
 		'type' => 'int',
-		'description' => '',
+		'description' => 'the number of posts to display on a page',
 	],
 	'link_detection' => [
 		'type' => 'bool',
-		'description' => '',
+		'description' => 'automatically detect links in post content; if set to <code>false</code>, <code>link_preview</code> is also set to <code>false</code>',
 	],
 	'link_preview' => [
 		'type' => 'bool',
-		'description' => '',
+		'description' => 'show link previews below the post content; if <code>link_detection</code> is set to <code>false</code>, this option is also set to <code>false</code>',
 	],
 ];
