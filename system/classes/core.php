@@ -66,10 +66,10 @@ class Core {
 
 		$this->theme = new Theme();
 
-		$this->theme->add_stylesheet( 'css/eigenheim.css', 'global' );
+		$this->theme->add_stylesheet( 'css/knot-site.css', 'global' );
 
-		$this->theme->add_metatag( 'script_eigenheim', '<script type="text/javascript">const Eigenheim = { API: { url: "'.url(api_get_endpoint()).'" } };</script>', 'footer' );
-		$this->theme->add_script( 'js/eigenheim.js', 'global', 'async', true );
+		$this->theme->add_metatag( 'script_knot-site', '<script type="text/javascript">const Knot = { API: { url: "'.url(api_get_endpoint()).'" } };</script>', 'footer' );
+		$this->theme->add_script( 'js/knot-site.js', 'global', 'async', true );
 
 
 		$this->theme->add_metatag( 'charset', '<meta charset="utf-8">' );
@@ -81,7 +81,7 @@ class Core {
 			$this->theme->add_metatag( 'author', '<meta name="author" content="'.$author['display_name'].'">' );
 		}
 
-		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Eigenheim v.'.$core->version().'">' );
+		$this->theme->add_metatag( 'generator', '<meta tag="generator" content="Knot Site v.'.$core->version().'">' );
 
 
 		// IndieAuth Metadata endpoint

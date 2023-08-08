@@ -1,8 +1,8 @@
-# Eigenheim
+# Knot Site
 
-A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This is part of a larger system called [Homestead](https://github.com/maxhaesslein/homestead). You can install it as a standalone website, or use the Homestead installer, which also installs other modules alongside it.
+A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This is part of a larger system called **Knot System**. You can install it as a standalone service, or use the [Knot Installer](https://github.com/maxhaesslein/knot-installer), which also installs other modules alongside it.
 
-This is currently in beta stage. **Things may break, and are likely to change in the future!**
+**This is an early beta version!** Some things may break, or change in the future!
 
 ## Initial Setup
 
@@ -24,7 +24,7 @@ You may want to edit the `config.php` a bit after the initial setup and add addi
 <?php
 
 return [
-	'site_title' => 'My Eigenheim Site',
+	'site_title' => 'My Knot Site',
 	'theme' => 'default',
 	'theme-color-scheme' => 'blue', // for the default theme, this can be 'blue' (default), 'green', 'red' or 'lilac'
 	'posts_per_page' => 5,
@@ -76,11 +76,11 @@ The `theme/{themename}/config.php` can overwrite config options from `system/con
 
 ## transparent Subfolder
 
-You can install Eigenheim in a subfolder, but still use it as if it was installed in the root directory. This is a very special use-case, and you probably won't need it. If you do, use it like this:
+You can install Knot Site in a subfolder, but still use it as if it was installed in the root directory. This is a very special use-case, and you probably won't need it. If you do, use it like this:
 
-We assume you have installed Eigenheim inside `https://www.example.com/eigenheim/`, but want to run it as if it was installed at `https://www.example.com`.
+We assume you have installed Knot Site inside `https://www.example.com/knot-site/`, but want to run it as if it was installed at `https://www.example.com`.
 
-Add the following option inside the `eigenheim/config.php`:
+Add the following option inside the `knot-site/config.php`:
 ```php
 return [
 	// site_title and other fields ...
@@ -97,17 +97,19 @@ RewriteBase /
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule (.*) eigenheim/$1 [L,QSA]
-RewriteRule ^$ eigenheim/ [L,QSA]
+RewriteRule (.*) knot-site/$1 [L,QSA]
+RewriteRule ^$ knot-site/ [L,QSA]
 </IfModule>
 ```
 
-You can now access your Eigenheim installation at `https://www.example.com/` instead of `https://www.example.com/eigenheim/`.
+You can now access your Knot Site installation at `https://www.example.com/` instead of `https://www.example.com/knot-site/`.
 
 
 ## Updating
 
 **Important:** Before updating, backup your `content/` folder and your `config.php` (and your custom theme inside the `theme/` folder, if you have any). Better be safe than sorry.
+
+You can use [Knot Control](https://github.com/maxhaesslein/knot-control) to update this module automatically. Or you use the following instructions:
 
 Create a new empty file called `update` (or `update.txt`) in the root folder of your installation. Then open the website, and append `?update` to the URL to trigger the update process. **Important:** if you don't finish the update, manually delete the `update` (or `update.txt`) file (if the update process finishes, this file gets deleted automatically).
 

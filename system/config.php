@@ -5,7 +5,7 @@
 // - and/or via the config.php in the root folder
 
 return [
-	'site_title' => 'Eigenheim',
+	'site_title' => 'Knot Site',
 	'debug' => false,
 	'logging' => true,
 	'theme' => 'default',
@@ -27,7 +27,7 @@ return [
 	'slug_max_length' => 80,
 	'add_footnote_to_links' => true,
 	'cache_lifetime' => 60*60*24*30, // 30 days, in seconds
-	'user_agent' => 'maxhaesslein/eigenheim/', // version will be automatically appended
+	'user_agent' => 'knot/site/', // version will be automatically appended
 	'baseurl_overwrite' => false, // overwrite the baseurl; see #transparent-subfolder in the README.md
 	'basefolder_overwrite' => false, // overwrite the basefolder; see #transparent-subfolder in the README.md
 	'link_detection' => true, // automatically detect links in post content; if set to false, link_preview is also set to false, regardless of its config option

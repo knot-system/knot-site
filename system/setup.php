@@ -28,7 +28,7 @@ if( file_exists($abspath.'config.php') && file_exists($abspath.'.htaccess') ) {
 
 if( $message_output ) {
 	?>
-	<p>Hi. This is the first-time setup of Eigenheim.</p>
+	<p>Hi. This is the first-time setup of Knot Site.</p>
 	<p>We create some files and folders to get everything up and running.</p>
 
 	<hr>
@@ -84,9 +84,9 @@ if( $config &&
 	<hr>
 	<p>Please fill out these fields:</p>
 	<form action="<?= $baseurl ?>" method="POST">
-		<p><label><strong>Site Title</strong><br><input type="text" name="site_title" required></label></p>
-		<p><label><strong>Author Name</strong><br><input type="text" name="author_name" required></label></p>
-		<p><label><strong>IndieAuth Metadata Discovery Endpoint</strong><br><input type="url" name="indieauth-metadata" required></label></p>
+		<p><label><strong>Site Title</strong><br><input type="text" name="site_title" placeholder="My Knot Site" required></label></p>
+		<p><label><strong>Author Name</strong><br><input type="text" name="author_name" placeholder="My Author Name" required></label></p>
+		<p><label><strong>IndieAuth Metadata Discovery Endpoint</strong><br><input type="url" name="indieauth-metadata" placeholder="https://www.example.com/indieauth-metadata/" required></label></p>
 		<p><small>(all fields above are required)</small></p>
 		<p><label><input type="checkbox" name="testcontent" value="true" checked>create test content</label>
 		<p><button>start installation</button></p>
@@ -124,7 +124,7 @@ if( ! file_exists( $abspath.'.htaccess' ) ) {
 		<?php
 	}
 
-	$content = "# BEGIN eigenheim\r\n<IfModule mod_rewrite.c>\r\nRewriteEngine on\r\nRewriteBase ".$rewrite_base."\r\n\r\nRewriteRule ^theme/[^/]+/assets/(.*)$ - [L]\r\nRewriteRule ^system/site/assets/(.*)$ - [L]\r\nRewriteRule (^|/)\.(?!well-known\/) index.php [L]\r\nRewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]\r\nRewriteRule ^content/(.*)\.(jpg|jpeg|png)$ index.php [L]\r\nRewriteRule ^theme/(.*) index.php [L]\r\nRewriteRule ^system/(.*) index.php [L]\r\nRewriteRule ^log/(.*) index.php [L]\r\nRewriteRule ^cache/(.*) index.php [L]\r\n\r\nRewriteCond %{REQUEST_FILENAME} !-d\r\nRewriteCond %{REQUEST_FILENAME} !-f\r\nRewriteRule . index.php [L]\r\n</IfModule>\r\n# END eigenheim\r\n";
+	$content = "# BEGIN knot-site\r\n<IfModule mod_rewrite.c>\r\nRewriteEngine on\r\nRewriteBase ".$rewrite_base."\r\n\r\nRewriteRule ^theme/[^/]+/assets/(.*)$ - [L]\r\nRewriteRule ^system/site/assets/(.*)$ - [L]\r\nRewriteRule (^|/)\.(?!well-known\/) index.php [L]\r\nRewriteRule ^content/(.*)\.(txt|md|mdown)$ index.php [L]\r\nRewriteRule ^content/(.*)\.(jpg|jpeg|png)$ index.php [L]\r\nRewriteRule ^theme/(.*) index.php [L]\r\nRewriteRule ^system/(.*) index.php [L]\r\nRewriteRule ^log/(.*) index.php [L]\r\nRewriteRule ^cache/(.*) index.php [L]\r\n\r\nRewriteCond %{REQUEST_FILENAME} !-d\r\nRewriteCond %{REQUEST_FILENAME} !-f\r\nRewriteRule . index.php [L]\r\n</IfModule>\r\n# END knot-site\r\n";
 	if( file_put_contents( $abspath.'.htaccess', $content ) === false ) {
 
 		if( $message_output ) {
@@ -386,7 +386,7 @@ if( $testcontent ) {
 													array(
 														'type' => 'file',
 														'name' => 'post.txt',
-														'content' => "h: entry\r\n\r\n----\r\n\r\nname: Testpost\r\n\r\n----\r\n\r\ncontent: This is a first testpost. It is saved at <em>content/posts/".date('Y', $timestamp)."/".date('m', $timestamp)."/".date('Y-m-d_H-i-s', $timestamp)."_testpost/post.txt</em>\r\n\r\n----\r\n\r\npost-status: published\r\n\r\n----\r\n\r\ncategory: [\"eigenheim\",\"testpost\"]\r\n\r\n----\r\n\r\nslug: testpost\r\n\r\n----\r\n\r\ntimestamp: ".$timestamp."\r\n\r\n----\r\n\r\ndate: ".date('c', $timestamp)."\r\n\r\n----\r\n\r\nid: testpost"
+														'content' => "h: entry\r\n\r\n----\r\n\r\nname: Testpost\r\n\r\n----\r\n\r\ncontent: This is a first testpost. It is saved at <em>content/posts/".date('Y', $timestamp)."/".date('m', $timestamp)."/".date('Y-m-d_H-i-s', $timestamp)."_testpost/post.txt</em>\r\n\r\n----\r\n\r\npost-status: published\r\n\r\n----\r\n\r\ncategory: [\"knot-site\",\"testpost\"]\r\n\r\n----\r\n\r\nslug: testpost\r\n\r\n----\r\n\r\ntimestamp: ".$timestamp."\r\n\r\n----\r\n\r\ndate: ".date('c', $timestamp)."\r\n\r\n----\r\n\r\nid: testpost"
 													)
 												)
 											)

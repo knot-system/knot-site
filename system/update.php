@@ -2,8 +2,8 @@
 
 // this file can update the system with the latest release from github. create a empty file called 'update' or 'update.txt' in the root directory, and then add '?update' to the url, to trigger the update
 
-$api_url = 'https://api.github.com/repos/maxhaesslein/eigenheim/releases';
-$dev_zip = 'https://github.com/maxhaesslein/eigenheim/archive/refs/heads/main.zip';
+$api_url = 'https://api.github.com/repos/maxhaesslein/knot-site/releases';
+$dev_zip = 'https://github.com/maxhaesslein/knot-site/archive/refs/heads/main.zip';
 
 $step = false;
 if( ! empty($_GET['step']) ) $step = $_GET['step'];
@@ -25,7 +25,7 @@ include_once( 'functions_shared/request.php' );
 $core_version = get_system_version( $abspath );
 
 ?>
-<h1>Eigenheim System Update</h1>
+<h1>Knot Site Update</h1>
 <?php
 
 
@@ -135,13 +135,13 @@ if( $step == 'check' ) {
 
 		$zipball = $latest_release->zipball_url;
 
-		$zip_folder_name_start = 'maxhaesslein-eigenheim-';
+		$zip_folder_name_start = 'maxhaesslein-knot-site-';
 
 	} elseif( $_REQUEST['version'] == 'dev' ) {
 
 		$zipball = $dev_zip;
 
-		$zip_folder_name_start = 'eigenheim-';
+		$zip_folder_name_start = 'knot-site-';
 
 	} else {
 
@@ -170,7 +170,7 @@ if( $step == 'check' ) {
 	$ch = curl_init( $zipball );
 	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-	curl_setopt( $ch, CURLOPT_USERAGENT, 'maxhaesslein/eigenheim/'.$core_version );
+	curl_setopt( $ch, CURLOPT_USERAGENT, 'knot/site/'.$core_version );
 	curl_setopt( $ch, CURLOPT_FILE, $file_handle );
 	curl_exec( $ch );
 	curl_close( $ch );
@@ -340,7 +340,3 @@ if( $step == 'check' ) {
 
 	exit;
 }
-
-
-
-

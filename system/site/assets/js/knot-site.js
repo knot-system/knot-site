@@ -5,7 +5,7 @@ if they need refreshing, and then shows a reload button
 updates after the user clicks the button, so no layout shift
 happens on its own.
 you can remove this file in your custom themes functions.php via:
-remove_script('js/eigenheim.js');
+remove_script('js/knot-site.js');
 */
 (function(){
 
@@ -39,7 +39,7 @@ var LinkPreview = {
 
 	refresh: function( id ) {
 		
-		var url = Eigenheim.API.url+'?link_preview='+id;
+		var url = Knot.API.url+'?link_preview='+id;
 		fetch( url, {
 			mode: 'same-origin'
 		}).then( response => response.json() ).then(function(response){
