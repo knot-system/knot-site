@@ -1,6 +1,6 @@
 <?php
 
-// Version: 0.2.0
+// Version: 0.2.1
 
 if( ! $core ) exit;
 
@@ -10,7 +10,7 @@ if( ! $core ) exit;
 </main>
 
 <footer>
-	<a href="https://github.com/maxhaesslein/knot-site" target="_blank" rel="noopener">Knot Site</a> v.<?= $core->version() ?>
+	<a href="https://github.com/knot-system/knot-site" target="_blank" rel="noopener">Knot Site</a> v.<?= $core->version() ?>
 
 </footer>
 

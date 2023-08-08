@@ -1,6 +1,6 @@
 # Knot Site
 
-A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This is part of a larger system called **Knot System**. You can install it as a standalone service, or use the [Knot Installer](https://github.com/maxhaesslein/knot-installer), which also installs other modules alongside it.
+A small website system, that acts as a micropub server so you can use whatever micropub client you want to write new posts. This is part of a larger system called **Knot System**. You can install it as a standalone service, or use the [Knot Installer](https://github.com/knot-system/knot-installer), which also installs other modules alongside it.
 
 **This is an early beta version!** Some things may break, or change in the future!
 
@@ -109,7 +109,7 @@ You can now access your Knot Site installation at `https://www.example.com/` ins
 
 **Important:** Before updating, backup your `content/` folder and your `config.php` (and your custom theme inside the `theme/` folder, if you have any). Better be safe than sorry.
 
-You can use [Knot Control](https://github.com/maxhaesslein/knot-control) to update this module automatically. Or you use the following instructions:
+You can use [Knot Control](https://github.com/knot-system/knot-control) to update this module automatically. Or you use the following instructions:
 
 Create a new empty file called `update` (or `update.txt`) in the root folder of your installation. Then open the website, and append `?update` to the URL to trigger the update process. **Important:** if you don't finish the update, manually delete the `update` (or `update.txt`) file (if the update process finishes, this file gets deleted automatically).
 
