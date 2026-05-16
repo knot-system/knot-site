@@ -4,13 +4,12 @@ if( ! $core ) exit;
 
 $core->doing_feed = true;
 
-header('Content-Type: application/rss+xml; charset=utf-8');
+header('Content-Type: text/xml; charset=utf-8');
 
 $limit_count = get_config('feed_limit_posts');
 $posts = $core->posts->limit($limit_count)->get();
 
-?><?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
+?><rss version="2.0">
 
 	<channel>
 		<title><?= get_config( 'site_title' ) ?></title>
