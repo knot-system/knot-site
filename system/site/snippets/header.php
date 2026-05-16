@@ -19,7 +19,7 @@ head_html();
 		foreach( $navigation as $page ) :
 			$classes = array();
 			if( $page['is_current_page'] ) $classes[] = 'current-page';
-			?>	<li<?= get_class_attribute($classes) ?>><a href="<?= $page['permalink'] ?>"><?= $page['title'] ?></a></li>
+			?>	<li<?= get_class_attribute($classes) ?>><a href="<?= $page['url'] ?>"><?= $page['title'] ?></a></li>
 		<?php
 		endforeach;
 		?></ul>

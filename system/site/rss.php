@@ -31,7 +31,7 @@ $posts = $core->posts->limit($limit_count)->get();
 		<item>
 			<title><?= $post['title'] ?></title>
 			<description><![CDATA[<?= $post['content_html'] ?>]]></description>
-			<link><?= $post['permalink'] ?></link>
+			<link><?= $post['url'] ?></link>
 			<guid><?= $post['id'] ?></guid>
 			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
 <?php

@@ -20,6 +20,7 @@ class Core {
 
 	public $route;
 	public $is_link_refreshing;
+	public $doing_feed;
 
 	function __construct() {
 

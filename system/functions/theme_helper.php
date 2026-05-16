@@ -46,7 +46,7 @@ function get_navigation(){
 
 		$navigation[] = array(
 			'title' => $page->fields['title'],
-			'permalink' => $page->fields['permalink'],
+			'url' => $page->fields['url'],
 			'is_current_page' => $is_current_page
 		);
 		

@@ -38,7 +38,7 @@ class Page {
 			'title' => $title,
 			'content_html' => $content_html,
 			'content_text' => $content_text,
-			'permalink' => $url
+			'url' => $url
 		);
 
 		return $this;

@@ -112,7 +112,7 @@ class Post {
 			'id' => $this->id,
 			'title' => $title,
 			'author' => $author,
-			'permalink' => $permalink,
+			'url' => $permalink,
 			'content_html' => $content_html,
 			'content_text' => $content_text,
 			'link_preview' => $link_preview,

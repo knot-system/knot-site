@@ -11,7 +11,7 @@ if( ! $post ) return;
 $title = $post->fields['title'];
 $text = $post->fields['content_html'];
 $tags = $post->fields['tags'];
-$permalink = $post->fields['permalink'];
+$permalink = $post->fields['url'];
 $link_preview = $post->fields['link_preview'];
 
 $date = false;
@@ -28,7 +28,7 @@ $image_html = $post->fields['image_html'];
 if( $date ) {
 ?>
 
-		<time class="dt-published" datetime="<?= $date ?>"><a href="<?= $post->fields['permalink'] ?>"><?= $date ?></a></time>
+		<time class="dt-published" datetime="<?= $date ?>"><a href="<?= $post->fields['url'] ?>"><?= $date ?></a></time>
 <?php
 }
 		
