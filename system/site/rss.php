@@ -12,8 +12,8 @@ $posts = $core->posts->limit($limit_count)->get();
 ?><rss version="2.0">
 
 	<channel>
-		<title><?= get_config( 'site_title' ) ?></title>
-		<link><?= url() ?></link>
+		<title><?= htmlspecialchars(get_config( 'site_title' )) ?></title>
+		<link><?= htmlspecialchars(url()) ?></link>
 		<description></description>
 <?php /*
 		<lastBuildDate></lastBuildDate>
@@ -30,14 +30,14 @@ $posts = $core->posts->limit($limit_count)->get();
 		<item>
 			<title><?= htmlspecialchars($post['title']) ?></title>
 			<description><![CDATA[<?= $post['content_html'] ?>]]></description>
-			<link><?= $post['url'] ?></link>
-			<guid><?= $post['id'] ?></guid>
+			<link><?= htmlspecialchars($post['url']) ?></link>
+			<guid><?= htmlspecialchars($post['id']) ?></guid>
 			<pubDate><?= date( 'r', $post['timestamp'] ) ?></pubDate>
 <?php
 			$author = get_author_information();
 			if( ! empty( $author['display_name'] ) ) :
 			?>
-			<author><?= $author['display_name'] ?></author>
+			<author><?= htmlspecialchars($author['display_name']) ?></author>
 <?php endif; ?>
 		</item>
 <?php endforeach; ?>
