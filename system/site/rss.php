@@ -28,7 +28,7 @@ $posts = $core->posts->limit($limit_count)->get();
 	if( ! empty($post['image']) ) $post['content_html'] = '<p><img src="'.$post['image'].'"></p>'.$post['content_html'];
 	?>
 		<item>
-			<title><?= $post['title'] ?></title>
+			<title><?= htmlspecialchars($post['title']) ?></title>
 			<description><![CDATA[<?= $post['content_html'] ?>]]></description>
 			<link><?= $post['url'] ?></link>
 			<guid><?= $post['id'] ?></guid>
