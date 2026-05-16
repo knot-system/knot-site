@@ -8,6 +8,7 @@ class Link {
 	public $id;
 	public $url;
 	public $short_url;
+	public $tiny_url;
 
 	private $cache;
 

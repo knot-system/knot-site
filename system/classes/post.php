@@ -5,6 +5,9 @@ class Post {
 
 	public $id;
 	public $fields = array();
+	public $raw_file;
+	public $tags;
+	public $slug;
 	private $raw_data;
 
 	function __construct( $file ) {

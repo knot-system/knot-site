@@ -19,7 +19,8 @@ class Core {
 	public $posts;
 
 	public $route;
-	
+	public $is_link_refreshing;
+
 	function __construct() {
 
 		global $core;
