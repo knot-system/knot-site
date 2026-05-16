@@ -29,7 +29,9 @@ $posts = $core->posts->limit($limit_count)->get();
 if( count($posts) ) {
 	$json['items'] = array();
 	foreach( $posts as $post ) {
-		$json['items'][] = $post->fields;
+		$item = $post->fields;
+		unset($item['timestamp']); // not part of JSON Feed 1.1 spec, date_published covers this
+		$json['items'][] = $item;
 	}
 }
 

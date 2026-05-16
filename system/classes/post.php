@@ -125,10 +125,9 @@ class Post {
 		);
 
 		if( doing_feed() ) {
-			// json feed: remove obsolete fields:
+			// remove html-only fields not needed in any feed format:
 			unset($this->fields['link_preview']);
 			unset($this->fields['image_html']);
-			unset($this->fields['timestamp']);
 		}
 
 		return $this;
