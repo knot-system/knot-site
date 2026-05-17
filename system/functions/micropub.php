@@ -253,8 +253,10 @@ function micropub_check_authorization_bearer( $me ) {
 
 	
 	// NOTE: for our purposes, https://wwww.example.com/, https://www.example.com and http://www.example.com are the same user
+	// If an 'owner' URL is configured (e.g. identity URL differs from site URL), use that for comparison
+	$owner_url = get_config('owner') ?: $core->baseurl;
 	$cleaned_me = un_trailing_slash_it($me);
-	$cleaned_baseurl = un_trailing_slash_it($core->baseurl);
+	$cleaned_baseurl = un_trailing_slash_it($owner_url);
 	$cleaned_me = str_replace( array('https://', 'http://'), '', $cleaned_me );
 	$cleaned_baseurl = str_replace( array('https://', 'http://'), '', $cleaned_baseurl );
 	if( $cleaned_me != $cleaned_baseurl ){
