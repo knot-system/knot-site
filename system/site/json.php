@@ -31,6 +31,7 @@ if( count($posts) ) {
 	foreach( $posts as $post ) {
 		$item = $post->fields;
 		unset($item['timestamp']); // not part of JSON Feed 1.1 spec, date_published covers this
+		if( ! empty($item['image']) ) $item['content_html'] = '<p><img src="'.$item['image'].'"></p>'.$item['content_html'];
 		$json['items'][] = $item;
 	}
 }
