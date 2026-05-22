@@ -90,7 +90,8 @@ class Post {
 				$image = new Image( $image_path );
 				$image_html = $image->get_html_embed();
 
-				$image_url = url($image_path, false);
+				$encoded_path = implode('/', array_map('rawurlencode', explode('/', $image_path)));
+				$image_url = url($encoded_path, false);
 			}
 
 		}
