@@ -26,6 +26,7 @@ $posts = $core->posts->limit($limit_count)->get();
 	$post = $post->fields;
 
 	if( ! empty($post['image']) ) $post['content_html'] = '<p><img src="'.$post['image'].'"></p>'.$post['content_html'];
+	$post = feed_add_utm( $post, 'knot_feed' );
 	?>
 		<item>
 			<title><?= htmlspecialchars($post['title']) ?></title>

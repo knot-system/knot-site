@@ -32,6 +32,7 @@ if( count($posts) ) {
 		$item = $post->fields;
 		unset($item['timestamp']); // not part of JSON Feed 1.1 spec, date_published covers this
 		if( ! empty($item['image']) ) $item['content_html'] = '<p><img src="'.$item['image'].'"></p>'.$item['content_html'];
+		$item = feed_add_utm( $item, 'knot_feed' );
 		$json['items'][] = $item;
 	}
 }
