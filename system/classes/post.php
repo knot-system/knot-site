@@ -47,6 +47,14 @@ class Post {
 
 		$content_html = $data['content'];
 
+		// check for <!--more--> before text processing strips HTML comments:
+		$has_more = false;
+		if( strpos($content_html, '<!--more-->') !== false ) {
+			$has_more = true;
+			$raw_parts = explode('<!--more-->', $content_html, 2);
+			$content_html = implode('', $raw_parts); // remove the marker from full content
+		}
+
 		$content_text = strip_tags( $content_html ); // TODO: revisit this in the future
 
 		$link_preview = false;
@@ -73,12 +81,14 @@ class Post {
 			$content_html = $text->get();
 		}
 
-		$has_more = false;
+		// build excerpt from the first part if <!--more--> was found:
 		$content_excerpt = $content_html;
-		if( strpos($content_html, '<!--more-->') !== false ) {
-			$has_more = true;
-			$content_excerpt = trim( explode('<!--more-->', $content_html)[0] );
-			$content_html = str_replace('<!--more-->', '', $content_html);
+		if( $has_more ) {
+			$excerpt_text = new Text($raw_parts[0]);
+			$excerpt_text->remove_html_elements()->fix_html();
+			if( $use_link_detection ) $excerpt_text->auto_a();
+			$excerpt_text->auto_p();
+			$content_excerpt = trim( $excerpt_text->get() );
 		}
 
 
