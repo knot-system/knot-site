@@ -73,6 +73,14 @@ class Post {
 			$content_html = $text->get();
 		}
 
+		$has_more = false;
+		$content_excerpt = $content_html;
+		if( strpos($content_html, '<!--more-->') !== false ) {
+			$has_more = true;
+			$content_excerpt = trim( explode('<!--more-->', $content_html)[0] );
+			$content_html = str_replace('<!--more-->', '', $content_html);
+		}
+
 
 		$image_html = false;
 		$image_url = false;
@@ -115,6 +123,8 @@ class Post {
 			'author' => $author,
 			'url' => $permalink,
 			'content_html' => $content_html,
+			'content_excerpt' => $content_excerpt,
+			'has_more' => $has_more,
 			'content_text' => $content_text,
 			'link_preview' => $link_preview,
 			'image_html' => $image_html,
