@@ -66,7 +66,7 @@ if( $has_more ) {
 }
 
 
-if( $link_preview ) {
+if( $link_preview && ! $is_overview ) {
 ?>
 
 		<div class="link-preview-container">
